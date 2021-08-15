@@ -85,6 +85,7 @@ goto error
 @REM Find the project base dir, i.e. the directory that contains the folder ".mvn".
 @REM Fallback to current working directory if not found.
 
+set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_66
 set MAVEN_PROJECTBASEDIR=%MAVEN_BASEDIR%
 IF NOT "%MAVEN_PROJECTBASEDIR%"=="" goto endDetectBaseDir
 
