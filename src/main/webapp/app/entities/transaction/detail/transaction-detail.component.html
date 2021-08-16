@@ -1,0 +1,106 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="transaction">
+      <h2 data-cy="transactionDetailsHeading"><span>Transaction</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ transaction.id }}</span>
+        </dd>
+        <dt><span>Reference No</span></dt>
+        <dd>
+          <span>{{ transaction.referenceNo }}</span>
+        </dd>
+        <dt><span>Transaction Type</span></dt>
+        <dd>
+          <span>{{ transaction.transactionType }}</span>
+        </dd>
+        <dt><span>Total Cost Price</span></dt>
+        <dd>
+          <span>{{ transaction.totalCostPrice }}</span>
+        </dd>
+        <dt><span>Discount</span></dt>
+        <dd>
+          <span>{{ transaction.discount }}</span>
+        </dd>
+        <dt><span>Total</span></dt>
+        <dd>
+          <span>{{ transaction.total }}</span>
+        </dd>
+        <dt><span>Invoice Tax</span></dt>
+        <dd>
+          <span>{{ transaction.invoiceTax }}</span>
+        </dd>
+        <dt><span>Total Tax</span></dt>
+        <dd>
+          <span>{{ transaction.totalTax }}</span>
+        </dd>
+        <dt><span>Labor Cost</span></dt>
+        <dd>
+          <span>{{ transaction.laborCost }}</span>
+        </dd>
+        <dt><span>Net Total</span></dt>
+        <dd>
+          <span>{{ transaction.netTotal }}</span>
+        </dd>
+        <dt><span>Paid</span></dt>
+        <dd>
+          <span>{{ transaction.paid }}</span>
+        </dd>
+        <dt><span>Change Amount</span></dt>
+        <dd>
+          <span>{{ transaction.changeAmount }}</span>
+        </dd>
+        <dt><span>Return Invoice</span></dt>
+        <dd>
+          <span>{{ transaction.returnInvoice }}</span>
+        </dd>
+        <dt><span>Return Balance</span></dt>
+        <dd>
+          <span>{{ transaction.returnBalance }}</span>
+        </dd>
+        <dt><span>Pos</span></dt>
+        <dd>
+          <span>{{ transaction.pos }}</span>
+        </dd>
+        <dt><span>Date</span></dt>
+        <dd>
+          <span>{{ transaction.date | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Created At</span></dt>
+        <dd>
+          <span>{{ transaction.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Updated At</span></dt>
+        <dd>
+          <span>{{ transaction.updatedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Deleted At</span></dt>
+        <dd>
+          <span>{{ transaction.deletedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Person</span></dt>
+        <dd>
+          <div *ngIf="transaction.person">
+            <a [routerLink]="['/person', transaction.person?.id, 'view']">{{ transaction.person?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/transaction', transaction.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+<div>
+  <h2 id="page-heading" data-cy="TransactionHeading">
+    <span>Transactions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-transaction"
+        [routerLink]="['/transaction/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Transaction </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="transactions?.length === 0">
+    <span>No transactions found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="transactions && transactions.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="referenceNo"><span>Reference No</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="transactionType"><span>Transaction Type</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="totalCostPrice"><span>Total Cost Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="discount"><span>Discount</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="total"><span>Total</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="invoiceTax"><span>Invoice Tax</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="totalTax"><span>Total Tax</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="laborCost"><span>Labor Cost</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="netTotal"><span>Net Total</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="paid"><span>Paid</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="changeAmount"><span>Change Amount</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="returnInvoice"><span>Return Invoice</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="returnBalance"><span>Return Balance</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="pos"><span>Pos</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="date"><span>Date</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="createdAt"><span>Created At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="updatedAt"><span>Updated At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="deletedAt"><span>Deleted At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="person.id"><span>Person</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/transaction', transaction.id, 'view']">{{ transaction.id }}</a>
+          </td>
+          <td>{{ transaction.referenceNo }}</td>
+          <td>{{ transaction.transactionType }}</td>
+          <td>{{ transaction.totalCostPrice }}</td>
+          <td>{{ transaction.discount }}</td>
+          <td>{{ transaction.total }}</td>
+          <td>{{ transaction.invoiceTax }}</td>
+          <td>{{ transaction.totalTax }}</td>
+          <td>{{ transaction.laborCost }}</td>
+          <td>{{ transaction.netTotal }}</td>
+          <td>{{ transaction.paid }}</td>
+          <td>{{ transaction.changeAmount }}</td>
+          <td>{{ transaction.returnInvoice }}</td>
+          <td>{{ transaction.returnBalance }}</td>
+          <td>{{ transaction.pos }}</td>
+          <td>{{ transaction.date | formatMediumDatetime }}</td>
+          <td>{{ transaction.createdAt | formatMediumDatetime }}</td>
+          <td>{{ transaction.updatedAt | formatMediumDatetime }}</td>
+          <td>{{ transaction.deletedAt | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="transaction.person">
+              <a [routerLink]="['/person', transaction.person?.id, 'view']">{{ transaction.person?.id }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/transaction', transaction.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/transaction', transaction.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(transaction)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="transactions && transactions.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

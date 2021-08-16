@@ -1,0 +1,102 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="product">
+      <h2 data-cy="productDetailsHeading"><span>Product</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ product.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ product.name }}</span>
+        </dd>
+        <dt><span>Code</span></dt>
+        <dd>
+          <span>{{ product.code }}</span>
+        </dd>
+        <dt><span>Quantity</span></dt>
+        <dd>
+          <span>{{ product.quantity }}</span>
+        </dd>
+        <dt><span>Details</span></dt>
+        <dd>
+          <span>{{ product.details }}</span>
+        </dd>
+        <dt><span>Cost Price</span></dt>
+        <dd>
+          <span>{{ product.costPrice }}</span>
+        </dd>
+        <dt><span>Minimum Retail Price</span></dt>
+        <dd>
+          <span>{{ product.minimumRetailPrice }}</span>
+        </dd>
+        <dt><span>Unit</span></dt>
+        <dd>
+          <span>{{ product.unit }}</span>
+        </dd>
+        <dt><span>Status</span></dt>
+        <dd>
+          <span>{{ product.status }}</span>
+        </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <span>{{ product.image }}</span>
+        </dd>
+        <dt><span>Opening Stock</span></dt>
+        <dd>
+          <span>{{ product.openingStock }}</span>
+        </dd>
+        <dt><span>Alert Quantity</span></dt>
+        <dd>
+          <span>{{ product.alertQuantity }}</span>
+        </dd>
+        <dt><span>Created At</span></dt>
+        <dd>
+          <span>{{ product.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Updated At</span></dt>
+        <dd>
+          <span>{{ product.updatedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Deleted At</span></dt>
+        <dd>
+          <span>{{ product.deletedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Categorie</span></dt>
+        <dd>
+          <div *ngIf="product.categorie">
+            <a [routerLink]="['/categorie', product.categorie?.id, 'view']">{{ product.categorie?.categoryName }}</a>
+          </div>
+        </dd>
+        <dt><span>Sub Categorie</span></dt>
+        <dd>
+          <div *ngIf="product.subCategorie">
+            <a [routerLink]="['/subcategorie', product.subCategorie?.id, 'view']">{{ product.subCategorie?.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Taxe</span></dt>
+        <dd>
+          <div *ngIf="product.taxe">
+            <a [routerLink]="['/taxe', product.taxe?.id, 'view']">{{ product.taxe?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/product', product.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

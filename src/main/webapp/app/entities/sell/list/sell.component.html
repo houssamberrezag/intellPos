@@ -1,0 +1,114 @@
+<div>
+  <h2 id="page-heading" data-cy="SellHeading">
+    <span>Sells</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-sell"
+        [routerLink]="['/sell/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Sell </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="sells?.length === 0">
+    <span>No sells found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="sells && sells.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="referenceNo"><span>Reference No</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="quantity"><span>Quantity</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="unitCostPrice"><span>Unit Cost Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="subTotal"><span>Sub Total</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="productTax"><span>Product Tax</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="date"><span>Date</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="createdAt"><span>Created At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="updatedAt"><span>Updated At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="deletedAt"><span>Deleted At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="person.id"><span>Person</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="product.name"><span>Product</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sell of sells; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/sell', sell.id, 'view']">{{ sell.id }}</a>
+          </td>
+          <td>{{ sell.referenceNo }}</td>
+          <td>{{ sell.quantity }}</td>
+          <td>{{ sell.unitCostPrice }}</td>
+          <td>{{ sell.subTotal }}</td>
+          <td>{{ sell.productTax }}</td>
+          <td>{{ sell.date | formatMediumDatetime }}</td>
+          <td>{{ sell.createdAt | formatMediumDatetime }}</td>
+          <td>{{ sell.updatedAt | formatMediumDatetime }}</td>
+          <td>{{ sell.deletedAt | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="sell.person">
+              <a [routerLink]="['/person', sell.person?.id, 'view']">{{ sell.person?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="sell.product">
+              <a [routerLink]="['/product', sell.product?.id, 'view']">{{ sell.product?.name }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/sell', sell.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/sell', sell.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(sell)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="sells && sells.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

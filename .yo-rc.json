@@ -43,7 +43,24 @@
     "devServerPort": 4200,
     "clientTheme": "none",
     "clientThemeVariant": "",
-    "reactive": false
+    "reactive": false,
+    "entities": [
+      "ReturnTransaction",
+      "Sell",
+      "Taxe",
+      "Transaction",
+      "CashRegister",
+      "Categorie",
+      "Subcategorie",
+      "Person",
+      "Damage",
+      "ExpenseCategorie",
+      "Expense",
+      "Payment",
+      "Product",
+      "Purchase"
+    ],
+    "lastLiquibaseTimestamp": 1629042619000
   },
   "git-provider": "GitHub",
   "git-company": "houssamberrezag",

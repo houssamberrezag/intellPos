@@ -1,0 +1,72 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="purchase">
+      <h2 data-cy="purchaseDetailsHeading"><span>Purchase</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ purchase.id }}</span>
+        </dd>
+        <dt><span>Reference No</span></dt>
+        <dd>
+          <span>{{ purchase.referenceNo }}</span>
+        </dd>
+        <dt><span>Quantity</span></dt>
+        <dd>
+          <span>{{ purchase.quantity }}</span>
+        </dd>
+        <dt><span>Sub Total</span></dt>
+        <dd>
+          <span>{{ purchase.subTotal }}</span>
+        </dd>
+        <dt><span>Product Tax</span></dt>
+        <dd>
+          <span>{{ purchase.productTax }}</span>
+        </dd>
+        <dt><span>Date</span></dt>
+        <dd>
+          <span>{{ purchase.date | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Created At</span></dt>
+        <dd>
+          <span>{{ purchase.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Updated At</span></dt>
+        <dd>
+          <span>{{ purchase.updatedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Deleted At</span></dt>
+        <dd>
+          <span>{{ purchase.deletedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Person</span></dt>
+        <dd>
+          <div *ngIf="purchase.person">
+            <a [routerLink]="['/person', purchase.person?.id, 'view']">{{ purchase.person?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Product</span></dt>
+        <dd>
+          <div *ngIf="purchase.product">
+            <a [routerLink]="['/product', purchase.product?.id, 'view']">{{ purchase.product?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/purchase', purchase.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="cashRegister">
+      <h2 data-cy="cashRegisterDetailsHeading"><span>Cash Register</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ cashRegister.id }}</span>
+        </dd>
+        <dt><span>Cash In Hands</span></dt>
+        <dd>
+          <span>{{ cashRegister.cashInHands }}</span>
+        </dd>
+        <dt><span>Date</span></dt>
+        <dd>
+          <span>{{ cashRegister.date | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Created At</span></dt>
+        <dd>
+          <span>{{ cashRegister.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Updated At</span></dt>
+        <dd>
+          <span>{{ cashRegister.updatedAt | formatMediumDatetime }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/cash-register', cashRegister.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

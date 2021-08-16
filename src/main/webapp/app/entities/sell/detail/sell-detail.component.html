@@ -1,0 +1,76 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="sell">
+      <h2 data-cy="sellDetailsHeading"><span>Sell</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ sell.id }}</span>
+        </dd>
+        <dt><span>Reference No</span></dt>
+        <dd>
+          <span>{{ sell.referenceNo }}</span>
+        </dd>
+        <dt><span>Quantity</span></dt>
+        <dd>
+          <span>{{ sell.quantity }}</span>
+        </dd>
+        <dt><span>Unit Cost Price</span></dt>
+        <dd>
+          <span>{{ sell.unitCostPrice }}</span>
+        </dd>
+        <dt><span>Sub Total</span></dt>
+        <dd>
+          <span>{{ sell.subTotal }}</span>
+        </dd>
+        <dt><span>Product Tax</span></dt>
+        <dd>
+          <span>{{ sell.productTax }}</span>
+        </dd>
+        <dt><span>Date</span></dt>
+        <dd>
+          <span>{{ sell.date | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Created At</span></dt>
+        <dd>
+          <span>{{ sell.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Updated At</span></dt>
+        <dd>
+          <span>{{ sell.updatedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Deleted At</span></dt>
+        <dd>
+          <span>{{ sell.deletedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Person</span></dt>
+        <dd>
+          <div *ngIf="sell.person">
+            <a [routerLink]="['/person', sell.person?.id, 'view']">{{ sell.person?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Product</span></dt>
+        <dd>
+          <div *ngIf="sell.product">
+            <a [routerLink]="['/product', sell.product?.id, 'view']">{{ sell.product?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/sell', sell.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

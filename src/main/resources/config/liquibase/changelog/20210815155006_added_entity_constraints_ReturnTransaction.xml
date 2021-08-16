@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity ReturnTransaction.
+    -->
+    <changeSet id="20210815155006-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="return_transaction"
+                                 constraintName="fk_return_transaction__person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
+        <addForeignKeyConstraint baseColumnNames="sell_id"
+                                 baseTableName="return_transaction"
+                                 constraintName="fk_return_transaction__sell_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sell"/>
+    </changeSet>
+</databaseChangeLog>

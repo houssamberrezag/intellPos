@@ -1,0 +1,195 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-return-transaction-heading" data-cy="ReturnTransactionCreateUpdateHeading">Create or edit a Return Transaction</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_returnVat">Return Vat</label>
+          <input type="number" class="form-control" name="returnVat" id="field_returnVat" data-cy="returnVat" formControlName="returnVat" />
+          <div *ngIf="editForm.get('returnVat')!.invalid && (editForm.get('returnVat')!.dirty || editForm.get('returnVat')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('returnVat')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('returnVat')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_sellsReferenceNo">Sells Reference No</label>
+          <input
+            type="text"
+            class="form-control"
+            name="sellsReferenceNo"
+            id="field_sellsReferenceNo"
+            data-cy="sellsReferenceNo"
+            formControlName="sellsReferenceNo"
+          />
+          <div
+            *ngIf="
+              editForm.get('sellsReferenceNo')!.invalid &&
+              (editForm.get('sellsReferenceNo')!.dirty || editForm.get('sellsReferenceNo')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('sellsReferenceNo')?.errors?.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('sellsReferenceNo')?.errors?.maxlength">
+              This field cannot be longer than 191 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_returnUnits">Return Units</label>
+          <input
+            type="number"
+            class="form-control"
+            name="returnUnits"
+            id="field_returnUnits"
+            data-cy="returnUnits"
+            formControlName="returnUnits"
+          />
+          <div *ngIf="editForm.get('returnUnits')!.invalid && (editForm.get('returnUnits')!.dirty || editForm.get('returnUnits')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('returnUnits')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('returnUnits')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_returnAmount">Return Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="returnAmount"
+            id="field_returnAmount"
+            data-cy="returnAmount"
+            formControlName="returnAmount"
+          />
+          <div
+            *ngIf="editForm.get('returnAmount')!.invalid && (editForm.get('returnAmount')!.dirty || editForm.get('returnAmount')!.touched)"
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('returnAmount')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('returnAmount')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_returnedBy">Returned By</label>
+          <input
+            type="number"
+            class="form-control"
+            name="returnedBy"
+            id="field_returnedBy"
+            data-cy="returnedBy"
+            formControlName="returnedBy"
+          />
+          <div *ngIf="editForm.get('returnedBy')!.invalid && (editForm.get('returnedBy')!.dirty || editForm.get('returnedBy')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('returnedBy')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('returnedBy')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_createdAt">Created At</label>
+          <div class="d-flex">
+            <input
+              id="field_createdAt"
+              data-cy="createdAt"
+              type="datetime-local"
+              class="form-control"
+              name="createdAt"
+              formControlName="createdAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_updatedAt">Updated At</label>
+          <div class="d-flex">
+            <input
+              id="field_updatedAt"
+              data-cy="updatedAt"
+              type="datetime-local"
+              class="form-control"
+              name="updatedAt"
+              formControlName="updatedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_deletedAt">Deleted At</label>
+          <div class="d-flex">
+            <input
+              id="field_deletedAt"
+              data-cy="deletedAt"
+              type="datetime-local"
+              class="form-control"
+              name="deletedAt"
+              formControlName="deletedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_person">Person</label>
+          <select class="form-control" id="field_person" data-cy="person" name="person" formControlName="person">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="personOption.id === editForm.get('person')!.value?.id ? editForm.get('person')!.value : personOption"
+              *ngFor="let personOption of peopleSharedCollection; trackBy: trackPersonById"
+            >
+              {{ personOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_sell">Sell</label>
+          <select class="form-control" id="field_sell" data-cy="sell" name="sell" formControlName="sell">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="sellOption.id === editForm.get('sell')!.value?.id ? editForm.get('sell')!.value : sellOption"
+              *ngFor="let sellOption of sellsSharedCollection; trackBy: trackSellById"
+            >
+              {{ sellOption.referenceNo }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

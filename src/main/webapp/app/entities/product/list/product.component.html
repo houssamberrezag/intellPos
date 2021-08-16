@@ -1,0 +1,140 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductHeading">
+    <span>Products</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-product"
+        [routerLink]="['/product/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Product </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="products?.length === 0">
+    <span>No products found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="products && products.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="name"><span>Name</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="code"><span>Code</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="quantity"><span>Quantity</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="details"><span>Details</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="costPrice"><span>Cost Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="minimumRetailPrice"><span>Minimum Retail Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="unit"><span>Unit</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="status"><span>Status</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="image"><span>Image</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="openingStock"><span>Opening Stock</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="alertQuantity"><span>Alert Quantity</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="createdAt"><span>Created At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="updatedAt"><span>Updated At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="deletedAt"><span>Deleted At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="categorie.categoryName"><span>Categorie</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="subCategorie.name"><span>Sub Categorie</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="taxe.name"><span>Taxe</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/product', product.id, 'view']">{{ product.id }}</a>
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.code }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.details }}</td>
+          <td>{{ product.costPrice }}</td>
+          <td>{{ product.minimumRetailPrice }}</td>
+          <td>{{ product.unit }}</td>
+          <td>{{ product.status }}</td>
+          <td>{{ product.image }}</td>
+          <td>{{ product.openingStock }}</td>
+          <td>{{ product.alertQuantity }}</td>
+          <td>{{ product.createdAt | formatMediumDatetime }}</td>
+          <td>{{ product.updatedAt | formatMediumDatetime }}</td>
+          <td>{{ product.deletedAt | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="product.categorie">
+              <a [routerLink]="['/categorie', product.categorie?.id, 'view']">{{ product.categorie?.categoryName }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="product.subCategorie">
+              <a [routerLink]="['/subcategorie', product.subCategorie?.id, 'view']">{{ product.subCategorie?.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="product.taxe">
+              <a [routerLink]="['/taxe', product.taxe?.id, 'view']">{{ product.taxe?.name }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/product', product.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/product', product.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="products && products.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

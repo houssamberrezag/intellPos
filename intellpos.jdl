@@ -1,0 +1,202 @@
+
+entity ReturnTransaction {
+	returnVat Double required,
+	sellsReferenceNo String required maxlength(191),
+	returnUnits Integer required,
+	returnAmount Double required,
+	returnedBy Integer required,
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+entity Sell {
+	referenceNo String required maxlength(191),
+	quantity Double required,
+	unitCostPrice Double,
+	subTotal Double required,
+	productTax Double,
+	date Instant,
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+
+
+entity Taxe {
+	name String required maxlength(50),
+	rate Double required,
+	type Integer required,
+	createdAt Instant,
+	updatedAt Instant
+}
+
+
+enum TransactionTypes {
+  OPENING,
+  SELL,
+  PURCHASE
+}
+entity Transaction {
+	referenceNo String required maxlength(191),
+	transactionType TransactionTypes required ,
+	totalCostPrice Double,
+	discount Double required,
+	total Double required,
+	invoiceTax Double,
+	totalTax Double,
+	laborCost Double required,
+	netTotal Double,
+	paid Double required,
+	changeAmount Double,
+	//return Boolean required,
+	returnInvoice String maxlength(191),
+	returnBalance Double,
+	pos Boolean required,
+	date Instant, 
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+
+entity CashRegister {
+	cashInHands Double required,
+	date LocalDate required,
+	createdAt Instant,
+	updatedAt Instant
+}
+
+entity Categorie {
+	categoryName String required maxlength(191),
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+entity Subcategorie {
+	name String required maxlength(191),
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+enum PersonTypes {
+  CLIENT,
+  FOURNISSEUR
+}
+
+entity Person {
+	firstName String required maxlength(191),
+	lastName String maxlength(191),
+	companyName String maxlength(191),
+	email String maxlength(191),
+	phone String maxlength(191),
+	address String maxlength(191),
+	personType PersonTypes required,
+	proviousDue Double,
+	accountNo String maxlength(191),
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+entity Damage {
+	quantity Integer required,
+	date Instant,
+	note String maxlength(191),
+	createdAt Instant,
+	updatedAt Instant
+}
+
+entity ExpenseCategorie {
+	name String required maxlength(191),
+	createdAt Instant,
+	updatedAt Instant
+}
+
+entity Expense {
+	purpose String maxlength(191),
+	amount Double required,
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+
+enum PaymentTypes {
+  CLIENT,
+  FOURNISSEUR
+}
+
+entity Payment {
+	amount Double required,
+	method String maxlength(191),
+	type PaymentTypes required,
+	referenceNo String maxlength(191),
+	note String maxlength(191),
+	date Instant,
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+entity Product {
+	name String required maxlength(191),
+	code String required maxlength(191),
+	quantity Double,
+	details TextBlob,
+	costPrice Double required,
+	//mrp Double required,
+	minimumRetailPrice Double,
+	unit String maxlength(11),
+	status Boolean,
+	image String maxlength(255),
+	openingStock Double,
+	alertQuantity Integer,
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+entity Purchase {
+	referenceNo String required maxlength(191),
+	quantity Double required,
+	subTotal Double required,
+	productTax Double,
+	date Instant,
+	createdAt Instant,
+	updatedAt Instant,
+	deletedAt Instant
+}
+
+// Relations
+
+relationship OneToMany {
+Person to Payment{person required},
+ExpenseCategorie to Expense,
+Categorie to Subcategorie{categorie(categoryName)},
+}
+
+relationship ManyToOne {
+	Product{categorie(categoryName) required} to Categorie,
+    Product {subCategorie(name)} to Subcategorie,
+    Product{taxe(name)} to Taxe,
+    Damage{product(name)} to Product,
+    Purchase {person} to Person,
+    Purchase {product(name)} to Product,
+    Sell {person} to Person,
+    Sell {product(name)} to Product,
+    Transaction {person} to Person,
+    ReturnTransaction{person} to Person,
+    ReturnTransaction {sell(referenceNo)} to Sell,
+    
+    
+    
+}
+
+// Options
+service all with serviceImpl
+paginate * with pagination
+

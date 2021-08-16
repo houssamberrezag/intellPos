@@ -1,0 +1,11 @@
+id;name;code;quantity;details;cost_price;minimum_retail_price;unit;status;image;opening_stock;alert_quantity;created_at;updated_at;deleted_at;categorie_id
+1;Steel;Assistant;57374;../fake-data/blob/hipster.txt;81236;38757;Principal;false;wireless Handmade;76808;92572;2021-08-15T00:29:24;2021-08-15T10:32:23;2021-08-14T23:00:24;1
+2;THX Car;Soap withdrawal;40879;../fake-data/blob/hipster.txt;70307;57853;Incredible ;true;intermediate initiative Generic;32770;54278;2021-08-15T04:18:49;2021-08-15T11:52:26;2021-08-15T08:50:21;2
+3;Small digital Oklahoma;orange Practical;80588;../fake-data/blob/hipster.txt;95487;35518;Dynamic Spo;true;Personal Steel;15779;40746;2021-08-15T09:13:37;2021-08-15T03:10:11;2021-08-15T09:16:42;3
+4;withdrawal invoice;Bike Shoes Center;20319;../fake-data/blob/hipster.txt;26845;88292;Checking Ac;false;multi-byte Underpass project;82676;17130;2021-08-15T13:45:42;2021-08-15T07:05:28;2021-08-15T02:20:24;4
+5;Buckinghamshire;metrics;95618;../fake-data/blob/hipster.txt;19864;94541;application;true;systems Gorgeous;6953;93852;2021-08-15T14:25:54;2021-08-15T13:18:42;2021-08-15T00:17:02;5
+6;full-range;back-end National Operations;6909;../fake-data/blob/hipster.txt;788;16003;Balboa Mobi;false;Outdoors Global;1215;96602;2021-08-15T13:43:00;2021-08-15T12:47:36;2021-08-15T09:46:47;6
+7;Taka;wireless Practical Solutions;54007;../fake-data/blob/hipster.txt;92380;69233;Square Chec;false;capacity Administrator CFA;47027;67453;2021-08-15T11:40:37;2021-08-15T08:50:38;2021-08-15T07:16:27;7
+8;mobile;Berkshire;71391;../fake-data/blob/hipster.txt;24373;97064;Accounts Bo;true;Stand-alone;14752;77195;2021-08-14T19:59:50;2021-08-14T21:41:45;2021-08-15T00:13:59;8
+9;global;focus Phased infomediaries;606;../fake-data/blob/hipster.txt;19729;53349;Vista;false;Account portals Berkshire;36836;13935;2021-08-15T11:31:42;2021-08-14T23:37:54;2021-08-15T12:30:16;9
+10;Pike;Account Representative markets;98878;../fake-data/blob/hipster.txt;29774;2131;Keyboard;false;hack back-end application;41129;88756;2021-08-14T21:40:36;2021-08-15T14:18:58;2021-08-14T17:54:46;10

@@ -1,0 +1,72 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="returnTransaction">
+      <h2 data-cy="returnTransactionDetailsHeading"><span>Return Transaction</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ returnTransaction.id }}</span>
+        </dd>
+        <dt><span>Return Vat</span></dt>
+        <dd>
+          <span>{{ returnTransaction.returnVat }}</span>
+        </dd>
+        <dt><span>Sells Reference No</span></dt>
+        <dd>
+          <span>{{ returnTransaction.sellsReferenceNo }}</span>
+        </dd>
+        <dt><span>Return Units</span></dt>
+        <dd>
+          <span>{{ returnTransaction.returnUnits }}</span>
+        </dd>
+        <dt><span>Return Amount</span></dt>
+        <dd>
+          <span>{{ returnTransaction.returnAmount }}</span>
+        </dd>
+        <dt><span>Returned By</span></dt>
+        <dd>
+          <span>{{ returnTransaction.returnedBy }}</span>
+        </dd>
+        <dt><span>Created At</span></dt>
+        <dd>
+          <span>{{ returnTransaction.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Updated At</span></dt>
+        <dd>
+          <span>{{ returnTransaction.updatedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Deleted At</span></dt>
+        <dd>
+          <span>{{ returnTransaction.deletedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Person</span></dt>
+        <dd>
+          <div *ngIf="returnTransaction.person">
+            <a [routerLink]="['/person', returnTransaction.person?.id, 'view']">{{ returnTransaction.person?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Sell</span></dt>
+        <dd>
+          <div *ngIf="returnTransaction.sell">
+            <a [routerLink]="['/sell', returnTransaction.sell?.id, 'view']">{{ returnTransaction.sell?.referenceNo }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/return-transaction', returnTransaction.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

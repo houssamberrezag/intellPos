@@ -1,0 +1,106 @@
+{
+  "name": "Transaction",
+  "fields": [
+    {
+      "fieldName": "referenceNo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "191"
+    },
+    {
+      "fieldName": "transactionType",
+      "fieldType": "TransactionTypes",
+      "fieldValues": "OPENING,SELL,PURCHASE",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "totalCostPrice",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "discount",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "invoiceTax",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "totalTax",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "laborCost",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "netTotal",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "paid",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "changeAmount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "returnInvoice",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "191"
+    },
+    {
+      "fieldName": "returnBalance",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "pos",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updatedAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "deletedAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "person",
+      "otherEntityRelationshipName": "transaction",
+      "relationshipName": "person"
+    }
+  ],
+  "entityTableName": "transaction",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210815155009"
+}
