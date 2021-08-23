@@ -86,7 +86,12 @@
     "guard-for-in": "error",
     "no-bitwise": "error",
     "no-caller": "error",
-    "no-console": ["error", { "allow": ["warn", "error"] }],
+    //"no-console": ["error", { "allow": ["warn", "error"] }],
+    //============== my codes ===============//
+    "no-console": "off",
+    "no-empty": "off",
+    // "no-trailing-whitespace":false,
+    //============== end my codes ===============//
     "no-eval": "error",
     "no-labels": "error",
     "no-new": "error",

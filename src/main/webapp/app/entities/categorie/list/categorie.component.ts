@@ -13,6 +13,7 @@ import { CategorieDeleteDialogComponent } from '../delete/categorie-delete-dialo
 @Component({
   selector: 'jhi-categorie',
   templateUrl: './categorie.component.html',
+  styleUrls: ['./categorie.component.scss'],
 })
 export class CategorieComponent implements OnInit {
   categories?: ICategorie[];
@@ -108,6 +109,7 @@ export class CategorieComponent implements OnInit {
       });
     }
     this.categories = data ?? [];
+    console.log(this.categories);
     this.ngbPaginationPage = this.page;
   }
 

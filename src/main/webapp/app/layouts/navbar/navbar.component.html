@@ -1,4 +1,4 @@
-<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
+<!-- <nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
   <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
     <span class="logo-img"></span>
     <span class="navbar-title">Intellpos</span>
@@ -26,7 +26,6 @@
           </span>
         </a>
       </li>
-      <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
       <li
         *ngSwitchCase="true"
         ngbDropdown
@@ -210,7 +209,7 @@
               <span>Purchase</span>
             </a>
           </li>
-          <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+          
         </ul>
       </li>
       <li
@@ -264,8 +263,7 @@
               <span>API</span>
             </a>
           </li>
-          <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
-        </ul>
+         </ul>
       </li>
       <li
         ngbDropdown
@@ -325,3 +323,402 @@
     </ul>
   </div>
 </nav>
+ -->
+
+<div id="page-header" class="bg-gradient-9">
+  <div id="mobile-navigation">
+    <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar"><span></span></button>
+    <a href="" class="logo-content-small" title="Intell Pos"></a>
+  </div>
+
+  <div id="header-logo" class="logo-bg">
+    <a href="/" class="logo-content-big" title="site_name">
+      {{ 'site_name' }}
+      <span>{{ 'site_slogan' }}</span>
+    </a>
+    <a href="/" class="logo-content-small" title="site_name">
+      {{ 'site_name' }}
+      <span>{{ 'site_slogan' }}</span>
+    </a>
+    <a id="close-sidebar" (click)="toggleSidebar()" title="Close sidebar">
+      <i class="fas" [ngClass]="{ 'fa-angle-left': isSidebarCollapsed, 'fa-angle-right': !isSidebarCollapsed }"></i>
+    </a>
+  </div>
+
+  <div id="header-nav-left">
+    <div class="user-account-btn dropdown">
+      <a href="#" title="My Account" class="user-profile clearfix" data-toggle="dropdown">
+        <img src="content/img/default.png" class="user-image" alt="user imf" />
+        <span style="display: block; height: 20px">{{ 'first_name' }} </span>
+        <i class="fas fa-angle-down"></i>
+      </a>
+      <div class="dropdown-menu float-left">
+        <div class="box-sm">
+          <div class="login-box clearfix">
+            <div class="user-img">
+              <a href="#" title="" class="change-img">Change photo</a>
+              <img src="content/img/default.png" class="user-image" alt="" />
+            </div>
+            <div class="user-info">
+              <span>
+                {{ 'first_name' }}
+                {{ 'last_name' }}
+                <i>Member since </i>
+              </span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <ul class="reset-ul mrg5B">
+            <li>
+              <a href="#">
+                <i class="fa float-right fa-caret-right"></i>
+                View account details
+              </a>
+            </li>
+          </ul>
+          <div class="pad5A button-pane button-pane-alt text-center">
+            <a (click)="logout()" class="btn display-block font-normal btn-danger">
+              <i class="fas fa-power-off"></i>
+              {{ 'déconnexion' }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #header-nav-left -->
+
+  <div id="header-nav-right">
+    <!--fulscreen-->
+    <a href="#" class="hdr-btn tooltip-button hidden-xs" id="fullscreen-btn" data-placement="bottom" title="Fullscreen">
+      <i class="fas fa-expand-arrows-alt"></i>
+    </a>
+    <!--ends-->
+
+    <!--View cash status-->
+
+    <a
+      data-toggle="modal"
+      data-target="#myCashStatus"
+      href="#"
+      class="hdr-btn tooltip-button hidden-xs"
+      data-placement="bottom"
+      title="Cash Status"
+    >
+      <i class="far fa-money-bill-alt"></i>
+    </a>
+    <!--cash status ends-->
+
+    <!--View Today's profit-->
+    <a onclick="profitCalc()" href="#" class="hdr-btn tooltip-button" data-placement="bottom" title="Profit / Loss">
+      <i class="far fa-line-chart"></i>
+    </a>
+    <!--View Today's profit Ends-->
+
+    <!--Calculator-->
+    <div class="dropdown hidden-xs" id="notifications-btn">
+      <a href="#" data-toggle="dropdown" data-placement="bottom" title="Calculator" class="tooltip-button">
+        <i class="far fa-calculator" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right @else float-right @endif box-md">
+        <div class="scrollable-content scrollable-slim-box"></div>
+      </div>
+    </div>
+    <!--Calculator-->
+
+    <a class="header-btn tooltip-button hidden-xs" data-placement="bottom" href="#" title="POS" target="_BLINK">
+      <i class="far fa-desktop" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
+    </a>
+
+    <!--Notification-->
+
+    <div class="dropdown hidden-xs" id="notifications-btn">
+      <a
+        data-toggle="dropdown"
+        href="#"
+        data-placement="bottom"
+        title="Alert Products"
+        class="tooltip-button"
+        style="background-color: #ffe941cc !important"
+      >
+        <i class="far fa-bell" style="color: red; opacity: 0.8; font-size: 20px; text-shadow: 1px 1px 1px #ccc"> </i>
+      </a>
+
+      <div class="dropdown-menu float-right box-md">
+        <div class="popover-title display-block clearfix pad10A">
+          {{ 'alert_title' }}
+          {{ '0' }}
+          {{ 'p' }}
+        </div>
+
+        <div class="scrollable-content scrollable-slim-box">
+          <ul class="no-border notifications-box">
+            <li>
+              <ul>
+                <li>
+                  <span class="bg-danger icon-notification fas fa-bullhorn"></span>
+                  {{ '$product_alert' }}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="pad10A button-pane button-pane-alt text-center">
+          <a href="" class="btn btn-primary" title="View all notifications"> View all notifications </a>
+        </div>
+      </div>
+    </div>
+    <!--Notification Ends-->
+    <!--Notification Ends-->
+
+    <!--Language Swithcer -->
+    <div class="dropdown" id="dashnav-btn">
+      <a href="#" data-toggle="dropdown" data-placement="bottom" class="popover-button-header tooltip-button" title="Language">
+        <i class="fas fa-language" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
+      </a>
+      <div class="dropdown-menu float-right">
+        <div class="box-sm">
+          <div class="pad5T pad5B pad10L dashboard-buttons clearfix">
+            <a href="" class="btn vertical-button hover-green" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_Saudi_Arabia.png" width="20" height="20" />
+              </span>
+              Arabic
+            </a>
+
+            <a href="" class="btn vertical-button hover-green" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_Bangladesh.png" width="20" height="20" />
+              </span>
+              Bengali
+            </a>
+
+            <a href="" class="btn vertical-button hover-green" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_Portugal.png" width="20" height="20" />
+              </span>
+              <span class="tooltip-button" title="Brazilian Portuguese">Portuguese</span>
+            </a>
+
+            <a href="" class="btn vertical-button hover-red-alt" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_United_Kingdom.png" width="20" height="20" />
+              </span>
+              English
+            </a>
+
+            <a href="" class="btn vertical-button hover-blue-alt" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_France.png" width="20" height="20" />
+              </span>
+              French
+            </a>
+
+            <a href="" class="btn vertical-button hover-germany-alt" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_Germany.png" width="20" height="20" />
+              </span>
+              German
+            </a>
+
+            <a href="" class="btn vertical-button hover-india-alt" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_India.png" width="20" height="20" />
+              </span>
+              Hindi
+            </a>
+
+            <a href="" class="btn vertical-button hover-white-alt" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_Japan.png" width="20" height="20" />
+              </span>
+              Japanese
+            </a>
+
+            <a href="" class="btn vertical-button hover-orange" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <img src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/128/Flag_of_Spain.png" width="20" height="20" />
+              </span>
+              Spanish
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Language Swithcer Ends-->
+
+    <!--Quick Menu-->
+    <div class="dropdown" id="dashnav-btn">
+      <a href="#" data-toggle="dropdown" data-placement="bottom" class="popover-button-header tooltip-button" title="Dashboard Quick Menu">
+        <i class="far fa-th" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
+      </a>
+      <div class="dropdown-menu float-right">
+        <div class="box-sm">
+          <div class="divider"></div>
+          <div class="pad5T pad5B pad10L dashboard-buttons clearfix">
+            <a href="" class="btn vertical-button remove-border btn-success" title="Product List">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="far fa-cubes opacity-80 font-size-20"></i>
+              </span>
+              {{ 'produits' }}
+            </a>
+
+            <a href="" class="btn vertical-button remove-border btn-info" title="Add New Sell">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="far fa-shopping-cart opacity-80 font-size-20"></i>
+              </span>
+              <i class="fa fa-plus"></i>
+              {{ 'achats' }}
+            </a>
+            <a href="" class="btn vertical-button remove-border btn-danger" title="Sells List">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="far fa-file-excel-o opacity-80 font-size-20"></i>
+              </span>
+              {{ 'ventes' }}
+            </a>
+            <a href="" class="btn vertical-button remove-border btn-purple" title="Transaction List">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="far fa-money opacity-80 font-size-20"></i>
+              </span>
+              {{ 'transaction' }}
+            </a>
+            <a href="" class="btn vertical-button remove-border btn-azure" title="">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="far fa-ship opacity-80 font-size-20"></i>
+              </span>
+              <i class="fa fa-plus"></i>
+              {{ 'achats' }}
+            </a>
+            <a href="" class="btn vertical-button remove-border btn-yellow" title="Purchase List">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="far fa-file opacity-80 font-size-20"></i>
+              </span>
+              {{ 'achat liste' }}
+            </a>
+            <a
+              href=""
+              class="btn vertical-button remove-border"
+              title="Add New Customer"
+              style="background-color: #4ecd00 !important; color: #fff !important"
+            >
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="far fa-user opacity-80 font-size-20"></i>
+              </span>
+              <i class="fa fa-plus"></i>
+              {{ 'clients' }}
+            </a>
+            <a href="" class="btn vertical-button remove-border btn-black-opacity" title="'expense">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="far fa-usd opacity-80 font-size-20"></i>
+              </span>
+              {{ 'expense' }}
+            </a>
+            <a href="" class="btn vertical-button remove-border btn-warning" title="'settings'}}">
+              <span class="fas fa-separator-vertical pad0A medium">
+                <i class="fas fa-cog opacity-80 font-size-20"></i>
+              </span>
+              {{ 'paramétre' }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Quick Menu Ends-->
+
+    <a class="header-btn tooltip-button hidden-xs" data-placement="bottom" id="logout-btn" href="" title="Lock">
+      <i class="far fa-lock" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
+    </a>
+  </div>
+  <!-- #header-nav-right -->
+</div>
+<!-- header ends -->
+
+<!-- Modal for cash register, if cash if not opened yet -->
+<div class="modal fade" id="myCashStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form>
+        {{ 'csrf_field()' }}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">
+            {{'core.cash_is_not_open_yet}}
+          </h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>
+              {{ 'core.cash_open_label' }}
+            </label>
+            <input type="text" class="form-control" name="cash_in_hands" value="0" onkeypress="" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Modal ends-->
+<!-- 
+
+<script>
+  function profitCalc() {
+      var profit = {{todayProfit()}};
+     swal({
+        title: {!! json_encode(trans('core.todays_profit')) !!},
+        text: "{{settings('currency_code')}} " + profit,
+        imageUrl: '/img/profit.jpeg',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Details',
+        cancelButtonText: 'Close!',
+        buttonsStyling: true
+      }).then(function () {
+        window.location.href = {!! json_encode(route("profit.details")) !!};
+      }, function (dismiss) {
+        // dismiss can be 'cancel', 'overlay',
+        // 'close', and 'timer'
+        if (dismiss === 'close') {
+          swal(
+            'close',
+            'Done',
+            'error'
+          )
+        }
+      })
+  }
+
+  function cashCalc() {
+      var cash = {{cashNow()}};
+     swal({
+        title: {!! json_encode(trans('core.now_in_cash')) !!},
+        text: "{{settings('currency_code')}} "+ cash,
+        imageUrl: '/img/cash.jpg',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Details',
+        cancelButtonText: 'Close!',
+        buttonsStyling: true
+      }).then(function () {
+        window.location.href = {!! json_encode(route("cash.details")) !!};
+      }, function (dismiss) {
+        // dismiss can be 'cancel', 'overlay',
+        // 'close', and 'timer'
+        if (dismiss === 'close') {
+          swal(
+            'close',
+            'Done.',
+            'error'
+          )
+        }
+      })
+  }
+</script>
+
+ -->

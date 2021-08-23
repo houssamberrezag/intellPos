@@ -15,6 +15,7 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 export class NavbarComponent implements OnInit {
   inProduction?: boolean;
   isNavbarCollapsed = true;
+  isSidebarCollapsed = true;
   openAPIEnabled?: boolean;
   version = '';
   account: Account | null = null;
@@ -49,10 +50,16 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this.collapseNavbar();
     this.loginService.logout();
-    this.router.navigate(['']);
+    this.router.navigate(['login']);
   }
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    const body = document.getElementsByTagName('body')[0];
+    this.isSidebarCollapsed ? body.classList.remove('closed-sidebar') : body.classList.add('closed-sidebar');
   }
 }

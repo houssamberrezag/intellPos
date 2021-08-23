@@ -1,0 +1,227 @@
+<div id="page-sidebar" class="bg-gradient-9 font-inverse" style="height: 1400px">
+  <div class="scroll-sidebar">
+    <ul id="sidebar-menu">
+      <li class="no-menu">
+        <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fas fa-th"></i>
+          <span>{{ 'Accueil' }}</span>
+        </a>
+      </li>
+
+      <li class="no-menu">
+        <a routerLink="categorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fas fa-tag"></i>
+          <span>{{ 'Catégories' }}</span>
+        </a>
+      </li>
+
+      <li class="no-menu" routerLinkActive="active">
+        <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fas fa-tags"></i>
+          <span>{{ 'Sous-catégories' }}</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#" data-toggle="collapse" aria-expanded="true">
+          <i class="fas fa-cubes"></i>
+          <span>{{ 'Produits' }}</span>
+        </a>
+
+        <div class="sidebar-submenu">
+          <ul>
+            <li>
+              <a routerLink="produit" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class=""></i>
+                <span>{{ 'Liste des produits' }}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class=""></i>
+                <span>{{ 'nouveau produit' }} </span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class="fas fa-angle-right"></i>
+                <span>{{ 'Télécharger un produit en vrac' }} </span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class=""></i>
+                <span>{{ 'imprimer le code à barres' }} </span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class=""></i>
+                <span>{{ 'Imprimer le code-barres par facture' }} </span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class=""></i>
+                <span>{{ 'Articles endommagés' }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"><i class="fas fa-users"></i> <span>Personnes</span></a>
+
+        <div class="sidebar-submenu">
+          <ul>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class=""></i>
+                <span>{{ 'Clients' }}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class=""></i>
+                <span>{{ 'Fournisseurs' }} </span>
+              </a>
+            </li>
+
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class=""></i>
+                <span>{{ 'users' }} </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"
+          ><i class="fas fa-ship"></i> <span>{{ 'Achats' }}</span></a
+        >
+        <div class="sidebar-submenu">
+          <ul>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'Liste des achats' }}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'nouvel achat' }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"
+          ><i class="fas fa-shopping-cart"></i> <span>{{ 'Ventes' }}</span></a
+        >
+        <div class="sidebar-submenu">
+          <ul>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'Liste des ventes' }}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'nouvelle vente' }}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'POS' }}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'retour de vente' }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="no-menu">
+        <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fas fa-money"></i>
+          <span>{{ 'Transactions' }}</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);">
+          <i class="fas fa-usd"></i>
+          <span>{{ 'Expenses' }}</span>
+        </a>
+        <div class="sidebar-submenu">
+          <ul>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'Expense' }}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'Expense Categorie' }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"
+          ><i class="fas fa-cog"></i><span> {{ 'Parametre' }}</span></a
+        >
+        <div class="sidebar-submenu">
+          <ul>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'paramétre générale' }}</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'roles' }}</span>
+              </a>
+            </li>
+
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'taxe' }}</span>
+              </a>
+            </li>
+
+            <li>
+              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <span>{{ 'backup' }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="no-menu">
+        <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fas fa-industry"></i>
+          <span>{{ 'dépot' }}</span>
+        </a>
+      </li>
+
+      <li class="no-menu" *ngIf="true">
+        <a routerLink="subcategorie" routerLinkActive="active">
+          <i class="fas fa-pie-chart"></i>
+          <span>report</span>
+        </a>
+      </li>
+    </ul>
+    <!-- #sidebar-menu -->
+  </div>
+</div>

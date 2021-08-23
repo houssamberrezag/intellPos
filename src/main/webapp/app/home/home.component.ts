@@ -22,7 +22,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(account => (this.account = account));
+      .subscribe(account => {
+        if (!account) {
+          this.login();
+        }
+        this.account = account;
+      });
   }
 
   login(): void {
