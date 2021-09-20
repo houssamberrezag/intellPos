@@ -1,6 +1,7 @@
 package com.intell.pos.service.impl;
 
 import com.intell.pos.domain.Person;
+import com.intell.pos.domain.enumeration.PersonTypes;
 import com.intell.pos.repository.PersonRepository;
 import com.intell.pos.service.PersonService;
 import java.util.Optional;
@@ -101,5 +102,11 @@ public class PersonServiceImpl implements PersonService {
     public void delete(Long id) {
         log.debug("Request to delete Person : {}", id);
         personRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Person> findByPersonType(PersonTypes personType, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return personRepository.findBypersonType(personType, pageable);
     }
 }

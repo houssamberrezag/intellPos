@@ -180,4 +180,18 @@ public class ProductResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /products} : get all the products.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
+     */
+    @GetMapping("/productsBySubcategoryId")
+    public ResponseEntity<List<Product>> getProductsBySubcategoryId(Pageable pageable, Long subcategoryId) {
+        log.debug("REST request to get a page of Products");
+        Page<Product> page = productService.findBySubcategoryId(subcategoryId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

@@ -1,6 +1,7 @@
 package com.intell.pos.web.rest;
 
 import com.intell.pos.domain.Person;
+import com.intell.pos.domain.enumeration.PersonTypes;
 import com.intell.pos.repository.PersonRepository;
 import com.intell.pos.service.PersonService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -148,6 +148,34 @@ public class PersonResource {
     public ResponseEntity<List<Person>> getAllPeople(Pageable pageable) {
         log.debug("REST request to get a page of People");
         Page<Person> page = personService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /people} : get all clients.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of people in body.
+     */
+    @GetMapping("/people/client")
+    public ResponseEntity<List<Person>> getClients(Pageable pageable) {
+        log.debug("REST request to get a page of People");
+        Page<Person> page = personService.findByPersonType(PersonTypes.CLIENT, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /people} : get all clients.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of people in body.
+     */
+    @GetMapping("/people/fournisseur")
+    public ResponseEntity<List<Person>> getFournisseur(Pageable pageable) {
+        log.debug("REST request to get a page of People");
+        Page<Person> page = personService.findByPersonType(PersonTypes.FOURNISSEUR, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

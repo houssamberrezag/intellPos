@@ -147,6 +147,7 @@ public class CategorieResource {
     public ResponseEntity<List<Categorie>> getAllCategories(Pageable pageable) {
         log.debug("REST request to get a page of Categories");
         Page<Categorie> page = categorieService.findAll(pageable);
+        // System.out.println(page.getContent().get(0).getSubcategories());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

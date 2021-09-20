@@ -1,4 +1,173 @@
-<div>
+<div id="page-title">
+  <h3>Products</h3>
+</div>
+<div class="panel">
+  <div class="panel-heading">
+    <a [routerLink]="['/product/new']" class="btn btn-success btn-alt btn-xs" style="border-radius: 0px !important">
+      <i class="fa fa-plus"></i>
+      Create New Product
+    </a>
+
+    <span class="pull-right">
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn btn-warning btn-alt btn-xs dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Download <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="http://localhost/intell/public/admin/download/excel" title="Export Excel">
+              <i class="fa fa-file-excel-o" style="color: #12a823"></i>
+              Download Excel
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <a class="btn btn-primary btn-alt btn-xs" id="searchButton">
+        <i class="fa fa-search"></i>
+        Search
+      </a>
+    </span>
+  </div>
+
+  <div class="panel-body">
+    <div class="table-responsive" style="min-height: 300px">
+      <table class="table table-bordered table-striped">
+        <thead class="bg-gradient-9">
+          <tr>
+            <td class="text-center font-white"># &nbsp;&nbsp;</td>
+            <td class="text-center font-white">Name</td>
+            <td class="text-center font-white">In Stock</td>
+            <td class="text-center font-white">Actions</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let product of products; trackBy: trackId; let index = index" data-cy="entityTable">
+            <td class="text-center">{{ index + 1 }}</td>
+            <td class="text-center">
+              {{ product.name + ' ( ' + product.code + ' ) ' }}
+            </td>
+            <td class="text-center">
+              {{ product.quantity }}
+            </td>
+
+            <td class="text-center">
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn btn-info btn-alt btn-xs dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Actions <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li>
+                    <a [routerLink]="['/product', product.id, 'edit']" title="Edit">
+                      <i class="fa fa-edit" style="color: #069996"></i>
+                      Edit
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="#" data-toggle="modal" data-target="#priceUpdate1">
+                      <i class="fa fa-usd" style="color: #0ad629"></i>
+                      Update Price
+                    </a>
+                  </li>
+
+                  <!-- product delete modal trigger -->
+                  <li>
+                    <a type="submit" (click)="delete(product)">
+                      <i class="fa fa-trash" style="color: #edb426"></i>
+                      Delete
+                    </a>
+                  </li>
+
+                  <li>
+                    <!-- product details button -->
+                    <a [routerLink]="['/product', product.id, 'view']">
+                      <i class="fa fa-eye" style="color: #269fed"></i>
+                      Details
+                    </a>
+                  </li>
+
+                  <!-- Print barcode of a product -->
+                  <li>
+                    <a href="http://localhost/intell/public/admin/product/1/print/barcode">
+                      <i class="fa fa-barcode" style="color: purple"></i>
+                      Print Barcode
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--Pagination-->
+    <div class="row justify-content-center" style="text-align: center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+    <!--Ends-->
+  </div>
+
+  <!-- Product search modal -->
+  <div class="modal fade" id="searchModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" action="http://localhost/intell/public/admin/product" accept-charset="UTF-8" class="form-horizontal">
+          <input name="_token" type="hidden" value="kYmh6WfdzN0J1rKAL0r9Uxdm34AroDLKHEpl1a2W" />
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h4 class="modal-title">Search Product</h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="Name" class="col-sm-3">Name</label>
+              <div class="col-sm-9">
+                <input class="form-control" name="name" type="text" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="Product Code" class="col-sm-3">Product Code</label>
+              <div class="col-sm-9">
+                <input class="form-control" name="code" type="text" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input class="btn btn-primary" data-disable-with="core.searching" type="submit" value="Search" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- search modal ends -->
+</div>
+
+<!-- <div>
   <h2 id="page-heading" data-cy="ProductHeading">
     <span>Products</span>
 
@@ -138,3 +307,4 @@
     </div>
   </div>
 </div>
+ -->

@@ -6,6 +6,7 @@ import { SubcategorieComponent } from '../list/subcategorie.component';
 import { SubcategorieDetailComponent } from '../detail/subcategorie-detail.component';
 import { SubcategorieUpdateComponent } from '../update/subcategorie-update.component';
 import { SubcategorieRoutingResolveService } from './subcategorie-routing-resolve.service';
+import { ProductComponent } from '../product/product.component';
 
 const subcategorieRoute: Routes = [
   {
@@ -35,6 +36,17 @@ const subcategorieRoute: Routes = [
   {
     path: ':id/edit',
     component: SubcategorieUpdateComponent,
+    resolve: {
+      subcategorie: SubcategorieRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/product',
+    component: ProductComponent,
+    data: {
+      defaultSort: 'id,asc',
+    },
     resolve: {
       subcategorie: SubcategorieRoutingResolveService,
     },

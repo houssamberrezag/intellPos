@@ -39,7 +39,7 @@ public class Categorie implements Serializable {
     private Instant deletedAt;
 
     @OneToMany(mappedBy = "categorie", fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    //@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "categorie" }, allowSetters = true)
     private Set<Subcategorie> subcategories = new HashSet<>();
 

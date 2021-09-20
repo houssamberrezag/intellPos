@@ -47,4 +47,6 @@ public interface ProductService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<Product> findBySubcategoryId(Long subcategoryId, Pageable pageable);
 }

@@ -1,4 +1,234 @@
-<div class="row justify-content-center">
+<div id="page-title">
+  <h3>Create or edit product</h3>
+</div>
+<div class="panel">
+  <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm" class="form-horizontal bordered-row">
+    <div class="panel-body">
+      <div class="example-box-wrapper">
+        <div class="form-group" hidden>
+          <label class="form-control-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">
+            Product Name
+            <span class="required">*</span>
+          </label>
+
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+            <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+              <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required"> This field is required. </small>
+              <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.maxlength">
+                This field cannot be longer than 100 characters.
+              </small>
+            </div>
+          </div>
+
+          <label class="col-sm-2 control-label">
+            Product Code
+            <span class="required">*</span>
+          </label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
+            <div *ngIf="editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)">
+              <small class="form-text text-danger" *ngIf="editForm.get('code')?.errors?.required"> This field is required. </small>
+              <small class="form-text text-danger" *ngIf="editForm.get('code')?.errors?.maxlength">
+                This field cannot be longer than 10 characters.
+              </small>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-info col-sm-1 tooltip-button"
+            type="button"
+            (click)="generateCode()"
+            data-original-title="Click here to generate random code"
+          >
+            <i class="fa fa-random"></i>
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label"> Category Name <span class="required">*</span></label>
+          <div class="col-sm-4">
+            <select class="form-control" id="field_categorie" data-cy="categorie" name="categorie" formControlName="categorie">
+              <option *ngIf="!editForm.get('categorie')!.value" [ngValue]="null" selected></option>
+              <option
+                [ngValue]="categorieOption.id === editForm.get('categorie')!.value?.id ? editForm.get('categorie')!.value : categorieOption"
+                *ngFor="let categorieOption of categoriesSharedCollection; trackBy: trackCategorieById"
+              >
+                {{ categorieOption.categoryName }}
+              </option>
+            </select>
+            <div
+              *ngIf="editForm.get(['categorie'])!.invalid && (editForm.get(['categorie'])!.dirty || editForm.get(['categorie'])!.touched)"
+            >
+              <small class="form-text text-danger" *ngIf="editForm.get(['categorie'])?.errors?.required"> This field is required. </small>
+            </div>
+          </div>
+
+          <label class="col-sm-2 control-label"> Subcategory Name </label>
+          <div class="col-sm-4">
+            <select class="form-control" id="field_subCategorie" data-cy="subCategorie" name="subCategorie" formControlName="subCategorie">
+              <option [ngValue]="null"></option>
+              <option
+                [ngValue]="
+                  subcategorieOption.id === editForm.get('subCategorie')!.value?.id
+                    ? editForm.get('subCategorie')!.value
+                    : subcategorieOption
+                "
+                *ngFor="let subcategorieOption of subcategoriesSharedCollection; trackBy: trackSubcategorieById"
+              >
+                {{ subcategorieOption.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">
+            Cost Price
+            <span class="required">*</span>
+          </label>
+          <div class="col-sm-4">
+            <input
+              type="number"
+              class="form-control"
+              name="costPrice"
+              id="field_costPrice"
+              data-cy="costPrice"
+              formControlName="costPrice"
+            />
+            <div *ngIf="editForm.get('costPrice')!.invalid && (editForm.get('costPrice')!.dirty || editForm.get('costPrice')!.touched)">
+              <small class="form-text text-danger" *ngIf="editForm.get('costPrice')?.errors?.required"> This field is required. </small>
+              <small class="form-text text-danger" [hidden]="!editForm.get('costPrice')?.errors?.number">
+                This field should be a number.
+              </small>
+            </div>
+          </div>
+
+          <label class="col-sm-2 control-label">
+            MRP
+            <span class="required">*</span>
+          </label>
+          <div class="col-sm-4">
+            <input class="form-control number" name="mrp" type="text" value="2300" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label"> Minimum Retail Price </label>
+          <div class="col-sm-4">
+            <input
+              type="number"
+              class="form-control"
+              name="minimumRetailPrice"
+              id="field_minimumRetailPrice"
+              data-cy="minimumRetailPrice"
+              formControlName="minimumRetailPrice"
+            />
+          </div>
+
+          <label class="col-sm-2 control-label"> Product Tax </label>
+
+          <div class="col-sm-4 tooltip-button" title="" data-original-title="To enable product tax, go to the settings">
+            <input type="text" disabled="" class="form-control" value="disabled" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label"> Unit </label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="unit" id="field_unit" data-cy="unit" formControlName="unit" />
+            <div *ngIf="editForm.get('unit')!.invalid && (editForm.get('unit')!.dirty || editForm.get('unit')!.touched)">
+              <small class="form-text text-danger" *ngIf="editForm.get('unit')?.errors?.maxlength">
+                This field cannot be longer than 11 characters.
+              </small>
+            </div>
+          </div>
+
+          <label for="featured" class="col-sm-2 control-label"> Status </label>
+          <div class="col-sm-4 tooltip-button" title="" data-original-title="Only active products shows in new sell &amp; purchases">
+            <select class="form-control selectpickerLive" name="status" id="field_status" data-cy="status" formControlName="status">
+              <option [ngValue]="true">Active</option>
+              <option [ngValue]="false">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- <div class="form-group">
+					<label class="col-sm-2 control-label"> Description </label>
+					<div class="col-sm-10">
+						<textarea class="form-control" rows="3" name="details" cols="50"></textarea>
+					</div>
+				</div> -->
+
+        <div class="form-group">
+          <label
+            class="col-sm-2 control-label tooltip-button"
+            title=""
+            data-original-title="Opening stock is the value of goods available for sale in the beginning of an accounting period"
+          >
+            Opening Stock
+          </label>
+          <div class="col-sm-4">
+            <input
+              type="number"
+              class="form-control"
+              name="openingStock"
+              id="field_openingStock"
+              data-cy="openingStock"
+              formControlName="openingStock"
+            />
+          </div>
+
+          <label class="col-sm-2 control-label"> Product Alert Quantity </label>
+          <div class="col-sm-4">
+            <input
+              type="number"
+              class="form-control"
+              name="alertQuantity"
+              id="field_alertQuantity"
+              data-cy="alertQuantity"
+              formControlName="alertQuantity"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label"> Image </label>
+          <div class="col-sm-4">
+            <input name="image" type="file" />
+          </div>
+
+          <div class="col-sm-3">
+            <p>
+              <a href="http://localhost/intell/public/uploads/products/ZBy1iqjmf9Lf.jpg">
+                <abbr title="Show Product Image">
+                  <img src="http://localhost/intell/public/uploads/products/ZBy1iqjmf9Lf.jpg" class="img-thumbnail img-responsive" alt="" />
+                </abbr>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-default content-box text-center pad20A mrg25T">
+        <input
+          type="submit"
+          class="btn btn-lg btn-primary"
+          value="Save"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-product-heading" data-cy="ProductCreateUpdateHeading">Create or edit a Product</h2>
@@ -223,3 +453,4 @@
     </form>
   </div>
 </div>
+ -->

@@ -1,6 +1,7 @@
 package com.intell.pos.service;
 
 import com.intell.pos.domain.Person;
+import com.intell.pos.domain.enumeration.PersonTypes;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,14 @@ public interface PersonService {
      * @return the list of entities.
      */
     Page<Person> findAll(Pageable pageable);
+
+    /**
+     * Get all the people by person type.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<Person> findByPersonType(PersonTypes personType, Pageable pageable);
 
     /**
      * Get the "id" person.

@@ -1,6 +1,6 @@
 <div id="page-sidebar" class="bg-gradient-9 font-inverse" style="height: 1400px">
   <div class="scroll-sidebar">
-    <ul id="sidebar-menu">
+    <ul id="sidebar-menu" data-widget="treeview">
       <li class="no-menu">
         <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <i class="fas fa-th"></i>
@@ -15,87 +15,92 @@
         </a>
       </li>
 
-      <li class="no-menu" routerLinkActive="active">
-        <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <li class="no-menu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a routerLink="subcategorie">
           <i class="fas fa-tags"></i>
           <span>{{ 'Sous-catégories' }}</span>
         </a>
       </li>
-
-      <li>
-        <a href="#" data-toggle="collapse" aria-expanded="true">
+      <!-- <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fas fa-chart-pie"></i>
+            <span>{{ 'Produits' }}</span>
+            <i class="right fas fa-angle-right" style="float: right;margin-top: 8px;"></i>
+        </a>
+        <ul class="nav nav-treeview" style="display: none;">
+          <li class="nav-item">
+            <a href="pages/charts/chartjs.html" class="nav-link">
+              <span>ChartJS</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/charts/flot.html" class="nav-link">
+              <span>Flot</span>
+            </a>
+          </li>
+        </ul>
+      </li> -->
+      <li class="nav-item">
+        <a href="#" class="nav-link">
           <i class="fas fa-cubes"></i>
           <span>{{ 'Produits' }}</span>
+          <i class="right fas fa-angle-right" style="float: right; margin-top: 8px"></i>
         </a>
 
-        <div class="sidebar-submenu">
-          <ul>
-            <li>
-              <a routerLink="produit" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class=""></i>
-                <span>{{ 'Liste des produits' }}</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class=""></i>
-                <span>{{ 'nouveau produit' }} </span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fas fa-angle-right"></i>
-                <span>{{ 'Télécharger un produit en vrac' }} </span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class=""></i>
-                <span>{{ 'imprimer le code à barres' }} </span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class=""></i>
-                <span>{{ 'Imprimer le code-barres par facture' }} </span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class=""></i>
-                <span>{{ 'Articles endommagés' }}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+        <ul class="nav nav-treeview" style="display: none">
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="product">
+              <span>{{ 'Liste des produits' }}</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a [routerLink]="['/product/new']" class="nav-link">
+              <span>{{ 'nouveau produit' }} </span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="subcategorie" class="nav-link">
+              <span>{{ 'Télécharger produit vrac' }} </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="subcategorie" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <span>{{ 'imprimer le code à barres' }} </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="subcategorie" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <span>{{ 'Imprimer CB par facture' }} </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="subcategorie" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <span>{{ 'Articles endommagés' }}</span>
+            </a>
+          </li>
+        </ul>
       </li>
 
-      <li>
-        <a href="javascript:void(0);"><i class="fas fa-users"></i> <span>Personnes</span></a>
-
-        <div class="sidebar-submenu">
-          <ul>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class=""></i>
-                <span>{{ 'Clients' }}</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class=""></i>
-                <span>{{ 'Fournisseurs' }} </span>
-              </a>
-            </li>
-
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <i class=""></i>
-                <span>{{ 'users' }} </span>
-              </a>
-            </li>
-          </ul>
-        </div>
+      <li class="nav-item">
+        <a href="javascript:void(0);" class="nav-link">
+          <i class="fas fa-users"></i>
+          <span>Personnes</span>
+          <i class="right fas fa-angle-right" style="float: right; margin-top: 8px"></i>
+        </a>
+        <ul class="nav nav-treeview" style="display: none">
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="person/client">
+              <i class=""></i>
+              <span>{{ 'Clients' }}</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="person/fournisseur">
+              <i class=""></i>
+              <span>{{ 'Fournisseurs' }} </span>
+            </a>
+          </li>
+        </ul>
       </li>
 
       <li>

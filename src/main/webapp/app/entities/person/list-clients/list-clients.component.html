@@ -1,0 +1,154 @@
+<div id="page-title">
+  <h3>Liste des Clients</h3>
+</div>
+<div class="panel">
+  <div class="panel-heading">
+    <a [routerLink]="['/person/client/new']" class="btn btn-success btn-alt btn-xs" style="border-radius: 0px !important">
+      <i class="fa fa-plus"></i>
+      Nouveau client
+    </a>
+
+    <a class="btn btn-primary btn-alt btn-xs pull-right" id="searchButton">
+      <i class="fa fa-search"></i>
+      Search
+    </a>
+  </div>
+
+  <div class="panel-body">
+    <div class="table-responsive" style="min-height: 150px">
+      <div class="modal fade" id="deleteModal1">
+        <div class="modal-dialog">
+          <form method="POST" action="http://localhost/intell/public/admin/client/delete/1" accept-charset="UTF-8"></form>
+          <input name="_method" type="hidden" value="DELETE" /><input
+            name="_token"
+            type="hidden"
+            value="jjUuJb7SC7Dzc0flfQKkQ1chIGawgdwY2SMfUr9v"
+          />
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <h4 class="modal-title" id="myModalLabel">Houssam Berrezag</h4>
+            </div>
+            <div class="modal-body">
+              <h4>Are you sure to delete <b>Houssam Berrezag</b>?</h4>
+              <br />
+              <h4 style="color: red">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Houssam Berrezag has too much transactions, so it can't be
+                deleted!
+              </h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <table class="table table-bordered table-striped">
+        <thead class="bg-gradient-9">
+          <tr>
+            <td class="text-center font-white"># &nbsp;&nbsp;</td>
+            <td class="text-center font-white">Name</td>
+            <td class="text-center font-white">Company Name</td>
+            <td class="text-center font-white">Total Due</td>
+            <td class="text-center font-white">Phone</td>
+            <td class="text-center font-white">Actions</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let person of people; trackBy: trackId; let index = index" data-cy="entityTable">
+            <td class="text-center">{{ index + 1 }}</td>
+            <td class="text-center">{{ person.firstName + ' ' + person.lastName }}</td>
+            <td class="text-center">{{ person.companyName }}</td>
+            <td class="text-center">
+              {{ (person.proviousDue ?? '0') + ' DH' }}
+            </td>
+            <td class="text-center">
+              {{ person.phone }}
+            </td>
+            <td class="text-center">
+              <a [routerLink]="['/person/client', person.id, 'edit']" class="btn btn-info btn-alt btn-xs">
+                <i class="fa fa-edit"></i>
+                Edit
+              </a>
+              <a href="http://localhost/intell/public/admin/client/1/details" type="button" class="btn btn-purple btn-alt btn-xs">
+                <i class="fa fa-eye"></i>
+                Details
+              </a>
+            </td>
+          </tr>
+
+          <!-- modal for delete -->
+
+          <!-- Delete modal Ends Here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!--Pagination-->
+    <div class="row justify-content-center" style="text-align: center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+    <!--Ends-->
+  </div>
+
+  <!-- Client search modal -->
+  <div class="modal fade" id="searchModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" action="http://localhost/intell/public/admin/client" accept-charset="UTF-8" class="form-horizontal">
+          <input name="_token" type="hidden" value="jjUuJb7SC7Dzc0flfQKkQ1chIGawgdwY2SMfUr9v" />
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h4 class="modal-title">Search Customer</h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="Name" class="col-sm-3">Name</label>
+              <div class="col-sm-9">
+                <input class="form-control" name="name" type="text" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="Company Name" class="col-sm-3">Company Name</label>
+              <div class="col-sm-9">
+                <input class="form-control" name="company_name" type="text" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="Phone No" class="col-sm-3">Phone</label>
+              <div class="col-sm-9">
+                <input class="form-control" name="phone" type="text" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="Address" class="col-sm-3">Address</label>
+              <div class="col-sm-9">
+                <input class="form-control" name="address" type="text" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input class="btn btn-primary" data-disable-with="core.searching" type="submit" value="Search" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

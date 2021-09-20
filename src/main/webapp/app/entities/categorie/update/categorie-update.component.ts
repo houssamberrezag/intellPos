@@ -20,22 +20,19 @@ export class CategorieUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    categoryName: [null, [Validators.required, Validators.maxLength(191)]],
-    createdAt: [],
-    updatedAt: [],
-    deletedAt: [],
+    categoryName: [null, [Validators.required, Validators.maxLength(100)]],
   });
 
   constructor(protected categorieService: CategorieService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ categorie }) => {
-      if (categorie.id === undefined) {
+      /*if (categorie.id === undefined) {
         const today = dayjs().startOf('day');
         categorie.createdAt = today;
         categorie.updatedAt = today;
         categorie.deletedAt = today;
-      }
+      }*/
 
       this.updateForm(categorie);
     });
@@ -78,20 +75,14 @@ export class CategorieUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: categorie.id,
       categoryName: categorie.categoryName,
-      createdAt: categorie.createdAt ? categorie.createdAt.format(DATE_TIME_FORMAT) : null,
-      updatedAt: categorie.updatedAt ? categorie.updatedAt.format(DATE_TIME_FORMAT) : null,
-      deletedAt: categorie.deletedAt ? categorie.deletedAt.format(DATE_TIME_FORMAT) : null,
     });
   }
 
   protected createFromForm(): ICategorie {
     return {
       ...new Categorie(),
-      id: this.editForm.get(['id'])!.value,
-      categoryName: this.editForm.get(['categoryName'])!.value,
-      createdAt: this.editForm.get(['createdAt'])!.value ? dayjs(this.editForm.get(['createdAt'])!.value, DATE_TIME_FORMAT) : undefined,
-      updatedAt: this.editForm.get(['updatedAt'])!.value ? dayjs(this.editForm.get(['updatedAt'])!.value, DATE_TIME_FORMAT) : undefined,
-      deletedAt: this.editForm.get(['deletedAt'])!.value ? dayjs(this.editForm.get(['deletedAt'])!.value, DATE_TIME_FORMAT) : undefined,
+      id: this.editForm.get('id')!.value,
+      categoryName: this.editForm.get('categoryName')!.value,
     };
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+declare let $: any;
 
 @Component({
   selector: 'jhi-sidebar',
@@ -11,6 +12,13 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /* $('li').Treeview('init');
+    $('.sidebar-submenu').Treeview('init');
+    $('ul').Treeview('init'); */
+    console.log('init');
+  }
+  ngAfterViewInit(): void {
+    //$('[data-widget="treeview"]').Treeview('init');
     console.log('init');
   }
 }

@@ -12,6 +12,7 @@ import { ISubcategorie, Subcategorie } from '../subcategorie.model';
 import { SubcategorieService } from '../service/subcategorie.service';
 import { ICategorie } from 'app/entities/categorie/categorie.model';
 import { CategorieService } from 'app/entities/categorie/service/categorie.service';
+declare let $: any;
 
 @Component({
   selector: 'jhi-subcategorie-update',
@@ -39,6 +40,7 @@ export class SubcategorieUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    $('.select2bs4').select2();
     this.activatedRoute.data.subscribe(({ subcategorie }) => {
       if (subcategorie.id === undefined) {
         const today = dayjs().startOf('day');

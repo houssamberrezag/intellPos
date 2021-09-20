@@ -33,8 +33,8 @@ export class ProductUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    name: [null, [Validators.required, Validators.maxLength(191)]],
-    code: [null, [Validators.required, Validators.maxLength(191)]],
+    name: [null, [Validators.required, Validators.maxLength(100)]],
+    code: [null, [Validators.required, Validators.maxLength(10)]],
     quantity: [],
     details: [],
     costPrice: [null, [Validators.required]],
@@ -99,10 +99,11 @@ export class ProductUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const product = this.createFromForm();
+    const product: IProduct = this.createFromForm();
     if (product.id !== undefined) {
       this.subscribeToSaveResponse(this.productService.update(product));
     } else {
+      product.quantity = product.openingStock;
       this.subscribeToSaveResponse(this.productService.create(product));
     }
   }
@@ -117,6 +118,19 @@ export class ProductUpdateComponent implements OnInit {
 
   trackTaxeById(index: number, item: ITaxe): number {
     return item.id!;
+  }
+
+  generateCode(): void {
+    const productName = this.editForm.get(['name'])!.value;
+    if (productName) {
+      this.editForm.patchValue({
+        code: `${String(productName.substring(0, 2)).toUpperCase()}${String(Math.floor(Math.random() * 1000) + 999)}`,
+      });
+    } else {
+      this.editForm.patchValue({
+        code: Math.floor(Math.random() * 90000) + 100000,
+      });
+    }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProduct>>): void {

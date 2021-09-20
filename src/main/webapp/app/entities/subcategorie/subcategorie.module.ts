@@ -5,10 +5,17 @@ import { SubcategorieDetailComponent } from './detail/subcategorie-detail.compon
 import { SubcategorieUpdateComponent } from './update/subcategorie-update.component';
 import { SubcategorieDeleteDialogComponent } from './delete/subcategorie-delete-dialog.component';
 import { SubcategorieRoutingModule } from './route/subcategorie-routing.module';
+import { ProductComponent } from './product/product.component';
 
 @NgModule({
   imports: [SharedModule, SubcategorieRoutingModule],
-  declarations: [SubcategorieComponent, SubcategorieDetailComponent, SubcategorieUpdateComponent, SubcategorieDeleteDialogComponent],
+  declarations: [
+    SubcategorieComponent,
+    SubcategorieDetailComponent,
+    SubcategorieUpdateComponent,
+    SubcategorieDeleteDialogComponent,
+    ProductComponent,
+  ],
   entryComponents: [SubcategorieDeleteDialogComponent],
 })
 export class SubcategorieModule {}

@@ -14,9 +14,7 @@
       <div [ngClass]="{ container: account !== null }">
         <!-- @include('partials.contentheader')
           @include('partials.messages') -->
-        <div [ngClass]="{ panel: account !== null }">
-          <router-outlet></router-outlet>
-        </div>
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

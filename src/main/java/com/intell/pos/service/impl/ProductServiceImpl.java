@@ -108,4 +108,10 @@ public class ProductServiceImpl implements ProductService {
         log.debug("Request to delete Product : {}", id);
         productRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Product> findBySubcategoryId(Long subcategoryId, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return productRepository.findBySubCategorieId(subcategoryId, pageable);
+    }
 }

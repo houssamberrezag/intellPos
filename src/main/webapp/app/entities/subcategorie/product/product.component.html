@@ -1,0 +1,46 @@
+<div id="page-title">
+  <h3>Products</h3>
+</div>
+<div class="panel" *ngIf="products && products.length === 0">
+  <div class="panel-body">
+    <h2>No Product</h2>
+    <!--Pagination-->
+    <div class="pull-right"></div>
+    <!--Ends-->
+  </div>
+</div>
+<div class="panel" *ngIf="products && products.length > 0">
+  <div class="panel-body">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-header-color">
+        <tr>
+          <td># &nbsp;&nbsp;</td>
+          <td>Name</td>
+          <td>In Stock</td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let product of products; let index = index" data-cy="entityTable">
+          <td>{{ index + 1 }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.quantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--Pagination-->
+    <div class="row justify-content-center" style="text-align: center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+    <!--Ends-->
+  </div>
+</div>

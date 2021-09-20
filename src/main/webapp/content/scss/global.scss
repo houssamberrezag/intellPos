@@ -14,6 +14,7 @@ pos styles*/
 @import '../assets/css-core/pos.css';
 @import '../assets/css-core/printer.css';
 @import '../assets/css-core/slick.css';
+@import '../assets/css-core/layout.css';
 
 @import '../build/base.34e4f96e8227f5524af1.css';
 @import '../build/base.77576a64bf94305972dd.css';
@@ -22,4 +23,16 @@ pos styles*/
 
 .bg-gradient-9 {
   background: linear-gradient(154deg, #008fe2, #00b29c) !important;
+}
+#page-title {
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-weight: 300;
+  }
 }
