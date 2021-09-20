@@ -222,3 +222,6 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [jasmine]: https://jasmine.github.io/2.0/introduction.html
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
+
+declare var $: any;
+ $('[data-widget="treeview"]').Treeview('init');
