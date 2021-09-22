@@ -1,4 +1,192 @@
-<div class="row justify-content-center">
+<div id="page-title">
+  <h3>Create New Purchase</h3>
+</div>
+<div class="panel">
+  <div class="panel-body">
+    <div class="form-horizontal bordered-row">
+      <div style="margin-top: 20px">
+        <div class="form-group">
+          <label class="col-md-offset-2 col-md-2 control-label"> Supplier Name: </label>
+          <div class="col-md-5">
+            <select class="form-control" id="field_person" data-cy="person" name="person">
+              <option [ngValue]="null"></option>
+              <option [ngValue]="personOption" *ngFor="let personOption of peopleSharedCollection; trackBy: trackPersonById">
+                {{ personOption.firstName + ' ' + personOption.lastName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div>
+        <table class="table table-bordered bg-purchase" style="background-color: #e8fbe3">
+          <thead class="bg-gradient-9">
+            <tr>
+              <td class="text-center font-white" style="width: 25%">Product</td>
+              <td class="text-center font-white" style="width: 15%">Unit Cost</td>
+              <td class="text-center font-white" style="width: 15%">Quantity</td>
+              <!---->
+              <td class="text-center font-white" style="width: 20%">Sub Total</td>
+              <td class="text-center font-white" style="width: 5%">&nbsp;</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let purchase of purchases; let index = index">
+              <td>
+                <select
+                  class="form-control"
+                  id="field_product"
+                  data-cy="product"
+                  name="product"
+                  [(ngModel)]="purchase.product"
+                  (change)="onProductSelectedChange(purchase)"
+                >
+                  <option [ngValue]="null"></option>
+                  <option [ngValue]="productOption" *ngFor="let productOption of productsSharedCollection; trackBy: trackProductById">
+                    {{ productOption.name }}
+                  </option>
+                </select>
+              </td>
+              <td><input type="text" class="form-control text-center" [(ngModel)]="purchase.unitCost" /></td>
+              <td><input type="text" class="form-control text-center" [(ngModel)]="purchase.quantity" /></td>
+              <!---->
+              <td>
+                <input
+                  type="text"
+                  disabled
+                  class="form-control text-center"
+                  [value]="(purchase.quantity ?? 0) * (purchase.unitCost ?? 0)"
+                />
+              </td>
+              <td>
+                <button class="btn btn-success" *ngIf="index === 0" (click)="newPurchase()"><i class="fa fa-plus"></i></button>
+                <button class="btn btn-danger" *ngIf="index > 0" (click)="removePurchase(index)"><i class="fa fa-times"></i></button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Date &nbsp;&nbsp;</td>
+              <td colspan="2"><input type="text" class="datepicker form-control text-center" /></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">
+                Total
+                <span class="font-size-9"> (Excluding Vat) </span>
+              </td>
+              <td colspan="2"><input type="text" disabled="disabled" class="form-control text-center" /></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">
+                Discount
+                <!---->
+              </td>
+              <td colspan="2">
+                <input type="text" onkeypress="return event.charCode <= 57 &amp; event.charCode != 32" class="form-control text-center" />
+              </td>
+            </tr>
+            <!---->
+            <!---->
+            <!---->
+            <tr class="bg-khaki">
+              <td colspan="3" style="text-align: right; font-weight: bold">Net Total</td>
+              <td colspan="2"><input type="text" disabled="disabled" class="form-control text-center" /></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Payment Method</td>
+              <td colspan="2">
+                <div class="btn-group bootstrap-select form-control">
+                  <button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Cash">
+                    <span class="filter-option pull-left">Cash</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+                  </button>
+                  <div class="dropdown-menu open" role="combobox">
+                    <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                      <li data-original-index="0" class="selected">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"
+                          ><span class="text">Cash</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="1">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Card</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="2">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Cheque</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="3">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Others</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <select class="form-control selectpicker" tabindex="-98">
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                    <option value="cheque">Cheque</option>
+                    <option value="others">Others</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Paid</td>
+              <td colspan="2">
+                <input type="text" onkeypress="return event.charCode <= 57 &amp; event.charCode != 32" class="form-control text-center" />
+              </td>
+            </tr>
+            <!---->
+            <tr>
+              <td colspan="6">
+                <button type="submit" class="btn btn-success pull-right">
+                  <!---->
+                  Submit
+                </button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <template id="purchase">
+    <tr>
+      <td>
+        <select class="form-control selectPickerLive" change="setPrice" v-model="purchase.product_id" data-live-search="true">
+          <option>Select a product</option>
+          <option value="1" data-price="2000" data-taxrate="0" data-taxtype="">hp probook 4530s (157398)</option>
+          <option value="2" data-price="1800" data-taxrate="0" data-taxtype="">lenovo thinkcentre m93p (LE1171)</option>
+        </select>
+      </td>
+      <td>
+        <input type="text" v-model="purchase.price" class="form-control text-center" />
+      </td>
+      <td>
+        <input type="text" v-model="purchase.quantity" class="form-control text-center" />
+      </td>
+
+      <td v-if="enable_product_tax ==1">
+        <input type="text" v-model="purchase.product_tax" class="form-control text-center" disabled="true" />
+      </td>
+
+      <td>
+        <input type="text" v-model="purchase.subtotal" class="form-control text-center" disabled="true" />
+      </td>
+      <td>
+        <button click.prevent="remove(id)" class="btn btn-danger" v-if="id != 1">
+          <i class="fa fa-times"></i>
+        </button>
+        <button click.prevent="add()" class="btn btn-success" v-else="">
+          <i class="fa fa-plus"></i>
+        </button>
+      </td>
+    </tr>
+  </template>
+</div>
+<!-- <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-purchase-heading" data-cy="PurchaseCreateUpdateHeading">Create or edit a Purchase</h2>
@@ -168,3 +356,4 @@
     </form>
   </div>
 </div>
+ -->

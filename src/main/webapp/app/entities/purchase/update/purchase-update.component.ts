@@ -21,11 +21,11 @@ import { ProductService } from 'app/entities/product/service/product.service';
 })
 export class PurchaseUpdateComponent implements OnInit {
   isSaving = false;
-
+  purchases: IPurchase[] = [];
   peopleSharedCollection: IPerson[] = [];
   productsSharedCollection: IProduct[] = [];
 
-  editForm = this.fb.group({
+  /* editForm = this.fb.group({
     id: [],
     referenceNo: [null, [Validators.required, Validators.maxLength(191)]],
     quantity: [null, [Validators.required]],
@@ -37,7 +37,7 @@ export class PurchaseUpdateComponent implements OnInit {
     deletedAt: [],
     person: [],
     product: [],
-  });
+  }); */
 
   constructor(
     protected purchaseService: PurchaseService,
@@ -48,7 +48,7 @@ export class PurchaseUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ purchase }) => {
+    /* this.activatedRoute.data.subscribe(({ purchase }) => {
       if (purchase.id === undefined) {
         const today = dayjs().startOf('day');
         purchase.date = today;
@@ -57,10 +57,25 @@ export class PurchaseUpdateComponent implements OnInit {
         purchase.deletedAt = today;
       }
 
-      this.updateForm(purchase);
+      this.updateForm(purchase); 
+    });*/
 
-      this.loadRelationshipsOptions();
+    this.loadRelationshipsOptions();
+    this.newPurchase();
+  }
+
+  newPurchase(): void {
+    this.purchases.push({
+      unitCost: 0,
+      quantity: 1,
     });
+  }
+  removePurchase(index: number): void {
+    this.purchases.splice(index, 1);
+  }
+
+  onProductSelectedChange(purchase: IPurchase): void {
+    purchase.unitCost = purchase.product?.costPrice ?? 0;
   }
 
   previousState(): void {
@@ -69,12 +84,12 @@ export class PurchaseUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const purchase = this.createFromForm();
+    /*const purchase = this.createFromForm();
     if (purchase.id !== undefined) {
       this.subscribeToSaveResponse(this.purchaseService.update(purchase));
     } else {
       this.subscribeToSaveResponse(this.purchaseService.create(purchase));
-    }
+    }*/
   }
 
   trackPersonById(index: number, item: IPerson): number {
@@ -104,7 +119,7 @@ export class PurchaseUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  protected updateForm(purchase: IPurchase): void {
+  /*  protected updateForm(purchase: IPurchase): void {
     this.editForm.patchValue({
       id: purchase.id,
       referenceNo: purchase.referenceNo,
@@ -117,29 +132,29 @@ export class PurchaseUpdateComponent implements OnInit {
       deletedAt: purchase.deletedAt ? purchase.deletedAt.format(DATE_TIME_FORMAT) : null,
       person: purchase.person,
       product: purchase.product,
-    });
+    }); 
 
     this.peopleSharedCollection = this.personService.addPersonToCollectionIfMissing(this.peopleSharedCollection, purchase.person);
     this.productsSharedCollection = this.productService.addProductToCollectionIfMissing(this.productsSharedCollection, purchase.product);
-  }
+  }*/
 
   protected loadRelationshipsOptions(): void {
     this.personService
-      .query()
+      .fournisseurs()
       .pipe(map((res: HttpResponse<IPerson[]>) => res.body ?? []))
-      .pipe(map((people: IPerson[]) => this.personService.addPersonToCollectionIfMissing(people, this.editForm.get('person')!.value)))
+      //.pipe(map((people: IPerson[]) => this.personService.addPersonToCollectionIfMissing(people, this.editForm.get('person')!.value)))
       .subscribe((people: IPerson[]) => (this.peopleSharedCollection = people));
 
     this.productService
       .query()
       .pipe(map((res: HttpResponse<IProduct[]>) => res.body ?? []))
-      .pipe(
+      /*.pipe(
         map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing(products, this.editForm.get('product')!.value))
-      )
+      )*/
       .subscribe((products: IProduct[]) => (this.productsSharedCollection = products));
   }
 
-  protected createFromForm(): IPurchase {
+  /* protected createFromForm(): IPurchase {
     return {
       ...new Purchase(),
       id: this.editForm.get(['id'])!.value,
@@ -154,5 +169,5 @@ export class PurchaseUpdateComponent implements OnInit {
       person: this.editForm.get(['person'])!.value,
       product: this.editForm.get(['product'])!.value,
     };
-  }
+  } */
 }

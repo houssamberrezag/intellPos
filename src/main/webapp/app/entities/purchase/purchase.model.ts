@@ -6,6 +6,7 @@ export interface IPurchase {
   id?: number;
   referenceNo?: string;
   quantity?: number;
+  unitCost?: number;
   subTotal?: number;
   productTax?: number | null;
   date?: dayjs.Dayjs | null;
@@ -21,6 +22,7 @@ export class Purchase implements IPurchase {
     public id?: number,
     public referenceNo?: string,
     public quantity?: number,
+    public unitCost?: number,
     public subTotal?: number,
     public productTax?: number | null,
     public date?: dayjs.Dayjs | null,

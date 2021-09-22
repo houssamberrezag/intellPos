@@ -32,6 +32,10 @@ public class Purchase implements Serializable {
     private Double quantity;
 
     @NotNull
+    @Column(name = "unit_cost", nullable = false)
+    private Double unitCost;
+
+    @NotNull
     @Column(name = "sub_total", nullable = false)
     private Double subTotal;
 
@@ -203,6 +207,14 @@ public class Purchase implements Serializable {
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    public Double getUnitCost() {
+        return unitCost;
+    }
+
+    public void setUnitCost(Double unitCost) {
+        this.unitCost = unitCost;
+    }
 
     @Override
     public boolean equals(Object o) {

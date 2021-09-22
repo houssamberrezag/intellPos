@@ -103,24 +103,24 @@
         </ul>
       </li>
 
-      <li>
-        <a href="javascript:void(0);"
-          ><i class="fas fa-ship"></i> <span>{{ 'Achats' }}</span></a
-        >
-        <div class="sidebar-submenu">
-          <ul>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'Liste des achats' }}</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'nouvel achat' }}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+      <li class="nav-item">
+        <a href="javascript:void(0);" class="nav-link">
+          <i class="fas fa-ship"></i>
+          <span>{{ 'Achats' }}</span>
+          <i class="right fas fa-angle-right" style="float: right; margin-top: 8px"></i>
+        </a>
+        <ul class="nav nav-treeview" style="display: none">
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="purchase">
+              <span>{{ 'Liste des achats' }}</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="purchase/new">
+              <span>{{ 'nouvel achat' }}</span>
+            </a>
+          </li>
+        </ul>
       </li>
 
       <li>
