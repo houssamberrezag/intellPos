@@ -4,18 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IPurchase } from '../purchase.model';
-
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
-import { PurchaseService } from '../service/purchase.service';
-import { PurchaseDeleteDialogComponent } from '../delete/purchase-delete-dialog.component';
+import { ITransaction } from 'app/entities/transaction/transaction.model';
+import { TransactionDeleteDialogComponent } from 'app/entities/transaction/delete/transaction-delete-dialog.component';
+import { TransactionService } from 'app/entities/transaction/service/transaction.service';
 
 @Component({
   selector: 'jhi-purchase',
   templateUrl: './purchase.component.html',
 })
 export class PurchaseComponent implements OnInit {
-  purchases?: IPurchase[];
+  transactions?: ITransaction[];
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -25,7 +24,7 @@ export class PurchaseComponent implements OnInit {
   ngbPaginationPage = 1;
 
   constructor(
-    protected purchaseService: PurchaseService,
+    protected transactionService: TransactionService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal
@@ -35,14 +34,14 @@ export class PurchaseComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.purchaseService
+    this.transactionService
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<IPurchase[]>) => {
+        (res: HttpResponse<ITransaction[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
@@ -57,13 +56,13 @@ export class PurchaseComponent implements OnInit {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: IPurchase): number {
+  trackId(index: number, item: ITransaction): number {
     return item.id!;
   }
 
-  delete(purchase: IPurchase): void {
-    const modalRef = this.modalService.open(PurchaseDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.purchase = purchase;
+  delete(transaction: ITransaction): void {
+    const modalRef = this.modalService.open(TransactionDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.transaction = transaction;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
@@ -95,11 +94,11 @@ export class PurchaseComponent implements OnInit {
     });
   }
 
-  protected onSuccess(data: IPurchase[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
+  protected onSuccess(data: ITransaction[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     if (navigate) {
-      this.router.navigate(['/purchase'], {
+      this.router.navigate(['/transaction'], {
         queryParams: {
           page: this.page,
           size: this.itemsPerPage,
@@ -107,7 +106,7 @@ export class PurchaseComponent implements OnInit {
         },
       });
     }
-    this.purchases = data ?? [];
+    this.transactions = data ?? [];
     this.ngbPaginationPage = this.page;
   }
 

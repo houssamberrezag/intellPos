@@ -20,6 +20,9 @@
             <column name="quantity" type="double">
                 <constraints nullable="false" />
             </column>
+            <column name="unit_cost" type="double">
+                <constraints nullable="false" />
+            </column>
             <column name="sub_total" type="double">
                 <constraints nullable="false" />
             </column>
