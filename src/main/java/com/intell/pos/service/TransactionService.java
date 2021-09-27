@@ -1,6 +1,8 @@
 package com.intell.pos.service;
 
 import com.intell.pos.domain.Transaction;
+import com.intell.pos.domain.enumeration.TransactionTypes;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,4 +49,6 @@ public interface TransactionService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<Transaction> findByTransactiontype(TransactionTypes transactionType);
 }

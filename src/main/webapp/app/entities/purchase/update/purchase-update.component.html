@@ -8,8 +8,8 @@
         <div class="form-group">
           <label class="col-md-offset-2 col-md-2 control-label"> Supplier Name: </label>
           <div class="col-md-5">
-            <select class="form-control" id="field_person" data-cy="person" name="person">
-              <option [ngValue]="null"></option>
+            <select class="form-control" id="field_person" data-cy="person" name="person" [(ngModel)]="supplier">
+              <option [ngValue]="{}"></option>
               <option [ngValue]="personOption" *ngFor="let personOption of peopleSharedCollection; trackBy: trackPersonById">
                 {{ personOption.firstName + ' ' + personOption.lastName }}
               </option>
@@ -67,7 +67,7 @@
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">Date</td>
               <td colspan="2">
-                <input type="text" class="datepicker form-control text-center" formControlName="date" />
+                <input type="datetime" class="datepicker form-control text-center" formControlName="date" />
               </td>
             </tr>
             <tr>
@@ -95,16 +95,18 @@
               </td>
             </tr>
             <!---->
-            <tr *ngIf="editForm.value['discount']">
+            <tr *ngIf="editForm.value['discount'] && editForm.value['discount'] != 0">
               <td colspan="3" style="text-align: right; font-weight: bold">Discount Amount</td>
               <td colspan="2">
-                <b> <input type="text" class="form-control text-center" formControlName="discountAmount" [disabled]="true" /></b>
+                <b> <input type="text" class="form-control text-center" disabled="disabled" [value]="calculeDiscountAmount()" /></b>
               </td>
             </tr>
             <!---->
             <tr class="bg-khaki">
               <td colspan="3" style="text-align: right; font-weight: bold">Net Total</td>
-              <td colspan="2"><input type="text" disabled="disabled" class="form-control text-center" /></td>
+              <td colspan="2">
+                <input type="text" disabled="disabled" class="form-control text-center" [value]="calculeTotalNet()" />
+              </td>
             </tr>
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">Payment Method</td>
@@ -126,7 +128,7 @@
             <!---->
             <tr>
               <td colspan="6">
-                <button class="btn btn-success pull-right">
+                <button class="btn btn-success pull-right" (click)="save()">
                   <!---->
                   Submit
                 </button>

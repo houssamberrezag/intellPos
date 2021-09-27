@@ -14,6 +14,7 @@ import { IPerson } from 'app/entities/person/person.model';
 import { PersonService } from 'app/entities/person/service/person.service';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
+import { SweetAlertService } from 'app/core/util/sweet-alert.service';
 
 @Component({
   selector: 'jhi-purchase-update',
@@ -21,6 +22,7 @@ import { ProductService } from 'app/entities/product/service/product.service';
 })
 export class PurchaseUpdateComponent implements OnInit {
   isSaving = false;
+  supplier: IPerson = {};
   purchases: IPurchase[] = [];
   peopleSharedCollection: IPerson[] = [];
   productsSharedCollection: IProduct[] = [];
@@ -29,46 +31,22 @@ export class PurchaseUpdateComponent implements OnInit {
     date: [],
     discount: [0],
     discountType: ['fixed'],
-    discountAmount: [],
+    //discountAmount: [],
     paymentMethod: ['cash', [Validators.required, Validators.maxLength(50)]],
     paid: [null, [Validators.required]],
     subTotal: [null, [Validators.required]],
   });
-  /* editForm = this.fb.group({
-    id: [],
-    referenceNo: [null, [Validators.required, Validators.maxLength(191)]],
-    quantity: [null, [Validators.required]],
-    subTotal: [null, [Validators.required]],
-    productTax: [],
-    date: [],
-    createdAt: [],
-    updatedAt: [],
-    deletedAt: [],
-    person: [],
-    product: [],
-  }); */
 
   constructor(
     protected purchaseService: PurchaseService,
     protected personService: PersonService,
     protected productService: ProductService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    private sweetAlertService: SweetAlertService
   ) {}
 
   ngOnInit(): void {
-    /* this.activatedRoute.data.subscribe(({ purchase }) => {
-      if (purchase.id === undefined) {
-        const today = dayjs().startOf('day');
-        purchase.date = today;
-        purchase.createdAt = today;
-        purchase.updatedAt = today;
-        purchase.deletedAt = today;
-      }
-
-      this.updateForm(purchase); 
-    });*/
-
     this.loadRelationshipsOptions();
     this.newPurchase();
   }
@@ -93,12 +71,11 @@ export class PurchaseUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    /*const purchase = this.createFromForm();
-    if (purchase.id !== undefined) {
-      this.subscribeToSaveResponse(this.purchaseService.update(purchase));
-    } else {
-      this.subscribeToSaveResponse(this.purchaseService.create(purchase));
-    }*/
+    if (!this.supplier.id) {
+      this.sweetAlertService.create('Erreur', 'eeeeee', 'error');
+      return;
+    }
+    console.log('saveeeeeeeeee');
   }
 
   trackPersonById(index: number, item: IPerson): number {
@@ -111,6 +88,17 @@ export class PurchaseUpdateComponent implements OnInit {
 
   calculeTotal(): number {
     return this.purchases.map(p => (p.quantity ?? 0) * (p.unitCost ?? 0)).reduce((acc, value) => acc + value, 0);
+  }
+
+  calculeDiscountAmount(): number {
+    const { discount, discountType } = this.editForm.value;
+    const isFixedDiscount: boolean = discountType === 'fixed';
+    const total: number = this.calculeTotal();
+    return isFixedDiscount ? +discount : (total * discount) / 100;
+  }
+
+  calculeTotalNet(): number {
+    return this.calculeTotal() - this.calculeDiscountAmount();
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPurchase>>): void {

@@ -1,6 +1,8 @@
 package com.intell.pos.repository;
 
 import com.intell.pos.domain.Transaction;
+import com.intell.pos.domain.enumeration.TransactionTypes;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {}
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    @Query("select t from Transaction t where t.transactionType = ?1")
+    List<Transaction> findByTransactionType(TransactionTypes transactionType);
+}

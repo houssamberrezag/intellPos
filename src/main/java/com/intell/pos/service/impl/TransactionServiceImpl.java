@@ -1,8 +1,10 @@
 package com.intell.pos.service.impl;
 
 import com.intell.pos.domain.Transaction;
+import com.intell.pos.domain.enumeration.TransactionTypes;
 import com.intell.pos.repository.TransactionRepository;
 import com.intell.pos.service.TransactionService;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,5 +121,11 @@ public class TransactionServiceImpl implements TransactionService {
     public void delete(Long id) {
         log.debug("Request to delete Transaction : {}", id);
         transactionRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Transaction> findByTransactiontype(TransactionTypes transactionType) {
+        // TODO Auto-generated method stub
+        return transactionRepository.findByTransactionType(transactionType);
     }
 }
