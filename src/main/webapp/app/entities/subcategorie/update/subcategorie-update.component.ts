@@ -40,7 +40,6 @@ export class SubcategorieUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $('.select2bs4').select2();
     this.activatedRoute.data.subscribe(({ subcategorie }) => {
       if (subcategorie.id === undefined) {
         const today = dayjs().startOf('day');
@@ -117,7 +116,10 @@ export class SubcategorieUpdateComponent implements OnInit {
           this.categorieService.addCategorieToCollectionIfMissing(categories, this.editForm.get('categorie')!.value)
         )
       )
-      .subscribe((categories: ICategorie[]) => (this.categoriesSharedCollection = categories));
+      .subscribe((categories: ICategorie[]) => {
+        this.categoriesSharedCollection = categories;
+        console.log(categories);
+      });
   }
 
   protected createFromForm(): ISubcategorie {

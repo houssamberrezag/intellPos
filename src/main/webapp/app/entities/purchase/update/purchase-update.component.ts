@@ -25,6 +25,15 @@ export class PurchaseUpdateComponent implements OnInit {
   peopleSharedCollection: IPerson[] = [];
   productsSharedCollection: IProduct[] = [];
 
+  editForm = this.fb.group({
+    date: [],
+    discount: [0],
+    discountType: ['fixed'],
+    discountAmount: [],
+    paymentMethod: ['cash', [Validators.required, Validators.maxLength(50)]],
+    paid: [null, [Validators.required]],
+    subTotal: [null, [Validators.required]],
+  });
   /* editForm = this.fb.group({
     id: [],
     referenceNo: [null, [Validators.required, Validators.maxLength(191)]],
@@ -98,6 +107,10 @@ export class PurchaseUpdateComponent implements OnInit {
 
   trackProductById(index: number, item: IProduct): number {
     return item.id!;
+  }
+
+  calculeTotal(): number {
+    return this.purchases.map(p => (p.quantity ?? 0) * (p.unitCost ?? 0)).reduce((acc, value) => acc + value, 0);
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPurchase>>): void {

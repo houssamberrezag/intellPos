@@ -63,29 +63,44 @@
               </td>
             </tr>
           </tbody>
-          <tfoot>
+          <tfoot [formGroup]="editForm">
             <tr>
-              <td colspan="3" style="text-align: right; font-weight: bold">Date &nbsp;&nbsp;</td>
-              <td colspan="2"><input type="text" class="datepicker form-control text-center" /></td>
+              <td colspan="3" style="text-align: right; font-weight: bold">Date</td>
+              <td colspan="2">
+                <input type="text" class="datepicker form-control text-center" formControlName="date" />
+              </td>
             </tr>
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">
                 Total
                 <span class="font-size-9"> (Excluding Vat) </span>
               </td>
-              <td colspan="2"><input type="text" disabled="disabled" class="form-control text-center" /></td>
+              <td colspan="2"><input type="text" disabled="disabled" class="form-control text-center" [value]="calculeTotal()" /></td>
             </tr>
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">
-                Discount
-                <!---->
+                Discount <span *ngIf="editForm.value['discountType'] === 'percentage'">(%)</span>
               </td>
               <td colspan="2">
-                <input type="text" onkeypress="return event.charCode <= 57 &amp; event.charCode != 32" class="form-control text-center" />
+                <input type="text" class="form-control text-center" formControlName="discount" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Discount Type</td>
+              <td colspan="2">
+                <select class="form-control" formControlName="discountType">
+                  <option value="fixed">Fixed</option>
+                  <option value="percentage">Percentage</option>
+                </select>
               </td>
             </tr>
             <!---->
-            <!---->
+            <tr *ngIf="editForm.value['discount']">
+              <td colspan="3" style="text-align: right; font-weight: bold">Discount Amount</td>
+              <td colspan="2">
+                <b> <input type="text" class="form-control text-center" formControlName="discountAmount" [disabled]="true" /></b>
+              </td>
+            </tr>
             <!---->
             <tr class="bg-khaki">
               <td colspan="3" style="text-align: right; font-weight: bold">Net Total</td>
@@ -94,53 +109,24 @@
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">Payment Method</td>
               <td colspan="2">
-                <div class="btn-group bootstrap-select form-control">
-                  <button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Cash">
-                    <span class="filter-option pull-left">Cash</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
-                  </button>
-                  <div class="dropdown-menu open" role="combobox">
-                    <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
-                      <li data-original-index="0" class="selected">
-                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"
-                          ><span class="text">Cash</span><span class="glyphicon glyphicon-ok check-mark"></span
-                        ></a>
-                      </li>
-                      <li data-original-index="1">
-                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
-                          ><span class="text">Card</span><span class="glyphicon glyphicon-ok check-mark"></span
-                        ></a>
-                      </li>
-                      <li data-original-index="2">
-                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
-                          ><span class="text">Cheque</span><span class="glyphicon glyphicon-ok check-mark"></span
-                        ></a>
-                      </li>
-                      <li data-original-index="3">
-                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
-                          ><span class="text">Others</span><span class="glyphicon glyphicon-ok check-mark"></span
-                        ></a>
-                      </li>
-                    </ul>
-                  </div>
-                  <select class="form-control selectpicker" tabindex="-98">
-                    <option value="cash">Cash</option>
-                    <option value="card">Card</option>
-                    <option value="cheque">Cheque</option>
-                    <option value="others">Others</option>
-                  </select>
-                </div>
+                <select class="form-control" formControlName="paymentMethod">
+                  <option value="cash">Cash</option>
+                  <option value="card">Card</option>
+                  <option value="cheque">Cheque</option>
+                  <option value="others">Others</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">Paid</td>
               <td colspan="2">
-                <input type="text" onkeypress="return event.charCode <= 57 &amp; event.charCode != 32" class="form-control text-center" />
+                <input type="text" class="form-control text-center" formControlName="paid" />
               </td>
             </tr>
             <!---->
             <tr>
               <td colspan="6">
-                <button type="submit" class="btn btn-success pull-right">
+                <button class="btn btn-success pull-right">
                   <!---->
                   Submit
                 </button>
