@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
@@ -22,6 +22,14 @@ export class PurchaseService {
     const copy = this.convertDateFromClient(purchase);
     return this.http
       .post<IPurchase>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  create2(purchases: IPurchase[], paid: number, discountAmount: number, paymentMethod: string): Observable<EntityResponseType> {
+    const copy = purchases.map(purchase => this.convertDateFromClient(purchase));
+    const params: HttpParams = new HttpParams().set('paid', paid).set('discountAmount', discountAmount).set('paymentMethod', paymentMethod);
+    return this.http
+      .post<IPurchase>(this.resourceUrl, copy, { observe: 'response', params })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 

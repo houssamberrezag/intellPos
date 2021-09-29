@@ -1,11 +1,22 @@
 package com.intell.pos.web.rest;
 
+import com.intell.pos.domain.Payment;
+import com.intell.pos.domain.Product;
 import com.intell.pos.domain.Purchase;
+import com.intell.pos.domain.Transaction;
+import com.intell.pos.domain.enumeration.PaymentTypes;
+import com.intell.pos.domain.enumeration.TransactionTypes;
 import com.intell.pos.repository.PurchaseRepository;
+import com.intell.pos.service.PaymentService;
+import com.intell.pos.service.ProductService;
 import com.intell.pos.service.PurchaseService;
+import com.intell.pos.service.TransactionService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,7 +28,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,9 +53,24 @@ public class PurchaseResource {
 
     private final PurchaseRepository purchaseRepository;
 
-    public PurchaseResource(PurchaseService purchaseService, PurchaseRepository purchaseRepository) {
+    private final TransactionService transactionService;
+
+    private final ProductService productService;
+
+    private final PaymentService paymentService;
+
+    public PurchaseResource(
+        PurchaseService purchaseService,
+        PurchaseRepository purchaseRepository,
+        TransactionService transactionService,
+        ProductService productService,
+        PaymentService paymentService
+    ) {
         this.purchaseService = purchaseService;
         this.purchaseRepository = purchaseRepository;
+        this.transactionService = transactionService;
+        this.productService = productService;
+        this.paymentService = paymentService;
     }
 
     /**
@@ -55,7 +80,7 @@ public class PurchaseResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new purchase, or with status {@code 400 (Bad Request)} if the purchase has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/purchases")
+    @PostMapping("/purchases_")
     public ResponseEntity<Purchase> createPurchase(@Valid @RequestBody Purchase purchase) throws URISyntaxException {
         log.debug("REST request to save Purchase : {}", purchase);
         if (purchase.getId() != null) {
@@ -66,6 +91,98 @@ public class PurchaseResource {
             .created(new URI("/api/purchases/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code POST  /purchases} : Create a new purchase.
+     *
+     * @param purchase the purchase to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new purchase, or with status {@code 400 (Bad Request)} if the purchase has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/purchases")
+    public ResponseEntity<Purchase> createPurchases(
+        @Valid @RequestBody List<Purchase> purchases,
+        @RequestParam double paid,
+        @RequestParam double discountAmount,
+        @RequestParam String paymentMethod
+    ) throws URISyntaxException {
+        log.debug("REST request to save Purchase  : {}", purchases);
+
+        if (purchases.size() == 0) {
+            throw new BadRequestAlertException("achat invalide", ENTITY_NAME, "Veuillez sélectionner un ou plusieurs produis");
+        }
+
+        if (paid < 0) {
+            throw new BadRequestAlertException("Montant payé invalid", ENTITY_NAME, "Veuillez insérer un montant supérieur ou égale 0");
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY/MM");
+        String ym = formatter.format(LocalDate.now());
+        int row = transactionService.findByTransactiontype(TransactionTypes.PURCHASE).size() + 1;
+        String ref_no = ym + "/P-" + row;
+        double total = 0.0;
+        for (Purchase purchase : purchases) {
+            if (purchase.getPerson() == null || purchase.getPerson().getId() == null) {
+                throw new BadRequestAlertException("fournisseur obligatoir", ENTITY_NAME, "Veuillez sélectionner un fournisseur");
+            }
+
+            if (purchase.getQuantity() <= 0) {
+                throw new BadRequestAlertException(
+                    "Quantité requise",
+                    ENTITY_NAME,
+                    "La quantité de produit" + purchase.getProduct().getName() + " est requise"
+                );
+            }
+            if (purchase.getProduct() == null || purchase.getProduct().getId() == null) {
+                throw new BadRequestAlertException("produit null", ENTITY_NAME, "produit est requise");
+            }
+
+            purchase.setSubTotal(purchase.getQuantity() * purchase.getUnitCost());
+
+            total += purchase.getSubTotal();
+
+            purchase.setId(null);
+            purchase.setReferenceNo(ref_no);
+            purchase.setCreatedAt(Instant.now());
+
+            purchaseService.save(purchase);
+
+            Product product = purchase.getProduct();
+            product.setQuantity((product.getQuantity() != null ? product.getQuantity() : 0.0) + purchase.getQuantity());
+            productService.save(product);
+        }
+
+        double total_payable = total - discountAmount;
+
+        Transaction transaction = new Transaction();
+        transaction.setReferenceNo(ref_no);
+        transaction.setPerson(purchases.get(0).getPerson());
+        transaction.setTransactionType(TransactionTypes.PURCHASE);
+        transaction.setDiscount(discountAmount);
+        transaction.setTotal(total_payable);
+        transaction.setDate(Instant.now());
+        transaction.setPaid(paid);
+        transaction.setPos(false);
+        transaction.setLaborCost(0.0);
+
+        transactionService.save(transaction);
+
+        if (paid > 0) {
+            Payment payment = new Payment();
+            payment.setPerson(purchases.get(0).getPerson());
+            payment.setAmount(paid);
+            payment.setMethod(paymentMethod);
+            payment.setType(PaymentTypes.DEBIT);
+            payment.setReferenceNo(ref_no);
+            payment.setNote("Paid for bill " + ref_no);
+            payment.setDate(Instant.now());
+
+            paymentService.save(payment);
+        }
+
+        //Purchase result = purchaseService.save(purchase);
+        return ResponseEntity.ok(purchases.get(0));
     }
 
     /**

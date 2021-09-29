@@ -32,9 +32,8 @@ export class PurchaseUpdateComponent implements OnInit {
     discount: [0],
     discountType: ['fixed'],
     //discountAmount: [],
-    paymentMethod: ['cash', [Validators.required, Validators.maxLength(50)]],
+    paymentMethod: ['CASH', [Validators.required, Validators.maxLength(50)]],
     paid: [null, [Validators.required]],
-    subTotal: [null, [Validators.required]],
   });
 
   constructor(
@@ -71,11 +70,36 @@ export class PurchaseUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    if (!this.supplier.id) {
+    const { paid, paymentMethod } = this.editForm.value;
+    if (this.calculeTotalNet() < 0) {
+      this.sweetAlertService.create('Réduction invalide', 'Vous ne pouvez pas insérer une réduction supérieure au total', 'error');
+      this.isSaving = false;
+      return;
+    }
+    if (this.calculeTotalNet() < paid) {
+      this.sweetAlertService.create('Montant payé invalide', 'le montant payé ne doit pas être supérieur au total', 'error');
+      this.isSaving = false;
+      return;
+    }
+    this.purchases.forEach(purchase => {
+      purchase.person = this.supplier;
+    });
+
+    this.purchaseService.create2(this.purchases, paid ?? 0, this.calculeDiscountAmount(), paymentMethod).subscribe(
+      res => {
+        console.log(res.body);
+      },
+      err => {
+        console.log(err);
+        this.sweetAlertService.create(err.error.title, err.error.errorKey, 'error');
+      }
+    );
+
+    /*if (!this.supplier.id) {
       this.sweetAlertService.create('Erreur', 'eeeeee', 'error');
       return;
     }
-    console.log('saveeeeeeeeee');
+    console.log('saveeeeeeeeee');*/
   }
 
   trackPersonById(index: number, item: IPerson): number {

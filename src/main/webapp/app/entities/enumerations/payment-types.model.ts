@@ -1,5 +1,8 @@
 export enum PaymentTypes {
-  CLIENT = 'CLIENT',
-
-  FOURNISSEUR = 'FOURNISSEUR',
+  DEBIT = 'DEBIT',
+  CREDIT = 'CREDIT',
+  /*CASH = "CASH",
+  CARD = "CARD",
+  CHEQUE = "CHEQUE",
+  OTHERS = "OTHERS"*/
 }

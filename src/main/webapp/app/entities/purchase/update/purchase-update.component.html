@@ -9,7 +9,6 @@
           <label class="col-md-offset-2 col-md-2 control-label"> Supplier Name: </label>
           <div class="col-md-5">
             <select class="form-control" id="field_person" data-cy="person" name="person" [(ngModel)]="supplier">
-              <option [ngValue]="{}"></option>
               <option [ngValue]="personOption" *ngFor="let personOption of peopleSharedCollection; trackBy: trackPersonById">
                 {{ personOption.firstName + ' ' + personOption.lastName }}
               </option>
@@ -112,24 +111,24 @@
               <td colspan="3" style="text-align: right; font-weight: bold">Payment Method</td>
               <td colspan="2">
                 <select class="form-control" formControlName="paymentMethod">
-                  <option value="cash">Cash</option>
-                  <option value="card">Card</option>
-                  <option value="cheque">Cheque</option>
-                  <option value="others">Others</option>
+                  <option value="CASH">Cash</option>
+                  <option value="CARD">Card</option>
+                  <option value="CHEQUE">Cheque</option>
+                  <option value="OTHERS">Others</option>
                 </select>
               </td>
             </tr>
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">Paid</td>
               <td colspan="2">
-                <input type="text" class="form-control text-center" formControlName="paid" />
+                <input type="text" class="form-control text-center" formControlName="paid" required />
               </td>
             </tr>
             <!---->
             <tr>
               <td colspan="6">
-                <button class="btn btn-success pull-right" (click)="save()">
-                  <!---->
+                <button class="btn btn-success pull-right" (click)="save()" [disabled]="editForm.invalid || isSaving">
+                  <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="isSaving"></i>
                   Submit
                 </button>
               </td>
@@ -139,40 +138,6 @@
       </div>
     </div>
   </div>
-
-  <template id="purchase">
-    <tr>
-      <td>
-        <select class="form-control selectPickerLive" change="setPrice" v-model="purchase.product_id" data-live-search="true">
-          <option>Select a product</option>
-          <option value="1" data-price="2000" data-taxrate="0" data-taxtype="">hp probook 4530s (157398)</option>
-          <option value="2" data-price="1800" data-taxrate="0" data-taxtype="">lenovo thinkcentre m93p (LE1171)</option>
-        </select>
-      </td>
-      <td>
-        <input type="text" v-model="purchase.price" class="form-control text-center" />
-      </td>
-      <td>
-        <input type="text" v-model="purchase.quantity" class="form-control text-center" />
-      </td>
-
-      <td v-if="enable_product_tax ==1">
-        <input type="text" v-model="purchase.product_tax" class="form-control text-center" disabled="true" />
-      </td>
-
-      <td>
-        <input type="text" v-model="purchase.subtotal" class="form-control text-center" disabled="true" />
-      </td>
-      <td>
-        <button click.prevent="remove(id)" class="btn btn-danger" v-if="id != 1">
-          <i class="fa fa-times"></i>
-        </button>
-        <button click.prevent="add()" class="btn btn-success" v-else="">
-          <i class="fa fa-plus"></i>
-        </button>
-      </td>
-    </tr>
-  </template>
 </div>
 <!-- <div class="row justify-content-center">
   <div class="col-8">
