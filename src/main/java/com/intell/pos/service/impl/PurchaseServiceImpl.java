@@ -3,6 +3,7 @@ package com.intell.pos.service.impl;
 import com.intell.pos.domain.Purchase;
 import com.intell.pos.repository.PurchaseRepository;
 import com.intell.pos.service.PurchaseService;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,5 +90,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void delete(Long id) {
         log.debug("Request to delete Purchase : {}", id);
         purchaseRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Purchase> findByReference(String reference) {
+        log.debug("Request to get Purchases By reference");
+        return purchaseRepository.findByReference(reference);
     }
 }

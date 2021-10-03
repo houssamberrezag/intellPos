@@ -20,7 +20,7 @@ const purchaseRoute: Routes = [
     path: ':id/view',
     component: PurchaseDetailComponent,
     resolve: {
-      purchase: PurchaseRoutingResolveService,
+      transaction: PurchaseRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

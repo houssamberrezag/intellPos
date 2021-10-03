@@ -1,6 +1,7 @@
 package com.intell.pos.service;
 
 import com.intell.pos.domain.Payment;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,4 +48,12 @@ public interface PaymentService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get payments by reference.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    List<Payment> findByReference(String reference);
 }

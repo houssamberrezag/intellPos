@@ -15,6 +15,7 @@ import { PersonService } from 'app/entities/person/service/person.service';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { SweetAlertService } from 'app/core/util/sweet-alert.service';
+import { AlertService } from 'app/core/util/alert.service';
 
 @Component({
   selector: 'jhi-purchase-update',
@@ -33,7 +34,7 @@ export class PurchaseUpdateComponent implements OnInit {
     discountType: ['fixed'],
     //discountAmount: [],
     paymentMethod: ['CASH', [Validators.required, Validators.maxLength(50)]],
-    paid: [null, [Validators.required]],
+    paid: [0, [Validators.required]],
   });
 
   constructor(
@@ -42,7 +43,8 @@ export class PurchaseUpdateComponent implements OnInit {
     protected productService: ProductService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder,
-    private sweetAlertService: SweetAlertService
+    private sweetAlertService: SweetAlertService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -73,11 +75,13 @@ export class PurchaseUpdateComponent implements OnInit {
     const { paid, paymentMethod } = this.editForm.value;
     if (this.calculeTotalNet() < 0) {
       this.sweetAlertService.create('Réduction invalide', 'Vous ne pouvez pas insérer une réduction supérieure au total', 'error');
+      //this.addErrorAlert("Vous ne pouvez pas insérer une réduction supérieure au total");
       this.isSaving = false;
       return;
     }
     if (this.calculeTotalNet() < paid) {
       this.sweetAlertService.create('Montant payé invalide', 'le montant payé ne doit pas être supérieur au total', 'error');
+      //this.addErrorAlert("Le montant payé ne doit pas être supérieur au total");
       this.isSaving = false;
       return;
     }
@@ -85,21 +89,7 @@ export class PurchaseUpdateComponent implements OnInit {
       purchase.person = this.supplier;
     });
 
-    this.purchaseService.create2(this.purchases, paid ?? 0, this.calculeDiscountAmount(), paymentMethod).subscribe(
-      res => {
-        console.log(res.body);
-      },
-      err => {
-        console.log(err);
-        this.sweetAlertService.create(err.error.title, err.error.errorKey, 'error');
-      }
-    );
-
-    /*if (!this.supplier.id) {
-      this.sweetAlertService.create('Erreur', 'eeeeee', 'error');
-      return;
-    }
-    console.log('saveeeeeeeeee');*/
+    this.subscribeToSaveResponse(this.purchaseService.create2(this.purchases, paid ?? 0, this.calculeDiscountAmount(), paymentMethod));
   }
 
   trackPersonById(index: number, item: IPerson): number {
@@ -125,10 +115,13 @@ export class PurchaseUpdateComponent implements OnInit {
     return this.calculeTotal() - this.calculeDiscountAmount();
   }
 
+  protected addErrorAlert(message?: string): void {
+    this.alertService.addAlert({ type: 'danger', message });
+  }
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPurchase>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      error => this.onSaveError(error.error)
     );
   }
 
@@ -136,8 +129,8 @@ export class PurchaseUpdateComponent implements OnInit {
     this.previousState();
   }
 
-  protected onSaveError(): void {
-    // Api for inheritance.
+  protected onSaveError(error: any): void {
+    this.sweetAlertService.create(error.title, error.errorKey, 'error');
   }
 
   protected onSaveFinalize(): void {

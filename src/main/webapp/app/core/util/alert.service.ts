@@ -46,8 +46,8 @@ export class AlertService {
     alert.id = this.alertId++;
 
     alert.message = this.sanitizer.sanitize(SecurityContext.HTML, alert.message ?? '') ?? '';
-    alert.timeout = alert.timeout ?? this.timeout;
-    alert.toast = alert.toast ?? this.toast;
+    alert.timeout = 5000000; //alert.timeout ?? this.timeout;
+    alert.toast = true; //alert.toast ?? this.toast;
     alert.position = alert.position ?? this.position;
     alert.close = (alertsArray: Alert[]) => this.closeAlert(alert.id!, alertsArray);
 

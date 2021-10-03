@@ -4,20 +4,20 @@ import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { IPurchase, Purchase } from '../purchase.model';
-import { PurchaseService } from '../service/purchase.service';
+import { ITransaction, Transaction } from 'app/entities/transaction/transaction.model';
+import { TransactionService } from 'app/entities/transaction/service/transaction.service';
 
 @Injectable({ providedIn: 'root' })
-export class PurchaseRoutingResolveService implements Resolve<IPurchase> {
-  constructor(protected service: PurchaseService, protected router: Router) {}
+export class PurchaseRoutingResolveService implements Resolve<ITransaction> {
+  constructor(protected service: TransactionService, protected router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IPurchase> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<ITransaction> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        mergeMap((purchase: HttpResponse<Purchase>) => {
-          if (purchase.body) {
-            return of(purchase.body);
+        mergeMap((transaction: HttpResponse<ITransaction>) => {
+          if (transaction.body) {
+            return of(transaction.body);
           } else {
             this.router.navigate(['404']);
             return EMPTY;
@@ -25,6 +25,6 @@ export class PurchaseRoutingResolveService implements Resolve<IPurchase> {
         })
       );
     }
-    return of(new Purchase());
+    return of(new Transaction());
   }
 }

@@ -160,12 +160,13 @@ public class PurchaseResource {
         transaction.setPerson(purchases.get(0).getPerson());
         transaction.setTransactionType(TransactionTypes.PURCHASE);
         transaction.setDiscount(discountAmount);
-        transaction.setTotal(total_payable);
+        transaction.setTotal(total);
+        transaction.setNetTotal(total_payable);
         transaction.setDate(Instant.now());
         transaction.setPaid(paid);
         transaction.setPos(false);
         transaction.setLaborCost(0.0);
-
+        transaction.setCreatedAt(Instant.now());
         transactionService.save(transaction);
 
         if (paid > 0) {
@@ -177,6 +178,7 @@ public class PurchaseResource {
             payment.setReferenceNo(ref_no);
             payment.setNote("Paid for bill " + ref_no);
             payment.setDate(Instant.now());
+            payment.setCreatedAt(Instant.now());
 
             paymentService.save(payment);
         }
@@ -296,5 +298,19 @@ public class PurchaseResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /purchases} : get purchases by reference.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of purchases in body.
+     */
+    @GetMapping("/purchasesByReference")
+    public ResponseEntity<List<Purchase>> purchasesByReference(@RequestParam String reference) {
+        log.debug("REST request to get list of Purchases by reference");
+        List<Purchase> purchases = purchaseService.findByReference(reference);
+        // HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok(purchases);
     }
 }

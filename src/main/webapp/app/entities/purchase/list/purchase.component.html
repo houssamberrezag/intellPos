@@ -93,7 +93,7 @@
                 </button>
                 <ul class="dropdown-menu pull-right">
                   <li>
-                    <a href="http://localhost/intell/public/admin/purchase/details/5">
+                    <a [routerLink]="['/purchase', transaction.id, 'view']">
                       <i class="fa fa-eye" style="color: #269fed"></i>
                       Details
                     </a>

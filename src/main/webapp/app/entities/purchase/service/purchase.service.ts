@@ -81,6 +81,13 @@ export class PurchaseService {
     return purchaseCollection;
   }
 
+  getPurchasesByReference(reference: string): Observable<EntityArrayResponseType> {
+    const options = { reference };
+    return this.http
+      .get<IPurchase[]>('api/purchasesByReference', { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   protected convertDateFromClient(purchase: IPurchase): IPurchase {
     return Object.assign({}, purchase, {
       date: purchase.date?.isValid() ? purchase.date.toJSON() : undefined,

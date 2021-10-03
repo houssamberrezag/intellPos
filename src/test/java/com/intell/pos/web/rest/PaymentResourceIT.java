@@ -39,8 +39,8 @@ class PaymentResourceIT {
     private static final String DEFAULT_METHOD = "AAAAAAAAAA";
     private static final String UPDATED_METHOD = "BBBBBBBBBB";
 
-    private static final PaymentTypes DEFAULT_TYPE = PaymentTypes.CLIENT;
-    private static final PaymentTypes UPDATED_TYPE = PaymentTypes.FOURNISSEUR;
+    private static final PaymentTypes DEFAULT_TYPE = PaymentTypes.DEBIT;
+    private static final PaymentTypes UPDATED_TYPE = PaymentTypes.CREDIT;
 
     private static final String DEFAULT_REFERENCE_NO = "AAAAAAAAAA";
     private static final String UPDATED_REFERENCE_NO = "BBBBBBBBBB";

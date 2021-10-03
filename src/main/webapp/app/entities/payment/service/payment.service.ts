@@ -73,6 +73,13 @@ export class PaymentService {
     return paymentCollection;
   }
 
+  getPaymentsByReference(reference: string): Observable<EntityArrayResponseType> {
+    const options = { reference };
+    return this.http
+      .get<IPayment[]>('api/paymentsByReference', { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   protected convertDateFromClient(payment: IPayment): IPayment {
     return Object.assign({}, payment, {
       date: payment.date?.isValid() ? payment.date.toJSON() : undefined,

@@ -180,4 +180,17 @@ public class PaymentResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /payments} : get all the payments.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of payments in body.
+     */
+    @GetMapping("/paymentsByReference")
+    public ResponseEntity<List<Payment>> getPaymentsByRefence(@RequestParam String reference) {
+        log.debug("REST request to get a list of Payments by reference");
+        List<Payment> payments = paymentService.findByReference(reference);
+        return ResponseEntity.ok(payments);
+    }
 }

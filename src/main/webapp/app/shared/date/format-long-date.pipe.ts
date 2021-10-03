@@ -1,12 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import * as dayjs from 'dayjs';
-
 @Pipe({
-  name: 'formatMediumDatetime',
+  name: 'formatLongDate',
 })
-export class FormatMediumDatetimePipe implements PipeTransform {
+export class FormatLongDatePipe implements PipeTransform {
   transform(day: dayjs.Dayjs | null | undefined): string {
-    return day ? day.format('D MMM YYYY HH:mm') : '';
+    return day ? day.format('DD MMMM YYYY') : '';
   }
 }
