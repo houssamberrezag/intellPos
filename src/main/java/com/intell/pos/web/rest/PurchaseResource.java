@@ -110,7 +110,7 @@ public class PurchaseResource {
         log.debug("REST request to save Purchase  : {}", purchases);
 
         if (purchases.size() == 0) {
-            throw new BadRequestAlertException("achat invalide", ENTITY_NAME, "Veuillez sélectionner un ou plusieurs produis");
+            throw new BadRequestAlertException("achat invalide", ENTITY_NAME, "Veuillez sélectionner un ou plusieurs produits");
         }
 
         if (paid < 0) {

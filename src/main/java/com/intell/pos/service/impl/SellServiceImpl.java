@@ -3,6 +3,7 @@ package com.intell.pos.service.impl;
 import com.intell.pos.domain.Sell;
 import com.intell.pos.repository.SellRepository;
 import com.intell.pos.service.SellService;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,5 +93,10 @@ public class SellServiceImpl implements SellService {
     public void delete(Long id) {
         log.debug("Request to delete Sell : {}", id);
         sellRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Sell> findByReference(String reference) {
+        return sellRepository.findByReference(reference);
     }
 }

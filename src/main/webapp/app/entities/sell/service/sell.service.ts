@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
@@ -23,6 +23,31 @@ export class SellService {
     return this.http
       .post<ISell>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  create2(
+    sells: ISell[],
+    paid: number,
+    shippingCost: number,
+    discountAmount: number,
+    paymentMethod: string
+  ): Observable<EntityResponseType> {
+    const copy = sells.map(sell => this.convertDateFromClient(sell));
+    const params: HttpParams = new HttpParams()
+      .set('paid', paid)
+      .set('shippingCost', shippingCost)
+      .set('discountAmount', discountAmount)
+      .set('paymentMethod', paymentMethod);
+    return this.http
+      .post<ISell>(this.resourceUrl, copy, { observe: 'response', params })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  getSellsByReference(reference: string): Observable<EntityArrayResponseType> {
+    const options = { reference };
+    return this.http
+      .get<ISell[]>('api/sellsByReference', { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   update(sell: ISell): Observable<EntityResponseType> {

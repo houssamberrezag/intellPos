@@ -124,33 +124,32 @@
       </li>
 
       <li>
-        <a href="javascript:void(0);"
-          ><i class="fas fa-shopping-cart"></i> <span>{{ 'Ventes' }}</span></a
-        >
-        <div class="sidebar-submenu">
-          <ul>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'Liste des ventes' }}</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'nouvelle vente' }}</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'POS' }}</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'retour de vente' }}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+        <a href="javascript:void(0);" class="nav-link">
+          <i class="fas fa-shopping-cart"></i> <span>{{ 'Ventes' }}</span>
+          <i class="right fas fa-angle-right" style="float: right; margin-top: 8px"></i>
+        </a>
+        <ul class="nav nav-treeview" style="display: none">
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="sell">
+              <span>{{ 'Liste des ventes' }}</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="sell/new">
+              <span>{{ 'Nouvelle vente' }}</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="sell/new">
+              <span>{{ 'POS vente' }}</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="sell/new">
+              <span>{{ 'Retour de vente' }}</span>
+            </a>
+          </li>
+        </ul>
       </li>
 
       <li class="no-menu">

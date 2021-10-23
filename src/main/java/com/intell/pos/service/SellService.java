@@ -1,6 +1,7 @@
 package com.intell.pos.service;
 
 import com.intell.pos.domain.Sell;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,4 +48,6 @@ public interface SellService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<Sell> findByReference(String reference);
 }

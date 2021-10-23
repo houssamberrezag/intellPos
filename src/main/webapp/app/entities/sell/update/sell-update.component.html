@@ -1,4 +1,168 @@
-<div class="row justify-content-center">
+<div id="page-title">
+  <h3>Ajouter nouvelle vente</h3>
+</div>
+<div class="panel">
+  <div class="panel-body">
+    <div class="form-horizontal bordered-row">
+      <div style="margin-top: 20px">
+        <div class="form-group">
+          <label class="col-md-offset-2 col-md-2 control-label"> Client: </label>
+          <div class="col-md-5">
+            <select class="form-control" id="field_person" data-cy="person" name="person" [(ngModel)]="client">
+              <option [ngValue]="personOption" *ngFor="let personOption of peopleSharedCollection; trackBy: trackPersonById">
+                {{ personOption.firstName + ' ' + personOption.lastName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div>
+        <table class="table table table-bordered bg-sells" style="background-color: #d9ebfb">
+          <thead class="bg-gradient-9">
+            <tr>
+              <td class="text-center font-white" style="width: 25%">Product</td>
+              <td class="text-center font-white" style="width: 15%">Unit Price</td>
+              <td class="text-center font-white" style="width: 15%">Quantity</td>
+              <!---->
+              <td class="text-center font-white" style="width: 20%">Sub Total</td>
+              <td class="text-center font-white" style="width: 5%">&nbsp;</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sell of sells; let index = index">
+              <td>
+                <select
+                  class="form-control"
+                  id="field_product"
+                  data-cy="product"
+                  name="product"
+                  [(ngModel)]="sell.product"
+                  (change)="onProductSelectedChange(sell)"
+                >
+                  <option [ngValue]="null"></option>
+                  <option [ngValue]="productOption" *ngFor="let productOption of productsSharedCollection; trackBy: trackProductById">
+                    {{ productOption.name }}
+                  </option>
+                </select>
+              </td>
+              <td><input type="text" class="form-control text-center" [(ngModel)]="sell.unitPrice" /></td>
+              <td>
+                <input type="text" class="form-control text-center" [(ngModel)]="sell.quantity" />
+                <span>
+                  <p style="color: red; font-size: 10px; font-weight: bold; text-align: center">
+                    <span *ngIf="sell?.product && 0 >= (sell?.product?.quantity ?? 0)">Out Of Stock</span>
+                    <span *ngIf="(sell?.quantity ?? 0) > (sell?.product?.quantity ?? 0) && (sell?.product?.quantity ?? 0) > 0">
+                      en stock: {{ sell?.product?.quantity }}</span
+                    >
+                  </p>
+                </span>
+              </td>
+              <!---->
+              <td>
+                <input type="text" disabled class="form-control text-center" [value]="(sell.quantity ?? 0) * (sell.unitPrice ?? 0)" />
+              </td>
+              <td>
+                <button class="btn btn-success" *ngIf="index === 0" (click)="newSell()"><i class="fa fa-plus"></i></button>
+                <button class="btn btn-danger" *ngIf="index > 0" (click)="removeSell(index)"><i class="fa fa-times"></i></button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot [formGroup]="editForm">
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Date</td>
+              <td colspan="2">
+                <!-- <input type="datetime" class="datepicker form-control text-center" formControlName="date" /> -->
+                <input
+                  id="field_date"
+                  data-cy="date"
+                  type="datetime-local"
+                  class="form-control"
+                  name="date"
+                  formControlName="date"
+                  placeholder="YYYY-MM-DD HH:mm"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">
+                Total
+                <span class="font-size-9"> (Excluding Vat) </span>
+              </td>
+              <td colspan="2"><input type="text" disabled="disabled" class="form-control text-center" [value]="calculeTotal()" /></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">
+                Discount <span *ngIf="editForm.value['discountType'] === 'percentage'">(%)</span>
+              </td>
+              <td colspan="2">
+                <input type="text" class="form-control text-center" formControlName="discount" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Discount Type</td>
+              <td colspan="2">
+                <select class="form-control" formControlName="discountType">
+                  <option value="fixed">Fixed</option>
+                  <option value="percentage">Percentage</option>
+                </select>
+              </td>
+            </tr>
+            <!---->
+            <tr *ngIf="editForm.value['discount'] && editForm.value['discount'] != 0">
+              <td colspan="3" style="text-align: right; font-weight: bold">Discount Amount</td>
+              <td colspan="2">
+                <b> <input type="text" class="form-control text-center" disabled="disabled" [value]="calculeDiscountAmount()" /></b>
+              </td>
+            </tr>
+            <!---->
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Shipping Cost</td>
+              <td colspan="2">
+                <input type="text" class="form-control text-center" formControlName="shippingCost" />
+              </td>
+            </tr>
+
+            <!---->
+            <tr class="bg-khaki">
+              <td colspan="3" style="text-align: right; font-weight: bold">Net Total</td>
+              <td colspan="2">
+                <input type="text" disabled="disabled" class="form-control text-center" [value]="calculeTotalNet()" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Payment Method</td>
+              <td colspan="2">
+                <select class="form-control" formControlName="paymentMethod">
+                  <option value="CASH">Cash</option>
+                  <option value="CARD">Card</option>
+                  <option value="CHEQUE">Cheque</option>
+                  <option value="OTHERS">Others</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right; font-weight: bold">Paid</td>
+              <td colspan="2">
+                <input type="text" class="form-control text-center" formControlName="paid" required />
+              </td>
+            </tr>
+            <!---->
+            <tr>
+              <td colspan="6">
+                <button class="btn btn-success pull-right" (click)="save()" [disabled]="!saveIsValid()">
+                  <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="isSaving"></i>
+                  Submit
+                </button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-sell-heading" data-cy="SellCreateUpdateHeading">Create or edit a Sell</h2>
@@ -180,3 +344,4 @@
     </form>
   </div>
 </div>
+ -->

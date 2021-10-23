@@ -1,4 +1,343 @@
-<div class="row justify-content-center">
+<div id="page-title">
+  <h3>Détails de vente</h3>
+</div>
+
+<div class="panel">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="panel-layout">
+          <div class="panel-box">
+            <div class="panel-content bg-primary">
+              <div class="image-content font-white">
+                <div class="center-vertical">
+                  <div class="meta-box center-content">
+                    <h4 class="meta-subheading">
+                      {{ transaction?.person?.companyName }}
+                    </h4>
+                    <h3 class="meta-heading">
+                      {{ transaction?.person?.firstName + ' ' + transaction?.person?.lastName }}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-content bg-white">
+              <ul class="list-group list-group-separator mrg0A row list-group-icons">
+                <li class="col-md-12 list-group-item">
+                  Phone:
+                  {{ transaction?.person?.phone }}
+                </li>
+
+                <li class="col-md-12 list-group-item">
+                  Email:
+                  {{ transaction?.person?.email }}
+                </li>
+
+                <li class="col-md-12 list-group-item">
+                  Address:
+                  {{ transaction?.person?.address }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.col -->
+
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="panel-layout">
+          <div class="panel-box">
+            <div class="panel-content bg-blue-alt">
+              <div class="image-content font-white">
+                <div class="center-vertical">
+                  <div class="meta-box center-content">
+                    <h4 class="meta-subheading">
+                      <i class="fa fa-file-text"></i>
+                    </h4>
+                    <h3 class="meta-heading">Bill Info</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-content bg-white" style="min-height: 190px">
+              <ul class="list-group list-group-separator mrg0A row list-group-icons">
+                <li class="col-md-12 list-group-item">
+                  Reference No:
+                  {{ transaction?.referenceNo }}
+                </li>
+
+                <li class="col-md-12 list-group-item">
+                  Date:
+                  {{ transaction?.date | formatLongDate }}
+                </li>
+                <li class="col-md-12 list-group-item">
+                  Time:
+                  {{ transaction?.date | formatTime }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.col -->
+
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="panel-layout">
+          <div class="panel-box">
+            <div class="panel-content bg-purple">
+              <div class="image-content font-white">
+                <div class="center-vertical">
+                  <div class="meta-box center-content">
+                    <h4 class="meta-subheading">
+                      <i class="fa fa-money"></i>
+                    </h4>
+                    <h3 class="meta-heading">Payment</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-content bg-white" style="min-height: 190px">
+              <ul class="list-group list-group-separator mrg0A row list-group-icons">
+                <!-- <li class="col-md-12 list-group-item">
+        Total :
+        DH
+        2000
+      </li>
+
+       -->
+
+                <li class="col-md-12 list-group-item">
+                  Net Total :
+                  {{ transaction?.netTotal?.toFixed(2) }}
+                  Dhs
+                </li>
+
+                <li class="col-md-12 list-group-item">
+                  Paid:
+                  {{ transaction?.paid?.toFixed(2) }}
+                  Dhs
+                </li>
+
+                <li class="col-md-12 list-group-item">
+                  Due:
+                  {{ ((transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)).toFixed(2) }}
+                  Dhs
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+
+    <!-- tab section -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#items" data-toggle="tab" aria-expanded="true"> Sell Items </a>
+            </li>
+            <li class="">
+              <a href="#payments" data-toggle="tab" aria-expanded="false"> Payment History </a>
+            </li>
+
+            <li class="">
+              <a href="#make-payment" data-toggle="tab" aria-expanded="false"> Make Payment </a>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!--sell items table-->
+            <div class="tab-pane animated fadeIn active" id="items" style="padding-bottom: 50px">
+              <h3 style="text-align: center">Sell Items</h3>
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr class="table-header-color">
+                      <th class="text-center">#</th>
+                      <th class="text-center">Product</th>
+                      <th class="text-center">Quantity</th>
+                      <th class="text-center">Unit Price</th>
+                      <th class="text-center">Sub Total</th>
+                    </tr>
+
+                    <tr *ngFor="let sell of sells; let index = index">
+                      <td class="text-center">{{ index + 1 }}</td>
+                      <td class="text-center">{{ sell.product?.name }}</td>
+                      <td class="text-center">
+                        {{ sell.quantity }}
+                      </td>
+                      <td class="text-center">
+                        {{ sell.unitPrice }}
+                        Dhs
+                      </td>
+
+                      <td class="text-center">
+                        {{ sell.subTotal }}
+                        Dhs
+                      </td>
+                    </tr>
+
+                    <!--Table footer section for total-->
+                    <tr>
+                      <td class="text-right" colspan="4">
+                        <b>Total Quantity :</b>
+                      </td>
+                      <td>
+                        {{ totalQuantities() }}
+                        Item
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="(transaction?.discount ?? 0) > 0">
+                      <td class="text-right" colspan="4">
+                        <b>Discount :</b>
+                      </td>
+                      <td>
+                        {{ transaction?.discount }}
+                        Dhs
+                      </td>
+                    </tr>
+
+                    <tr style="background-color: #f8fcd4">
+                      <td class="text-right" colspan="4">
+                        <b>Net Total :</b>
+                      </td>
+                      <td>
+                        {{ transaction?.netTotal }}
+                        Dhs
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!--sell items table-->
+
+            <!-- Payment list table -->
+            <div class="tab-pane animated fadeIn" id="payments">
+              <h3 style="text-align: center">Payment History</h3>
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr class="table-header-color">
+                      <th class="text-center">Date</th>
+                      <th class="text-center">Method</th>
+                      <th class="text-center">Note</th>
+                      <th class="text-center">Amount</th>
+                      <th class="text-center">Print</th>
+                    </tr>
+
+                    <tr *ngFor="let payment of payments">
+                      <td class="text-center">{{ payment.date | formatMediumDatetime }}</td>
+                      <td class="text-center">{{ payment.method }}</td>
+                      <td class="text-center">{{ payment.note }}</td>
+                      <td class="text-center">
+                        {{ payment.amount }}
+                        Dhs
+                      </td>
+                      <td class="text-center">
+                        <a
+                          target="_BLINK"
+                          href="http://localhost/intell/public/admin/print/2/receipt"
+                          class="btn btn-border btn-alt border-orange btn-link font-orange btn-xs"
+                        >
+                          <i class="fa fa-print"></i>
+                          Print
+                        </a>
+                      </td>
+                    </tr>
+                    <tr style="background-color: #f8fcd4" class="text-center">
+                      <td colspan="3" class="text-right">
+                        <b>Total :</b>
+                      </td>
+                      <td colspan=" 2" class="text-left bold">
+                        {{ totalPayments() }}
+                        Dhs
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Payment list table ends -->
+
+            <!--Make payment form-->
+            <div class="tab-pane animated fadeIn" id="make-payment">
+              <h3 style="text-align: center">Make Payment</h3>
+              <form [formGroup]="paymentForm">
+                <div class="form-group">
+                  <label>Date</label>
+                  <input
+                    id="field_date"
+                    data-cy="date"
+                    type="datetime-local"
+                    class="form-control"
+                    name="date"
+                    formControlName="date"
+                    placeholder="YYYY-MM-DD HH:mm"
+                  />
+
+                  <br />
+
+                  <label>Amount</label>
+                  <input type="number" class="form-control number" formControlName="amount" required />
+                  <p
+                    id="message"
+                    style="color: red"
+                    *ngIf="(paymentForm.get(['amount'])?.value ?? 0) > (transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)"
+                  >
+                    Le montant payé ( {{ paymentForm.get(['amount'])!.value }} Dhs) ne peut pas être supérieur au montant dû (
+                    {{ ((transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)).toFixed(2) }} Dhs )
+                  </p>
+
+                  <br />
+
+                  <label>Payment Method</label>
+                  <select class="form-control" formControlName="method">
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                    <option value="cheque">Cheque</option>
+                    <option value="others">Others</option>
+                  </select>
+                  <br />
+                  <label>Note</label>
+                  <textarea name="note" class="form-control" formControlName="note"></textarea>
+                </div>
+                <button (click)="savePayment()" class="btn btn-success" [disabled]="!paymentValid()">Save</button>
+              </form>
+            </div>
+            <!--Make payment div ends-->
+          </div>
+          <!--  tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+      </div>
+      <!-- col -->
+    </div>
+    <!--row-->
+  </div>
+  <!--panel body-->
+
+  <div class="panel-footer">
+    <a class="btn btn-border btn-alt border-black font-black btn-xs pull-right" (click)="previousState()">
+      <i class="fa fa-backward"></i> Back
+    </a>
+
+    <a class="btn btn-alt btn-warning btn-xs" target="_BLINK" href="http://localhost/intell/public/admin/sell/11/invoice">
+      <i class="fa fa-print"></i>
+      Print Bill
+    </a>
+  </div>
+</div>
+
+<!-- <div class="row justify-content-center">
   <div class="col-8">
     <div *ngIf="sell">
       <h2 data-cy="sellDetailsHeading"><span>Sell</span></h2>
@@ -74,3 +413,4 @@
     </div>
   </div>
 </div>
+ -->

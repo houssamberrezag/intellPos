@@ -6,6 +6,7 @@ import { SellComponent } from '../list/sell.component';
 import { SellDetailComponent } from '../detail/sell-detail.component';
 import { SellUpdateComponent } from '../update/sell-update.component';
 import { SellRoutingResolveService } from './sell-routing-resolve.service';
+import { TransactionRoutingResolveService } from 'app/entities/transaction/route/transaction-routing-resolve.service';
 
 const sellRoute: Routes = [
   {
@@ -20,7 +21,7 @@ const sellRoute: Routes = [
     path: ':id/view',
     component: SellDetailComponent,
     resolve: {
-      sell: SellRoutingResolveService,
+      transaction: TransactionRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

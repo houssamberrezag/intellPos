@@ -7,6 +7,7 @@ export interface ISell {
   referenceNo?: string;
   quantity?: number;
   unitCostPrice?: number | null;
+  unitPrice?: number | null;
   subTotal?: number;
   productTax?: number | null;
   date?: dayjs.Dayjs | null;
@@ -23,6 +24,7 @@ export class Sell implements ISell {
     public referenceNo?: string,
     public quantity?: number,
     public unitCostPrice?: number | null,
+    public unitPrice?: number | null,
     public subTotal?: number,
     public productTax?: number | null,
     public date?: dayjs.Dayjs | null,

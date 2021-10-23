@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -61,7 +60,7 @@ public class PaymentResource {
         if (payment.getId() != null) {
             throw new BadRequestAlertException("A new payment cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Payment result = paymentService.save(payment);
+        Payment result = paymentService.saveAndUpdateTransactionPaidAmount(payment);
         return ResponseEntity
             .created(new URI("/api/payments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))

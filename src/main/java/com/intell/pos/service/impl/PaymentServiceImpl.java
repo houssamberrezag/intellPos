@@ -1,7 +1,9 @@
 package com.intell.pos.service.impl;
 
 import com.intell.pos.domain.Payment;
+import com.intell.pos.domain.Transaction;
 import com.intell.pos.repository.PaymentRepository;
+import com.intell.pos.repository.TransactionRepository;
 import com.intell.pos.service.PaymentService;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +25,11 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    public PaymentServiceImpl(PaymentRepository paymentRepository) {
+    private final TransactionRepository transactionRepository;
+
+    public PaymentServiceImpl(PaymentRepository paymentRepository, TransactionRepository transactionRepository) {
         this.paymentRepository = paymentRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -99,5 +104,16 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Payment> findByReference(String reference) {
         log.debug("Request to get Payments by reference");
         return paymentRepository.findByReference(reference);
+    }
+
+    @Override
+    public Payment saveAndUpdateTransactionPaidAmount(Payment payment) {
+        log.debug("Request to save Payment : {}, and update transaction paid amount ", payment);
+        Transaction transaction = transactionRepository.findFirstByReferenceNo(payment.getReferenceNo());
+        if (transaction != null) {
+            transaction.setPaid(transaction.getPaid() + payment.getAmount());
+            transactionRepository.save(transaction);
+        }
+        return paymentRepository.save(payment);
     }
 }

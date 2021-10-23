@@ -35,7 +35,7 @@ export class PurchaseComponent implements OnInit {
     const pageToLoad: number = page ?? this.page ?? 1;
 
     this.transactionService
-      .query({
+      .purchases({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),

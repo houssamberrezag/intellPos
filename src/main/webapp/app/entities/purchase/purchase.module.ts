@@ -5,9 +5,10 @@ import { PurchaseDetailComponent } from './detail/purchase-detail.component';
 import { PurchaseUpdateComponent } from './update/purchase-update.component';
 import { PurchaseDeleteDialogComponent } from './delete/purchase-delete-dialog.component';
 import { PurchaseRoutingModule } from './route/purchase-routing.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
-  imports: [SharedModule, PurchaseRoutingModule],
+  imports: [SharedModule, PurchaseRoutingModule, MatDatepickerModule],
   declarations: [PurchaseComponent, PurchaseDetailComponent, PurchaseUpdateComponent, PurchaseDeleteDialogComponent],
   entryComponents: [PurchaseDeleteDialogComponent],
 })

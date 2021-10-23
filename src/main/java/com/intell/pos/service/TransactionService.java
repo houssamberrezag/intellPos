@@ -51,4 +51,6 @@ public interface TransactionService {
     void delete(Long id);
 
     List<Transaction> findByTransactiontype(TransactionTypes transactionType);
+
+    Page<Transaction> findByTransactiontype(TransactionTypes transactionType, Pageable pageable);
 }

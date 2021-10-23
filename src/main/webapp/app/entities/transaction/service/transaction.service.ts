@@ -52,6 +52,20 @@ export class TransactionService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  purchases(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ITransaction[]>(this.resourceUrl + '/purchases', { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  sells(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ITransaction[]>(this.resourceUrl + '/sells', { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

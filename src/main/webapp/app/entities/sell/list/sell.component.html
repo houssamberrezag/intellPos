@@ -1,4 +1,280 @@
-<div>
+<div id="page-title">
+  <h3>liste de ventes</h3>
+</div>
+<div class="panel">
+  <div class="panel-heading">
+    <a routerLink="/sell/new" class="btn btn-success btn-alt btn-xs" style="border-radius: 0px !important">
+      <i class="fa fa-plus"></i>
+      ajouter nouvelle vente
+    </a>
+
+    <a class="btn btn-primary btn-alt btn-xs pull-right" id="searchButton">
+      <i class="fa fa-search"></i>
+      Search
+    </a>
+
+    <input type="button" class="btn btn-alt bg-purple btn-xs" onclick="showSummary()" id="summaryBtn" value="Summary" />
+  </div>
+
+  <div class="panel-body">
+    <div id="summaryDiv" style="display: none">
+      <table style="width: 100%; font-weight: bold" class="table table-bordered">
+        <tbody>
+          <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
+            <td style="text-align: right">
+              <b>Total :</b>
+            </td>
+            <td>
+              DH 34100.00
+              <span class="font-size-9">(Excluding Vat &amp; Product Tax)</span>
+            </td>
+          </tr>
+
+          <tr style="background-color: #f8f9f9; border: 2px solid #ddd">
+            <td style="text-align: right">
+              <b>Total Vat :</b>
+            </td>
+            <td>DH 0.00</td>
+          </tr>
+
+          <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
+            <td style="text-align: right">
+              <b>Net Total :</b>
+            </td>
+            <td>DH 34100.00</td>
+          </tr>
+
+          <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
+            <td style="text-align: right">
+              <b>Total Cost Price :</b>
+            </td>
+            <td>
+              DH 29800.00
+              <span class="font-size-9">(Excluding Vat &amp; Product Tax)</span>
+            </td>
+          </tr>
+
+          <tr style="background-color: #f8f9f9; border: 2px solid #ddd">
+            <td style="text-align: right">
+              <b>Total Profit</b>
+            </td>
+            <td>DH 4300.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-responsive" style="min-height: 300px" id="tableDIv">
+      <table class="table table-bordered table-striped">
+        <thead class="bg-gradient-9">
+          <tr>
+            <td class="text-center font-white" width="17%">Date</td>
+            <td class="text-center font-white" width="15%">Invoice No</td>
+            <td class="text-center font-white" width="15%">Customer</td>
+            <td class="text-center font-white" width="15%">Net Total</td>
+            <td class="text-center font-white" width="13%">Paid</td>
+            <td class="text-center font-white" width="10%">Actions</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let transaction of transactions; trackBy: trackId" data-cy="entityTable">
+            <td class="text-center tooltip-button" data-placement="bottom">
+              {{ transaction.date | formatMediumDatetime }}
+            </td>
+
+            <td class="text-center">
+              {{ transaction.referenceNo }}
+            </td>
+
+            <td class="text-center">
+              {{ transaction.person?.firstName + ' ' + transaction.person?.lastName }}
+            </td>
+
+            <td class="text-center">
+              {{ transaction.netTotal + ' DH' }}
+            </td>
+
+            <td class="text-center">
+              {{ transaction.paid + ' DH' }}
+            </td>
+
+            <td class="text-center">
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn btn-info btn-alt btn-xs dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Actions <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li>
+                    <a [routerLink]="['/sell', transaction.id, 'view']">
+                      <i class="fa fa-eye" style="color: #269fed"></i>
+                      Details
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_BLINK" href="http://localhost/intell/public/admin/sell/6/invoice">
+                      <i class="fa fa-file" style="color: #edb426"></i>
+                      Invoice
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="http://localhost/intell/public/admin/sell/return/6">
+                      <i class="fa fa-backward" style="color: #0ad629"></i>
+                      Return
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#deleteModal6"
+                      title="You can delete this sell within two hours after created"
+                    >
+                      <i class="fa fa-trash" style="color: red"></i>
+                      Delete
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!--Pagination-->
+      <div class="row justify-content-center" style="text-align: center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [(page)]="ngbPaginationPage"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="loadPage($event)"
+        ></ngb-pagination>
+      </div>
+      <!--Ends-->
+    </div>
+  </div>
+
+  <div class="pull-right" id="tableFooterDIv" style="display: none">
+    <small> <b>*Note:</b> Profit Calculation has been done without Vat/Tax </small>
+  </div>
+
+  <!-- Sell search modal -->
+  <!-- <div class="modal fade" id="searchModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" action="http://localhost/intell/public/admin/sell" accept-charset="UTF-8"
+          class="form-horizontal"><input name="_token" type="hidden" value="NIcqg8IJSjwOMyN837pKrynAPkVTFvoZqAN5r8PR">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h4 class="modal-title"> Search Sales</h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="col-sm-3">
+                Invoice No
+              </label>
+              <div class="col-sm-9">
+                <input class="form-control" name="invoice_no" type="text">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3">
+                Customer
+              </label>
+              <div class="col-sm-9">
+                <div class="btn-group bootstrap-select form-control"><button type="button"
+                    class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button"
+                    title="Please select a customer"><span class="filter-option pull-left">Please select a
+                      customer</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button>
+                  <div class="dropdown-menu open" role="combobox">
+                    <div class="bs-searchbox"><input type="text" class="form-control" autocomplete="off" role="textbox"
+                        aria-label="Search"></div>
+                    <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                      <li data-original-index="0" class="selected"><a tabindex="0" class="" data-tokens="null"
+                          role="option" aria-disabled="false" aria-selected="true"><span class="text">Please select a
+                            customer</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li>
+                      <li data-original-index="1"><a tabindex="0" class="" data-tokens="null" role="option"
+                          aria-disabled="false" aria-selected="false"><span class="text">Houssam</span><span
+                            class="glyphicon glyphicon-ok check-mark"></span></a></li>
+                    </ul>
+                  </div><select class="form-control selectpicker" data-live-search="true" name="customer"
+                    tabindex="-98">
+                    <option selected="selected" value="">Please select a customer</option>
+                    <option value="1">Houssam</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3" style="text-align: left;">Type</label>
+              <div class="col-sm-9">
+                <div class="btn-group bootstrap-select form-control"><button type="button"
+                    class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="ALL"><span
+                      class="filter-option pull-left">ALL</span>&nbsp;<span class="bs-caret"><span
+                        class="caret"></span></span></button>
+                  <div class="dropdown-menu open" role="combobox">
+                    <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                      <li data-original-index="0" class="selected"><a tabindex="0" class="" data-tokens="null"
+                          role="option" aria-disabled="false" aria-selected="true"><span class="text">ALL</span><span
+                            class="glyphicon glyphicon-ok check-mark"></span></a></li>
+                      <li data-original-index="1"><a tabindex="0" class="" data-tokens="null" role="option"
+                          aria-disabled="false" aria-selected="false"><span class="text">POS</span><span
+                            class="glyphicon glyphicon-ok check-mark"></span></a></li>
+                    </ul>
+                  </div><select class="form-control selectpicker" name="type" tabindex="-98">
+                    <option value="0">ALL</option>
+                    <option value="pos">POS</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3">
+                From
+              </label>
+              <div class="col-sm-9">
+                <input class="form-control dateTime" placeholder="yyyy-mm-dd" name="from" type="text">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3">
+                To
+              </label>
+              <div class="col-sm-9">
+                <input class="form-control dateTime" placeholder="yyyy-mm-dd" name="to" type="text">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input class="btn btn-primary" data-disable-with="core.searching" type="submit" value="Search">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
+  <!-- search modal ends -->
+</div>
+
+<!-- <div>
   <h2 id="page-heading" data-cy="SellHeading">
     <span>Sells</span>
 
@@ -112,3 +388,4 @@
     </div>
   </div>
 </div>
+ -->

@@ -19,6 +19,14 @@ public interface PaymentService {
     Payment save(Payment payment);
 
     /**
+     * Save a payment.
+     *
+     * @param payment the entity to save.
+     * @return the persisted entity.
+     */
+    Payment saveAndUpdateTransactionPaidAmount(Payment payment);
+
+    /**
      * Partially updates a payment.
      *
      * @param payment the entity to update partially.

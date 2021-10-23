@@ -9,13 +9,15 @@ import { ISell } from '../sell.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { SellService } from '../service/sell.service';
 import { SellDeleteDialogComponent } from '../delete/sell-delete-dialog.component';
+import { ITransaction } from 'app/entities/transaction/transaction.model';
+import { TransactionService } from 'app/entities/transaction/service/transaction.service';
 
 @Component({
   selector: 'jhi-sell',
   templateUrl: './sell.component.html',
 })
 export class SellComponent implements OnInit {
-  sells?: ISell[];
+  transactions?: ITransaction[];
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -25,7 +27,7 @@ export class SellComponent implements OnInit {
   ngbPaginationPage = 1;
 
   constructor(
-    protected sellService: SellService,
+    protected transactionService: TransactionService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal
@@ -35,14 +37,14 @@ export class SellComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.sellService
-      .query({
+    this.transactionService
+      .sells({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<ISell[]>) => {
+        (res: HttpResponse<ITransaction[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
@@ -57,7 +59,7 @@ export class SellComponent implements OnInit {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: ISell): number {
+  trackId(index: number, item: ITransaction): number {
     return item.id!;
   }
 
@@ -107,7 +109,9 @@ export class SellComponent implements OnInit {
         },
       });
     }
-    this.sells = data ?? [];
+    this.transactions = data ?? [];
+    console.log(data);
+
     this.ngbPaginationPage = this.page;
   }
 

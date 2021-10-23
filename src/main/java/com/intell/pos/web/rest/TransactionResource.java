@@ -1,6 +1,7 @@
 package com.intell.pos.web.rest;
 
 import com.intell.pos.domain.Transaction;
+import com.intell.pos.domain.enumeration.TransactionTypes;
 import com.intell.pos.repository.TransactionRepository;
 import com.intell.pos.service.TransactionService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -179,5 +179,33 @@ public class TransactionResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /transactions} : get sell transactions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
+     */
+    @GetMapping("/transactions/sells")
+    public ResponseEntity<List<Transaction>> getSellTransactions(Pageable pageable) {
+        log.debug("REST request to get a page of Transactions");
+        Page<Transaction> page = transactionService.findByTransactiontype(TransactionTypes.SELL, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /transactions} : get purchases transactions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
+     */
+    @GetMapping("/transactions/purchases")
+    public ResponseEntity<List<Transaction>> getPurchasesTransactions(Pageable pageable) {
+        log.debug("REST request to get a page of Transactions");
+        Page<Transaction> page = transactionService.findByTransactiontype(TransactionTypes.PURCHASE, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

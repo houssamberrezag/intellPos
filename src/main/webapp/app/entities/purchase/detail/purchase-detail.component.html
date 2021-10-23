@@ -274,13 +274,27 @@
               <form [formGroup]="paymentForm">
                 <div class="form-group">
                   <label>Date</label>
-                  <input type="text" class="paymentTime form-control" formControlName="date" />
-
+                  <input
+                    id="field_date"
+                    data-cy="date"
+                    type="datetime-local"
+                    class="form-control"
+                    name="date"
+                    formControlName="date"
+                    placeholder="YYYY-MM-DD HH:mm"
+                  />
                   <br />
 
                   <label>Amount</label>
                   <input type="number" class="form-control number" formControlName="amount" required />
-                  <p id="message" style="color: red"></p>
+                  <p
+                    id="message"
+                    style="color: red"
+                    *ngIf="(paymentForm.get(['amount'])?.value ?? 0) > (transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)"
+                  >
+                    Le montant payé ( {{ paymentForm.get(['amount'])!.value }} Dhs) ne peut pas être supérieur au montant dû (
+                    {{ ((transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)).toFixed(2) }} Dhs )
+                  </p>
 
                   <br />
 
@@ -295,8 +309,7 @@
                   <label>Note</label>
                   <textarea name="note" class="form-control" formControlName="note"></textarea>
                 </div>
-
-                <button (click)="savePayment()" class="btn btn-success" [disabled]="paymentForm.invalid">Save</button>
+                <button (click)="savePayment()" class="btn btn-success" [disabled]="!paymentValid()">Save</button>
               </form>
             </div>
             <!--Make payment div ends-->
@@ -312,7 +325,7 @@
   <!--panel body-->
 
   <div class="panel-footer">
-    <a class="btn btn-border btn-alt border-black font-black btn-xs pull-right" href="http://localhost/intell/public/admin/purchase">
+    <a class="btn btn-border btn-alt border-black font-black btn-xs pull-right" (click)="previousState()">
       <i class="fa fa-backward"></i> Back
     </a>
 

@@ -23,6 +23,9 @@
             <column name="unit_cost_price" type="double">
                 <constraints nullable="true" />
             </column>
+            <column name="unit_price" type="double">
+                <constraints nullable="true" />
+            </column>
             <column name="sub_total" type="double">
                 <constraints nullable="false" />
             </column>

@@ -128,4 +128,10 @@ public class TransactionServiceImpl implements TransactionService {
         // TODO Auto-generated method stub
         return transactionRepository.findByTransactionType(transactionType);
     }
+
+    @Override
+    public Page<Transaction> findByTransactiontype(TransactionTypes transactionType, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return transactionRepository.findByTransactionType(transactionType, pageable);
+    }
 }

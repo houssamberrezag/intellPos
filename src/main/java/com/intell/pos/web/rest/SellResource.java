@@ -1,11 +1,20 @@
 package com.intell.pos.web.rest;
 
+import com.intell.pos.domain.Payment;
+import com.intell.pos.domain.Product;
 import com.intell.pos.domain.Sell;
+import com.intell.pos.domain.Transaction;
+import com.intell.pos.domain.enumeration.PaymentTypes;
+import com.intell.pos.domain.enumeration.TransactionTypes;
 import com.intell.pos.repository.SellRepository;
+import com.intell.pos.service.PaymentService;
+import com.intell.pos.service.ProductService;
 import com.intell.pos.service.SellService;
+import com.intell.pos.service.TransactionService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,7 +26,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,9 +51,24 @@ public class SellResource {
 
     private final SellRepository sellRepository;
 
-    public SellResource(SellService sellService, SellRepository sellRepository) {
+    private final TransactionService transactionService;
+
+    private final ProductService productService;
+
+    private final PaymentService paymentService;
+
+    public SellResource(
+        SellService sellService,
+        SellRepository sellRepository,
+        TransactionService transactionService,
+        ProductService productService,
+        PaymentService paymentService
+    ) {
         this.sellService = sellService;
         this.sellRepository = sellRepository;
+        this.transactionService = transactionService;
+        this.productService = productService;
+        this.paymentService = paymentService;
     }
 
     /**
@@ -55,7 +78,7 @@ public class SellResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new sell, or with status {@code 400 (Bad Request)} if the sell has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/sells")
+    @PostMapping("/sells_")
     public ResponseEntity<Sell> createSell(@Valid @RequestBody Sell sell) throws URISyntaxException {
         log.debug("REST request to save Sell : {}", sell);
         if (sell.getId() != null) {
@@ -66,6 +89,106 @@ public class SellResource {
             .created(new URI("/api/sells/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code POST  /sells} : Create a new sell.
+     *
+     * @param sell the sell to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new sell, or with status {@code 400 (Bad Request)} if the sell has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/sells")
+    public ResponseEntity<Sell> createPurchases(
+        @Valid @RequestBody List<Sell> sells,
+        @RequestParam double paid,
+        @RequestParam double shippingCost,
+        @RequestParam double discountAmount,
+        @RequestParam String paymentMethod
+    ) throws URISyntaxException {
+        log.debug("REST request to save Sell  : {}", sells);
+
+        if (sells.size() == 0) {
+            throw new BadRequestAlertException("vente invalide", ENTITY_NAME, "Veuillez sélectionner un ou plusieurs produits");
+        }
+
+        if (paid < 0) {
+            throw new BadRequestAlertException("Montant payé invalid", ENTITY_NAME, "Veuillez insérer un montant supérieur ou égale 0");
+        }
+
+        /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY/MM");
+        String ym = formatter.format(LocalDate.now());*/
+        int row = transactionService.findByTransactiontype(TransactionTypes.SELL).size() + 1;
+        String ref_no = "INV-" + row;
+        double total = 0.0;
+        double total_cost_price = 0.0;
+        for (Sell sell : sells) {
+            if (sell.getPerson() == null || sell.getPerson().getId() == null) {
+                throw new BadRequestAlertException("client obligatoir", ENTITY_NAME, "Veuillez sélectionner un client");
+            }
+
+            if (sell.getQuantity() <= 0) {
+                throw new BadRequestAlertException(
+                    "Quantité requise",
+                    ENTITY_NAME,
+                    "La quantité de produit" + sell.getProduct().getName() + " est requise"
+                );
+            }
+            if (sell.getProduct() == null || sell.getProduct().getId() == null) {
+                throw new BadRequestAlertException("produit null", ENTITY_NAME, "produit est requise");
+            }
+
+            sell.setUnitCostPrice(sell.getProduct().getCostPrice());
+
+            sell.setSubTotal(sell.getQuantity() * sell.getUnitPrice()); // à vérifier -- vérifié
+
+            total += sell.getSubTotal();
+            total_cost_price += (sell.getUnitCostPrice() * sell.getQuantity());
+
+            sell.setId(null);
+            sell.setReferenceNo(ref_no);
+            sell.setCreatedAt(Instant.now());
+
+            sellService.save(sell);
+
+            Product product = sell.getProduct();
+            product.setQuantity((product.getQuantity() != null ? product.getQuantity() : 0.0) - sell.getQuantity());
+            productService.save(product);
+        }
+
+        double total_payable = total - discountAmount;
+
+        Transaction transaction = new Transaction();
+        transaction.setReferenceNo(ref_no);
+        transaction.setPerson(sells.get(0).getPerson());
+        transaction.setTransactionType(TransactionTypes.SELL);
+        transaction.setDiscount(discountAmount);
+        transaction.setTotal(total);
+        transaction.setTotalCostPrice(total_cost_price);
+        transaction.setNetTotal(total_payable);
+        transaction.setDate(Instant.now());
+        transaction.setPaid(paid);
+        transaction.setPos(false);
+        transaction.setLaborCost(shippingCost);
+        transaction.setCreatedAt(Instant.now());
+        transactionService.save(transaction);
+
+        if (paid > 0) {
+            Payment payment = new Payment();
+            payment.setPerson(sells.get(0).getPerson());
+            payment.setAmount(paid);
+            payment.setMethod(paymentMethod);
+            payment.setType(PaymentTypes.CREDIT);
+            payment.setReferenceNo(ref_no);
+            payment.setNote("Paid for invoice " + ref_no);
+            payment.setDate(Instant.now());
+            payment.setCreatedAt(Instant.now());
+
+            paymentService.save(payment);
+        }
+
+        //Purchase result = purchaseService.save(purchase);
+        return ResponseEntity.ok(sells.get(0));
     }
 
     /**
@@ -177,5 +300,12 @@ public class SellResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/sellsByReference")
+    public ResponseEntity<List<Sell>> sellsByReference(@RequestParam String reference) {
+        log.debug("REST request to get list of Sells by reference");
+        List<Sell> sells = sellService.findByReference(reference);
+        return ResponseEntity.ok(sells);
     }
 }
