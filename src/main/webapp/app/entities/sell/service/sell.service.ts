@@ -43,6 +43,13 @@ export class SellService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  returnSell(sellsReturnWithQuantity: string[], transactionId: number): Observable<EntityArrayResponseType> {
+    const params: HttpParams = new HttpParams().set('transactionId', transactionId);
+    return this.http
+      .post<ISell[]>(this.resourceUrl + '/return', sellsReturnWithQuantity, { observe: 'response', params })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   getSellsByReference(reference: string): Observable<EntityArrayResponseType> {
     const options = { reference };
     return this.http

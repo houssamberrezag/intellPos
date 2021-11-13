@@ -2,20 +2,27 @@ package com.intell.pos.web.rest;
 
 import com.intell.pos.domain.Payment;
 import com.intell.pos.domain.Product;
+import com.intell.pos.domain.ReturnTransaction;
 import com.intell.pos.domain.Sell;
 import com.intell.pos.domain.Transaction;
+import com.intell.pos.domain.User;
 import com.intell.pos.domain.enumeration.PaymentTypes;
 import com.intell.pos.domain.enumeration.TransactionTypes;
 import com.intell.pos.repository.SellRepository;
+import com.intell.pos.security.SecurityUtils;
 import com.intell.pos.service.PaymentService;
 import com.intell.pos.service.ProductService;
+import com.intell.pos.service.ReturnTransactionService;
 import com.intell.pos.service.SellService;
 import com.intell.pos.service.TransactionService;
+import com.intell.pos.service.UserService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -57,18 +64,26 @@ public class SellResource {
 
     private final PaymentService paymentService;
 
+    private final ReturnTransactionService returnTransactionService;
+
+    private final UserService userService;
+
     public SellResource(
         SellService sellService,
         SellRepository sellRepository,
         TransactionService transactionService,
         ProductService productService,
-        PaymentService paymentService
+        PaymentService paymentService,
+        ReturnTransactionService returnTransactionService,
+        UserService userService
     ) {
         this.sellService = sellService;
         this.sellRepository = sellRepository;
         this.transactionService = transactionService;
         this.productService = productService;
         this.paymentService = paymentService;
+        this.returnTransactionService = returnTransactionService;
+        this.userService = userService;
     }
 
     /**
@@ -99,7 +114,7 @@ public class SellResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/sells")
-    public ResponseEntity<Sell> createPurchases(
+    public ResponseEntity<Sell> createSells(
         @Valid @RequestBody List<Sell> sells,
         @RequestParam double paid,
         @RequestParam double shippingCost,
@@ -306,6 +321,60 @@ public class SellResource {
     public ResponseEntity<List<Sell>> sellsByReference(@RequestParam String reference) {
         log.debug("REST request to get list of Sells by reference");
         List<Sell> sells = sellService.findByReference(reference);
+        return ResponseEntity.ok(sells);
+    }
+
+    @PostMapping("/sells/return")
+    public ResponseEntity<List<Sell>> returnSells(@RequestBody List<String> sellsDataString, @RequestParam Long transactionId)
+        throws URISyntaxException {
+        Transaction transaction = transactionService.findOne(transactionId).get();
+        if (transaction == null) throw new BadRequestAlertException("Transaction not found", ENTITY_NAME, "idnotfound");
+
+        Map<Long, Integer> sellsWithReturnQuantity = new HashMap<Long, Integer>();
+        sellsDataString.forEach(
+            s -> {
+                String key = s.split(",")[0];
+                Integer value = Integer.valueOf(s.split(",")[1]);
+                if (value > 0) sellsWithReturnQuantity.put(Long.valueOf(key), value);
+            }
+        );
+        sellsWithReturnQuantity.forEach(
+            (sellId, quantity) -> {
+                Sell sell = sellService.findOne(sellId).get();
+                sell.setQuantity(sell.getQuantity() - quantity);
+                sell.setSubTotal(sell.getQuantity() * sell.getUnitPrice());
+                sellService.save(sell);
+
+                Product product = sell.getProduct();
+                product.setQuantity(product.getQuantity() + quantity);
+                productService.save(product);
+
+                String login = SecurityUtils.getCurrentUserLogin().orElse("anonymoususer");
+                Optional<User> optionalUser = userService.getUserWithAuthoritiesByLogin(login);
+
+                ReturnTransaction returnTransaction = new ReturnTransaction();
+                returnTransaction.setSellsReferenceNo(sell.getReferenceNo());
+                returnTransaction.setCreatedAt(Instant.now());
+                returnTransaction.setSell(sell);
+                returnTransaction.setPerson(transaction.getPerson());
+                returnTransaction.setReturnAmount(quantity * sell.getUnitPrice());
+                returnTransaction.setReturnUnits(quantity);
+                returnTransaction.setReturnVat(0.0);
+                if (optionalUser.isPresent()) returnTransaction.setReturnedBy(Integer.valueOf(optionalUser.get().getId().toString()));
+
+                returnTransactionService.save(returnTransaction);
+            }
+        );
+
+        List<Sell> sells = sellService.findByReference(transaction.getReferenceNo());
+        Double total = sells.stream().mapToDouble(sell -> sell.getSubTotal()).sum();
+        Double total_cost_price = sells.stream().mapToDouble(sell -> sell.getUnitCostPrice() * sell.getQuantity()).sum();
+        Double net_total = total + transaction.getLaborCost() - transaction.getDiscount();
+        transaction.setTotal(total);
+        transaction.setTotalCostPrice(total_cost_price);
+        transaction.setNetTotal(net_total);
+        transactionService.save(transaction);
+
         return ResponseEntity.ok(sells);
     }
 }

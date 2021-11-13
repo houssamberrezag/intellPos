@@ -1,0 +1,297 @@
+<div id="app" class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <form method="post">
+        <div class="col-md-4" style="border: 2px solid rgb(221, 221, 221)">
+          <div class="row pad5A">
+            <div class="col-md-10 pad5A">
+              <select data-live-search="true" class="form-control">
+                <option *ngFor="let client of clients">
+                  {{ client.firstName + ' ' + client.lastName }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-2 pad5A">
+              <a
+                data-toggle="modal"
+                data-target="#customerModal"
+                (click)="initClientForm()"
+                class="btn btn-default btn-block zero-border-radius"
+                ><i class="fa fa-plus"></i
+              ></a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12"><input type="text" placeholder="Scan your barcode" class="form-control" /></div>
+          </div>
+          <div style="min-height: 380px; overflow-y: scroll">
+            <table class="table table-bordered">
+              <tbody>
+                <tr class="bg-gradient-9 pos-table-header">
+                  <td width="30%" class="text-center">Product</td>
+                  <td width="10%" class="text-center">Quantity</td>
+                  <td width="25%" class="text-center">Unit Price</td>
+                  <td width="25%" class="text-center">Sub Total</td>
+                  <td width="10%" class="text-center"><i class="fa fa-trash"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-12 bg-gradient-9" style="margin-bottom: 10px">
+            <div class="row pos-footer">
+              <div class="col-md-12 padLpadR0">
+                <table class="pos-table">
+                  <tbody>
+                    <tr>
+                      <td width="25%" height="25px" style="text-align: left">Total Item:</td>
+                      <td width="25%" height="25px" style="text-align: right">
+                        <div>0</div>
+                      </td>
+                      <td width="25%" height="25px" style="text-align: right">Total:</td>
+                      <td width="25%" height="25px" style="text-align: right">
+                        <div>0.00</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row pos-footer">
+              <div class="col-md-12 padLpadR0">
+                <table class="pos-table">
+                  <tbody>
+                    <tr>
+                      <td width="30%" height="25px" style="text-align: left">Discount :</td>
+                      <td width="20%" height="25px"><input type="text" class="pos-discount-input" /></td>
+                      <td width="25%" height="25px" style="text-align: right">Amount:</td>
+                      <td width="25%" height="25px" style="text-align: right">
+                        <div id="">0</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row pos-footer">
+              <div class="col-md-12 padLpadR0">
+                <table class="pos-table">
+                  <tbody>
+                    <tr>
+                      <td width="75%" height="25px" style="text-align: right">Vat:</td>
+                      <td width="50%" height="25px" style="text-align: right">
+                        <div>0</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row pos-total">
+              <div class="col-md-12 padLpadR0">
+                <table class="pos-table">
+                  <tbody>
+                    <tr>
+                      <td width="50%" height="30px" style="text-align: left">Total Payable:</td>
+                      <td width="50%" height="30px" style="text-align: right">
+                        <div id="total_payable">0.00</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 pad10A">
+                <div class="pull-right">
+                  <button type="button" class="btn btn-danger">Cancel</button>
+                  <button type="button" data-toggle="modal" data-target="#paymentModal" class="btn btn-success">Payment</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="col-md-8">
+        <div class="panel panel-default" style="border: 1px solid rgb(221, 221, 221)">
+          <div class="panel-body">
+            <div class="row" style="margin-left: 0px; margin-right: 0px">
+              <div class="col-md-12" style="padding-left: 15px; padding-right: 15px; padding-top: 10px">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="form-control"
+                  style="border: 1px solid rgb(58, 58, 58); color: rgb(1, 1, 1)"
+                />
+              </div>
+            </div>
+            <div class="row" style="margin-left: 0px; margin-right: 0px">
+              <div class="col-md-12 pos-cat-div">
+                <div class="regular slider slick-initialized slick-slider" style="width: 100%">
+                  <div aria-live="polite" class="slick-list draggable">
+                    <div class="slick-track" style="opacity: 1; width: 327px; transform: translate3d(0px, 0px, 0px)" role="listbox">
+                      <a
+                        data-toggle="tab"
+                        href="#all"
+                        class="pos-single-cat bg-gradient-9 active slick-slide slick-current slick-active"
+                        data-slick-index="0"
+                        aria-hidden="false"
+                        style="width: 103px"
+                        tabindex="-1"
+                        role="option"
+                        aria-describedby="slick-slide00"
+                      >
+                        Frequent </a
+                      ><a
+                        data-toggle="tab"
+                        href="#tab1"
+                        class="pos-single-cat bg-gradient-9 slick-slide slick-active"
+                        data-slick-index="1"
+                        aria-hidden="false"
+                        style="width: 103px"
+                        tabindex="-1"
+                        role="option"
+                        aria-describedby="slick-slide01"
+                      >
+                        Electronique </a
+                      ><a
+                        data-toggle="tab"
+                        href="#tab3"
+                        class="pos-single-cat bg-gradient-9 slick-slide slick-active"
+                        data-slick-index="2"
+                        aria-hidden="false"
+                        style="width: 103px"
+                        tabindex="-1"
+                        role="option"
+                        aria-describedby="slick-slide02"
+                      >
+                        Plastique
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="min-height: 535px">
+              <!-- <center> -->
+              <div id="loader">
+                <div class="a"></div>
+                <div class="b"></div>
+                <div class="c"></div>
+                <div class="d"></div>
+              </div>
+              <!-- </center> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="customerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade">
+    <div role="document" class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="exampleModalLabel" class="modal-title">Create New Customer</h5>
+          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="clientForm">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="control-label">
+                  First Name
+                  <span class="required">*</span></label
+                >
+                <input type="text" class="form-control" formControlName="firstName" />
+              </div>
+              <div class="col-md-6">
+                <label class="control-label">
+                  Last Name
+                  <span class="required">*</span></label
+                >
+                <input type="text" class="form-control" formControlName="lastName" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="control-label"> Email </label> <input type="text" class="form-control" formControlName="email" />
+              </div>
+              <div class="col-md-6">
+                <label class="control-label">
+                  Phone
+                  <span class="required">*</span></label
+                >
+                <input type="text" class="form-control" formControlName="phone" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label class="control-label"> Address </label>
+                <textarea rows="2" formControlName="address" class="form-control"> </textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label class="control-label"> Company Name </label>
+                <input type="text" class="form-control" formControlName="companyNAme" />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+          <button class="btn btn-primary" data-dismiss="modal" [disabled]="clientForm.invalid" (click)="addClient()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade">
+    <div role="document" class="modal-dialog modal-lg">
+      <div class="modal-content" style="border-radius: 0px !important; top: 50px">
+        <div class="modal-header">
+          <h5 id="exampleModalLabel" class="modal-title">Finalize Sale</h5>
+          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group" style="background-color: rgb(248, 250, 214); padding: 50px">
+            <div class="row">
+              <div class="col-md-6">
+                <label>Amount</label> <input type="text" class="form-control" style="border-radius: 0px !important" />
+              </div>
+              <div class="col-md-6">
+                <label>Paying By</label>
+                <select class="form-control" style="border-radius: 0px !important">
+                  <option value="cash">Cash</option>
+                  <option value="card">Card</option>
+                  <option value="cash + card">Cash + Card</option>
+                  <option value="mobile_money">Mobile Money</option>
+                  <option value="others">Others</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <table class="table table-bordered" style="background-color: rgb(249, 249, 249)">
+            <tbody>
+              <tr style="font-size: 25px">
+                <td width="25%">Total Items :</td>
+                <td width="25%">0</td>
+                <td width="25%">Total Payable :</td>
+                <td width="25%">0.00</td>
+              </tr>
+            </tbody>
+          </table>
+          <span style="color: red; font-size: 25px; font-weight: bolder">
+            Due:
+            <span>0</span></span
+          >
+          <br />
+          <span style="color: green; font-size: 25px; font-weight: bolder">
+            Change Amount:
+            <span>0</span></span
+          >
+        </div>
+        <div class="modal-footer"><button class="btn btn-primary btn-block">Submit</button></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,13 +7,15 @@ import { SellDetailComponent } from '../detail/sell-detail.component';
 import { SellUpdateComponent } from '../update/sell-update.component';
 import { SellRoutingResolveService } from './sell-routing-resolve.service';
 import { TransactionRoutingResolveService } from 'app/entities/transaction/route/transaction-routing-resolve.service';
+import { ReturnComponent } from '../return/return.component';
+import { PosComponent } from '../pos/pos.component';
 
 const sellRoute: Routes = [
   {
     path: '',
     component: SellComponent,
     data: {
-      defaultSort: 'id,asc',
+      defaultSort: 'id,desc',
     },
     canActivate: [UserRouteAccessService],
   },
@@ -26,8 +28,24 @@ const sellRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
+    path: ':id/return',
+    component: ReturnComponent,
+    resolve: {
+      transaction: TransactionRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
     path: 'new',
     component: SellUpdateComponent,
+    resolve: {
+      sell: SellRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'pos',
+    component: PosComponent,
     resolve: {
       sell: SellRoutingResolveService,
     },
