@@ -16,6 +16,7 @@ import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { SweetAlertService } from 'app/core/util/sweet-alert.service';
 import { AlertService } from 'app/core/util/alert.service';
+import { DEFAULT_SUPPLIER } from 'app/shared/constants/constants';
 
 @Component({
   selector: 'jhi-purchase-update',
@@ -88,6 +89,7 @@ export class PurchaseUpdateComponent implements OnInit {
     this.purchases.forEach(purchase => {
       purchase.person = this.supplier;
     });
+    console.log(this.purchases);
 
     this.subscribeToSaveResponse(this.purchaseService.create2(this.purchases, paid ?? 0, this.calculeDiscountAmount(), paymentMethod));
   }
@@ -161,7 +163,11 @@ export class PurchaseUpdateComponent implements OnInit {
       .fournisseurs()
       .pipe(map((res: HttpResponse<IPerson[]>) => res.body ?? []))
       //.pipe(map((people: IPerson[]) => this.personService.addPersonToCollectionIfMissing(people, this.editForm.get('person')!.value)))
-      .subscribe((people: IPerson[]) => (this.peopleSharedCollection = people));
+      .subscribe((people: IPerson[]) => {
+        this.peopleSharedCollection = people;
+        this.supplier = this.peopleSharedCollection[0] ?? {};
+        //this.supplier = DEFAULT_SUPPLIER;
+      });
 
     this.productService
       .query()

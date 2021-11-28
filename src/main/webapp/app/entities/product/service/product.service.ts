@@ -45,6 +45,12 @@ export class ProductService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  findByCode(code: string): Observable<EntityResponseType> {
+    return this.http
+      .get<IProduct>(`${this.resourceUrl}/byCode?code=${code}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -55,10 +61,15 @@ export class ProductService {
   productsBySubcategoryId(subcategoryId: string, req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     options.set('subcategoryId', subcategoryId);
-    console.log('optionsssssssssssssssssssssssssssssssssssssss');
-    console.log(options);
     return this.http
       .get<IProduct[]>(this.resourceUrl + 'BySubcategoryId?subcategoryId=' + subcategoryId, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  productsByCategoryId(categoryId: number, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IProduct[]>(`${this.resourceUrl}ByCategoryId?categoryId=${categoryId}`, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 

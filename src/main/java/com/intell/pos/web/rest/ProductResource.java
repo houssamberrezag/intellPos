@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -166,6 +165,19 @@ public class ProductResource {
     }
 
     /**
+     * {@code GET  /products/:id} : get the "id" product.
+     *
+     * @param id the id of the product to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the product, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/products/byCode")
+    public ResponseEntity<Product> getProductByCode(@RequestParam String code) {
+        log.debug("REST request to get Product : {}", code);
+        Optional<Product> product = productService.findByCode(code);
+        return ResponseEntity.ok(product.isPresent() ? product.get() : null);
+    }
+
+    /**
      * {@code DELETE  /products/:id} : delete the "id" product.
      *
      * @param id the id of the product to delete.
@@ -191,6 +203,14 @@ public class ProductResource {
     public ResponseEntity<List<Product>> getProductsBySubcategoryId(Pageable pageable, Long subcategoryId) {
         log.debug("REST request to get a page of Products");
         Page<Product> page = productService.findBySubcategoryId(subcategoryId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/productsByCategoryId")
+    public ResponseEntity<List<Product>> getProductsByCategoryId(Pageable pageable, Long categoryId) {
+        log.debug("REST request to get a page of Products");
+        Page<Product> page = productService.findByCategoryId(categoryId, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

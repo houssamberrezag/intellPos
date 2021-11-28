@@ -42,6 +42,14 @@ public interface ProductService {
     Optional<Product> findOne(Long id);
 
     /**
+     * Get product by code.
+     *
+     * @param code  of the entity.
+     * @return the entity.
+     */
+    Optional<Product> findByCode(String code);
+
+    /**
      * Delete the "id" product.
      *
      * @param id the id of the entity.
@@ -49,4 +57,6 @@ public interface ProductService {
     void delete(Long id);
 
     Page<Product> findBySubcategoryId(Long subcategoryId, Pageable pageable);
+
+    Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
 }

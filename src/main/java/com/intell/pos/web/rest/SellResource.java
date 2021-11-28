@@ -20,6 +20,8 @@ import com.intell.pos.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,6 +201,110 @@ public class SellResource {
             payment.setDate(Instant.now());
             payment.setCreatedAt(Instant.now());
 
+            paymentService.save(payment);
+        }
+
+        //Purchase result = purchaseService.save(purchase);
+        return ResponseEntity.ok(sells.get(0));
+    }
+
+    /**
+     * {@code POST  /sells} : Create a new sell.
+     *
+     * @param sell the sell to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new sell, or with status {@code 400 (Bad Request)} if the sell has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/sells/pos")
+    public ResponseEntity<Sell> createPos(
+        @Valid @RequestBody List<Sell> sells,
+        @RequestParam double paid,
+        @RequestParam double discountAmount,
+        @RequestParam double changeAmount,
+        @RequestParam String paymentMethod
+    ) throws URISyntaxException {
+        log.debug("REST request to save Sell  : {}", sells);
+
+        if (sells.size() == 0) {
+            throw new BadRequestAlertException("vente invalide", ENTITY_NAME, "Veuillez sélectionner un ou plusieurs produits");
+        }
+
+        if (paid < 0) {
+            throw new BadRequestAlertException("Montant payé invalid", ENTITY_NAME, "Veuillez insérer un montant supérieur ou égale 0");
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY/MM");
+        String ym = formatter.format(LocalDate.now());
+        int row = transactionService.findByTransactiontype(TransactionTypes.SELL).size() + 1;
+        String ref_no = ym + "/S-" + row;
+        double total = 0.0;
+        double total_cost_price = 0.0;
+        for (Sell sell : sells) {
+            if (sell.getPerson() == null || sell.getPerson().getId() == null) {
+                throw new BadRequestAlertException("client obligatoir", ENTITY_NAME, "Veuillez sélectionner un client");
+            }
+
+            if (sell.getQuantity() <= 0) {
+                throw new BadRequestAlertException(
+                    "Quantité requise",
+                    ENTITY_NAME,
+                    "La quantité de produit" + sell.getProduct().getName() + " est requise"
+                );
+            }
+            if (sell.getProduct() == null || sell.getProduct().getId() == null) {
+                throw new BadRequestAlertException("produit null", ENTITY_NAME, "produit est requise");
+            }
+
+            sell.setUnitCostPrice(sell.getProduct().getCostPrice());
+            sell.setUnitPrice(sell.getProduct().getMinimumRetailPrice());
+
+            sell.setSubTotal(sell.getQuantity() * sell.getProduct().getMinimumRetailPrice());
+
+            total += sell.getSubTotal();
+            total_cost_price += (sell.getUnitCostPrice() * sell.getQuantity());
+
+            sell.setId(null);
+            sell.setReferenceNo(ref_no);
+            sell.setCreatedAt(Instant.now());
+
+            sellService.save(sell);
+
+            Product product = sell.getProduct();
+            product.setQuantity((product.getQuantity() != null ? product.getQuantity() : 0.0) - sell.getQuantity());
+            productService.save(product);
+        }
+
+        double total_payable = total - discountAmount;
+
+        Transaction transaction = new Transaction();
+        transaction.setReferenceNo(ref_no);
+
+        if (sells.get(0).getPerson() != null && sells.get(0).getPerson() != null) transaction.setPerson(sells.get(0).getPerson());
+
+        transaction.setTransactionType(TransactionTypes.SELL);
+        transaction.setDiscount(discountAmount);
+        transaction.setTotal(total);
+        transaction.setTotalCostPrice(total_cost_price);
+        transaction.setNetTotal(total_payable);
+        transaction.setDate(Instant.now());
+        transaction.setPaid(paid);
+        transaction.setPos(true);
+        transaction.setLaborCost(0.0);
+        transaction.setChangeAmount(changeAmount);
+        transaction.setCreatedAt(Instant.now());
+        transactionService.save(transaction);
+
+        if (paid > 0) {
+            Payment payment = new Payment();
+            if (sells.get(0).getPerson() != null && sells.get(0).getPerson() != null) payment.setPerson(sells.get(0).getPerson());
+
+            payment.setAmount(paid);
+            payment.setMethod(paymentMethod);
+            payment.setType(PaymentTypes.CREDIT);
+            payment.setReferenceNo(ref_no);
+            payment.setNote("Paid for invoice " + ref_no);
+            payment.setDate(Instant.now());
+            payment.setCreatedAt(Instant.now());
             paymentService.save(payment);
         }
 

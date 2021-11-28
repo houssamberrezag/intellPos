@@ -43,6 +43,24 @@ export class SellService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  createPos(
+    sells: ISell[],
+    paid: number,
+    changeAmount: number,
+    discountAmount: number,
+    paymentMethod: string
+  ): Observable<EntityResponseType> {
+    const copy = sells.map(sell => this.convertDateFromClient(sell));
+    const params: HttpParams = new HttpParams()
+      .set('paid', paid)
+      .set('changeAmount', changeAmount)
+      .set('discountAmount', discountAmount)
+      .set('paymentMethod', paymentMethod);
+    return this.http
+      .post<ISell>(this.resourceUrl + '/pos', copy, { observe: 'response', params })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
   returnSell(sellsReturnWithQuantity: string[], transactionId: number): Observable<EntityArrayResponseType> {
     const params: HttpParams = new HttpParams().set('transactionId', transactionId);
     return this.http

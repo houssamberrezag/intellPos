@@ -114,4 +114,16 @@ public class ProductServiceImpl implements ProductService {
         // TODO Auto-generated method stub
         return productRepository.findBySubCategorieId(subcategoryId, pageable);
     }
+
+    @Override
+    public Page<Product> findByCategoryId(Long categoryId, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return productRepository.findByCategorieId(categoryId, pageable);
+    }
+
+    @Override
+    public Optional<Product> findByCode(String code) {
+        // TODO Auto-generated method stub
+        return productRepository.findByCode(code);
+    }
 }

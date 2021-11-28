@@ -16,6 +16,7 @@ import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 import { SweetAlertService } from 'app/core/util/sweet-alert.service';
 import { AlertService } from 'app/core/util/alert.service';
+import { DEFAULT_CLIENT } from 'app/shared/constants/constants';
 
 @Component({
   selector: 'jhi-sell-update',
@@ -90,7 +91,6 @@ export class SellUpdateComponent implements OnInit {
       this.sells.forEach(sell => {
         sell.person = this.client;
       });
-      console.log(paid);
 
       this.subscribeToSaveResponse(
         this.sellService.create2(this.sells, paid ?? 0, shippingCost ?? 0, this.calculeDiscountAmount(), paymentMethod)
@@ -158,7 +158,10 @@ export class SellUpdateComponent implements OnInit {
       .clients()
       .pipe(map((res: HttpResponse<IPerson[]>) => res.body ?? []))
       //.pipe(map((people: IPerson[]) => this.personService.addPersonToCollectionIfMissing(people, this.editForm.get('person')!.value)))
-      .subscribe((people: IPerson[]) => (this.peopleSharedCollection = people));
+      .subscribe((people: IPerson[]) => {
+        this.peopleSharedCollection = people;
+        //this.client = DEFAULT_CLIENT;
+      });
 
     this.productService
       .query()
