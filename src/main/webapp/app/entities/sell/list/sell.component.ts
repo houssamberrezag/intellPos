@@ -110,7 +110,6 @@ export class SellComponent implements OnInit {
       });
     }
     this.transactions = data ?? [];
-    console.log(data);
 
     this.ngbPaginationPage = this.page;
   }

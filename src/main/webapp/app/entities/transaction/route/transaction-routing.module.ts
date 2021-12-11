@@ -12,7 +12,7 @@ const transactionRoute: Routes = [
     path: '',
     component: TransactionComponent,
     data: {
-      defaultSort: 'id,asc',
+      defaultSort: 'id,desc',
     },
     canActivate: [UserRouteAccessService],
   },

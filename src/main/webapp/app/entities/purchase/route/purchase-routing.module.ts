@@ -12,7 +12,7 @@ const purchaseRoute: Routes = [
     path: '',
     component: PurchaseComponent,
     data: {
-      defaultSort: 'id,asc',
+      defaultSort: 'id,desc',
     },
     canActivate: [UserRouteAccessService],
   },

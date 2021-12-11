@@ -21,7 +21,7 @@
         </button>
         <ul class="dropdown-menu">
           <li>
-            <a href="http://localhost/intell/public/admin/download/excel" title="Export Excel">
+            <a (click)="exportexcel()" title="Export Excel">
               <i class="fa fa-file-excel-o" style="color: #12a823"></i>
               Download Excel
             </a>
@@ -38,7 +38,7 @@
 
   <div class="panel-body">
     <div class="table-responsive" style="min-height: 300px">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered table-striped" id="products-table">
         <thead class="bg-gradient-9">
           <tr>
             <td class="text-center font-white"># &nbsp;&nbsp;</td>

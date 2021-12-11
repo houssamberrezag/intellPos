@@ -9,6 +9,7 @@ import { ITransaction } from '../transaction.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { TransactionService } from '../service/transaction.service';
 import { TransactionDeleteDialogComponent } from '../delete/transaction-delete-dialog.component';
+import { TransactionTypes } from 'app/entities/enumerations/transaction-types.model';
 
 @Component({
   selector: 'jhi-transaction',
@@ -23,6 +24,7 @@ export class TransactionComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  transactionTypeEnum = TransactionTypes;
 
   constructor(
     protected transactionService: TransactionService,

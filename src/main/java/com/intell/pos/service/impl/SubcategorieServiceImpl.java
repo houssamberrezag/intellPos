@@ -3,6 +3,7 @@ package com.intell.pos.service.impl;
 import com.intell.pos.domain.Subcategorie;
 import com.intell.pos.repository.SubcategorieRepository;
 import com.intell.pos.service.SubcategorieService;
+import java.time.Instant;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +77,11 @@ public class SubcategorieServiceImpl implements SubcategorieService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Subcategorie : {}", id);
-        subcategorieRepository.deleteById(id);
+        Optional<Subcategorie> subcatOptional = findOne(id);
+        if (subcatOptional.isPresent()) {
+            Subcategorie subCategorie = subcatOptional.get();
+            subCategorie.setDeletedAt(Instant.now());
+            subcategorieRepository.save(subCategorie);
+        }
     }
 }

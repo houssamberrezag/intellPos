@@ -314,4 +314,18 @@ public class PurchaseResource {
         // HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok(purchases);
     }
+
+    /**
+     * {@code GET  /purchases} : get purchases by product id.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of purchases in body.
+     */
+    @GetMapping("/purchasesByProductId")
+    public ResponseEntity<List<Purchase>> purchasesByProductId(Pageable pageable, @RequestParam Long productId) {
+        log.debug("REST request to get list of Purchases by product Id");
+        Page<Purchase> page = purchaseService.findByProductId(productId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

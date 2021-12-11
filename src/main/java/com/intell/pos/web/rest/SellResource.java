@@ -483,4 +483,18 @@ public class SellResource {
 
         return ResponseEntity.ok(sells);
     }
+
+    /**
+     * {@code GET  /sells} : get sells by productId.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of sells in body.
+     */
+    @GetMapping("/sellsByProductId")
+    public ResponseEntity<List<Sell>> getSellsByProductId(Pageable pageable, @RequestParam Long productId) {
+        log.debug("REST request to get a page of Sells by product id");
+        Page<Sell> page = sellService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

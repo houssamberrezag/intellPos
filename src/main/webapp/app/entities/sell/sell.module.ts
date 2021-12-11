@@ -7,10 +7,19 @@ import { SellDeleteDialogComponent } from './delete/sell-delete-dialog.component
 import { SellRoutingModule } from './route/sell-routing.module';
 import { ReturnComponent } from './return/return.component';
 import { PosComponent } from './pos/pos.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 @NgModule({
   imports: [SharedModule, SellRoutingModule],
-  declarations: [SellComponent, SellDetailComponent, SellUpdateComponent, SellDeleteDialogComponent, ReturnComponent, PosComponent],
+  declarations: [
+    SellComponent,
+    SellDetailComponent,
+    SellUpdateComponent,
+    SellDeleteDialogComponent,
+    ReturnComponent,
+    PosComponent,
+    InvoiceComponent,
+  ],
   entryComponents: [SellDeleteDialogComponent],
 })
 export class SellModule {}

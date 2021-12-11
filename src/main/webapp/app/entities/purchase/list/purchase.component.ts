@@ -98,7 +98,7 @@ export class PurchaseComponent implements OnInit {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     if (navigate) {
-      this.router.navigate(['/transaction'], {
+      this.router.navigate(['/purchase'], {
         queryParams: {
           page: this.page,
           size: this.itemsPerPage,

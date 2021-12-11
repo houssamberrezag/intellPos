@@ -134,4 +134,22 @@ public class TransactionServiceImpl implements TransactionService {
         // TODO Auto-generated method stub
         return transactionRepository.findByTransactionType(transactionType, pageable);
     }
+
+    @Override
+    public Transaction findByRef(String ref) {
+        // TODO Auto-generated method stub
+        return transactionRepository.findFirstByReferenceNo(ref);
+    }
+
+    @Override
+    public Page<Transaction> findByProductIdTypeSell(Long productId, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return transactionRepository.findTansactionSellByProductId(productId, pageable);
+    }
+
+    @Override
+    public Page<Transaction> findByProductIdTypePurchase(Long productId, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return transactionRepository.findTansactionPurchaseByProductId(productId, pageable);
+    }
 }

@@ -9,6 +9,7 @@ import { ICategorie } from '../categorie.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { CategorieService } from '../service/categorie.service';
 import { CategorieDeleteDialogComponent } from '../delete/categorie-delete-dialog.component';
+import { SweetAlertService } from 'app/core/util/sweet-alert.service';
 
 @Component({
   selector: 'jhi-categorie',
@@ -24,12 +25,13 @@ export class CategorieComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
-
+  selectedCategogy: ICategorie = {};
   constructor(
     protected categorieService: CategorieService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private alertService: SweetAlertService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -62,6 +64,10 @@ export class CategorieComponent implements OnInit {
     return item.id!;
   }
 
+  prepareDelete(categorie: ICategorie): void {
+    this.selectedCategogy = categorie;
+  }
+
   delete(categorie: ICategorie): void {
     const modalRef = this.modalService.open(CategorieDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.categorie = categorie;
@@ -71,6 +77,15 @@ export class CategorieComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  supprimer(): void {
+    if (this.selectedCategogy.id && (this.selectedCategogy.subcategories?.length ?? 0) <= 0) {
+      this.categorieService.delete(this.selectedCategogy.id).subscribe(() => {
+        this.alertService.create('', 'categorie supprimée avec succées', 'success');
+        this.loadPage();
+      });
+    }
   }
 
   protected sort(): string[] {
@@ -109,7 +124,6 @@ export class CategorieComponent implements OnInit {
       });
     }
     this.categories = data ?? [];
-    console.log(this.categories);
     this.ngbPaginationPage = this.page;
   }
 

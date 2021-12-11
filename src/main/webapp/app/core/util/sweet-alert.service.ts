@@ -12,6 +12,7 @@ export class SweetAlertService {
       title,
       text: msg,
       icon,
+      toast: true,
     });
   }
 }

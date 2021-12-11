@@ -45,6 +45,12 @@ export class TransactionService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  findByRef(ref: string): Observable<EntityResponseType> {
+    return this.http
+      .get<ITransaction>(`api/transactionByRef?ref=${ref}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -63,6 +69,26 @@ export class TransactionService {
     const options = createRequestOption(req);
     return this.http
       .get<ITransaction[]>(this.resourceUrl + '/sells', { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  transactionsSellByProductId(productId: number, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ITransaction[]>(this.resourceUrl + '/sellByProductId?productId=' + productId.toString(), {
+        params: options,
+        observe: 'response',
+      })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  transactionsPurchaseByProductId(productId: number, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ITransaction[]>(this.resourceUrl + '/purchaseByProductId?productId=' + productId.toString(), {
+        params: options,
+        observe: 'response',
+      })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 

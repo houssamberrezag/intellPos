@@ -56,4 +56,6 @@ public interface PurchaseService {
      * @return the list of entities.
      */
     List<Purchase> findByReference(String reference);
+
+    Page<Purchase> findByProductId(Long productId, Pageable pageable);
 }

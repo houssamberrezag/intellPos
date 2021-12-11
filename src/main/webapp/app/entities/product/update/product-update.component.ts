@@ -108,6 +108,10 @@ export class ProductUpdateComponent implements OnInit {
     }
   }
 
+  uploadPhoto(event: any): void {
+    console.log('houssam');
+  }
+
   trackCategorieById(index: number, item: ICategorie): number {
     return item.id!;
   }

@@ -3,6 +3,7 @@ package com.intell.pos.service.impl;
 import com.intell.pos.domain.Categorie;
 import com.intell.pos.repository.CategorieRepository;
 import com.intell.pos.service.CategorieService;
+import java.time.Instant;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +77,12 @@ public class CategorieServiceImpl implements CategorieService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Categorie : {}", id);
-        categorieRepository.deleteById(id);
+
+        Optional<Categorie> catOptional = findOne(id);
+        if (catOptional.isPresent()) {
+            Categorie categorie = catOptional.get();
+            categorie.setDeletedAt(Instant.now());
+            categorieRepository.save(categorie);
+        }
     }
 }

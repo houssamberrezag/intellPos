@@ -9,6 +9,8 @@ import { SellRoutingResolveService } from './sell-routing-resolve.service';
 import { TransactionRoutingResolveService } from 'app/entities/transaction/route/transaction-routing-resolve.service';
 import { ReturnComponent } from '../return/return.component';
 import { PosComponent } from '../pos/pos.component';
+import { InvoiceComponent } from '../invoice/invoice.component';
+import { InvoiceRoutingResolveService } from './invoice-routing-resolve.service';
 
 const sellRoute: Routes = [
   {
@@ -48,6 +50,14 @@ const sellRoute: Routes = [
     component: PosComponent,
     resolve: {
       sell: SellRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'invoice/:ref',
+    component: InvoiceComponent,
+    resolve: {
+      transaction: InvoiceRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

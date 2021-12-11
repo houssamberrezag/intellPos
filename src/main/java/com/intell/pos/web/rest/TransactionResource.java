@@ -166,6 +166,19 @@ public class TransactionResource {
     }
 
     /**
+     * {@code GET  /transactions/:id} : get the "id" transaction.
+     *
+     * @param id the id of the transaction to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the transaction, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/transactionByRef")
+    public ResponseEntity<Transaction> getTransactionByRef(@RequestParam String ref) {
+        log.debug("REST request to get Transaction : {}", ref);
+        Optional<Transaction> transaction = Optional.of(transactionService.findByRef(ref));
+        return ResponseUtil.wrapOrNotFound(transaction);
+    }
+
+    /**
      * {@code DELETE  /transactions/:id} : delete the "id" transaction.
      *
      * @param id the id of the transaction to delete.
@@ -205,6 +218,22 @@ public class TransactionResource {
     public ResponseEntity<List<Transaction>> getPurchasesTransactions(Pageable pageable) {
         log.debug("REST request to get a page of Transactions");
         Page<Transaction> page = transactionService.findByTransactiontype(TransactionTypes.PURCHASE, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/transactions/purchaseByProductId")
+    public ResponseEntity<List<Transaction>> getPurchasesTransactionsByProductId(Pageable pageable, @RequestParam Long productId) {
+        log.debug("REST request to get a page of Transactions");
+        Page<Transaction> page = transactionService.findByProductIdTypePurchase(productId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/transactions/sellByProductId")
+    public ResponseEntity<List<Transaction>> getSellsTransactionsByProductId(Pageable pageable, @RequestParam Long productId) {
+        log.debug("REST request to get a page of Transactions");
+        Page<Transaction> page = transactionService.findByProductIdTypeSell(productId, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

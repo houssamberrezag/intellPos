@@ -44,6 +44,14 @@ public interface TransactionService {
     Optional<Transaction> findOne(Long id);
 
     /**
+     * Get the "ref" transaction.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
+    Transaction findByRef(String ref);
+
+    /**
      * Delete the "id" transaction.
      *
      * @param id the id of the entity.
@@ -53,4 +61,20 @@ public interface TransactionService {
     List<Transaction> findByTransactiontype(TransactionTypes transactionType);
 
     Page<Transaction> findByTransactiontype(TransactionTypes transactionType, Pageable pageable);
+
+    /**
+     * Get transactions type sell by product ID.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<Transaction> findByProductIdTypeSell(Long productId, Pageable pageable);
+
+    /**
+     * Get transactions type purchase by product ID.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<Transaction> findByProductIdTypePurchase(Long productId, Pageable pageable);
 }

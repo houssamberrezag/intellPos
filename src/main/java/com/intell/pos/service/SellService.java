@@ -50,4 +50,6 @@ public interface SellService {
     void delete(Long id);
 
     List<Sell> findByReference(String reference);
+
+    Page<Sell> findByProductId(Long productId, Pageable pageable);
 }

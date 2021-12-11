@@ -10,6 +10,7 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants
 import { ProductService } from '../service/product.service';
 import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { ExportExcelService } from 'app/core/util/export-excel.service';
 
 @Component({
   selector: 'jhi-product',
@@ -30,7 +31,8 @@ export class ProductComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private exportExcelService: ExportExcelService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -80,6 +82,26 @@ export class ProductComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  exportexcel(): void {
+    const fileName = 'produits.xlsx';
+    this.exportExcelService.export(this.dataToExport(), fileName);
+  }
+
+  dataToExport(): any[] {
+    if (this.products) {
+      return this.products?.map(p => ({
+        Nom: p.name,
+        code: p.code,
+        'Quantité en stock': p.quantity,
+        'Prix de revient': p.costPrice,
+        'Prix de vente': p.minimumRetailPrice,
+        Unité: p.unit,
+      }));
+    } else {
+      return [];
+    }
   }
 
   protected sort(): string[] {

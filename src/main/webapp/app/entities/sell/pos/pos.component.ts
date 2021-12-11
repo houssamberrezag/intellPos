@@ -201,18 +201,16 @@ export class PosComponent implements OnInit, OnDestroy {
   }
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ISell>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
+      res => this.onSaveSuccess(res.body ?? {}),
       error => this.onSaveError(error.error)
     );
   }
 
-  protected onSaveSuccess(): void {
-    // this.router.navigate(['/sell']);
-    //this.paymentModal?.nativeElement.click();
+  protected onSaveSuccess(sell: ISell): void {
     this.sells = [];
     document.getElementById('closeModalButton')?.click();
     this.loadProducts();
-    this.sweetAlertService.create('', 'Achat éffectuée', 'success');
+    this.router.navigate(['/sell/invoice', sell.referenceNo]);
   }
 
   protected subscribeToSaveResponseClient(result: Observable<HttpResponse<IPerson>>): void {

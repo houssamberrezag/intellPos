@@ -99,4 +99,10 @@ public class SellServiceImpl implements SellService {
     public List<Sell> findByReference(String reference) {
         return sellRepository.findByReference(reference);
     }
+
+    @Override
+    public Page<Sell> findByProductId(Long productId, Pageable pageable) {
+        log.debug("Request to get page of sells By product id");
+        return sellRepository.findByProductId(productId, pageable);
+    }
 }

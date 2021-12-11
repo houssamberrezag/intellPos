@@ -1,102 +1,205 @@
-<div class="row justify-content-center">
-  <div class="col-8">
-    <div *ngIf="product">
-      <h2 data-cy="productDetailsHeading"><span>Product</span></h2>
+<div *ngIf="product">
+  <div id="page-title">
+    <h3>{{ product.name }} Details</h3>
+  </div>
+  <div class="panel">
+    <!-- Main content -->
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <p>
+                <a href="http://localhost/intell/public/uploads/products/ZBy1iqjmf9Lf.jpg">
+                  <abbr title="Show Product Image">
+                    <img
+                      src="http://localhost/intell/public/uploads/products/ZBy1iqjmf9Lf.jpg"
+                      class="img-thumbnail img-responsive"
+                      alt=""
+                    />
+                  </abbr>
+                </a>
+              </p>
 
-      <hr />
+              <h3 class="profile-username text-center">{{ product.name }}</h3>
 
-      <jhi-alert-error></jhi-alert-error>
+              <p class="text-muted text-center">
+                {{ product.categorie?.categoryName }}
+                <i class="fa fa-arrow-right"></i>
+                {{ product.subCategorie?.name }}
+              </p>
 
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span>ID</span></dt>
-        <dd>
-          <span>{{ product.id }}</span>
-        </dd>
-        <dt><span>Name</span></dt>
-        <dd>
-          <span>{{ product.name }}</span>
-        </dd>
-        <dt><span>Code</span></dt>
-        <dd>
-          <span>{{ product.code }}</span>
-        </dd>
-        <dt><span>Quantity</span></dt>
-        <dd>
-          <span>{{ product.quantity }}</span>
-        </dd>
-        <dt><span>Details</span></dt>
-        <dd>
-          <span>{{ product.details }}</span>
-        </dd>
-        <dt><span>Cost Price</span></dt>
-        <dd>
-          <span>{{ product.costPrice }}</span>
-        </dd>
-        <dt><span>Minimum Retail Price</span></dt>
-        <dd>
-          <span>{{ product.minimumRetailPrice }}</span>
-        </dd>
-        <dt><span>Unit</span></dt>
-        <dd>
-          <span>{{ product.unit }}</span>
-        </dd>
-        <dt><span>Status</span></dt>
-        <dd>
-          <span>{{ product.status }}</span>
-        </dd>
-        <dt><span>Image</span></dt>
-        <dd>
-          <span>{{ product.image }}</span>
-        </dd>
-        <dt><span>Opening Stock</span></dt>
-        <dd>
-          <span>{{ product.openingStock }}</span>
-        </dd>
-        <dt><span>Alert Quantity</span></dt>
-        <dd>
-          <span>{{ product.alertQuantity }}</span>
-        </dd>
-        <dt><span>Created At</span></dt>
-        <dd>
-          <span>{{ product.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span>Updated At</span></dt>
-        <dd>
-          <span>{{ product.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span>Deleted At</span></dt>
-        <dd>
-          <span>{{ product.deletedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span>Categorie</span></dt>
-        <dd>
-          <div *ngIf="product.categorie">
-            <a [routerLink]="['/categorie', product.categorie?.id, 'view']">{{ product.categorie?.categoryName }}</a>
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Created:</b>
+                  <span class="pull-right">{{ product.createdAt | formatMediumDatetime }}</span>
+                </li>
+                <li class="list-group-item">
+                  <b>Status:</b>
+                  <span class="pull-right">
+                    <span [ngStyle]="{ color: product.status ? 'green' : 'red' }">
+                      <i class="fa fa-check"></i> {{ product.status ? 'Active' : 'Inactive' }}
+                    </span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
           </div>
-        </dd>
-        <dt><span>Sub Categorie</span></dt>
-        <dd>
-          <div *ngIf="product.subCategorie">
-            <a [routerLink]="['/subcategorie', product.subCategorie?.id, 'view']">{{ product.subCategorie?.name }}</a>
-          </div>
-        </dd>
-        <dt><span>Taxe</span></dt>
-        <dd>
-          <div *ngIf="product.taxe">
-            <a [routerLink]="['/taxe', product.taxe?.id, 'view']">{{ product.taxe?.name }}</a>
-          </div>
-        </dd>
-      </dl>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-8">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a href="#details1" data-toggle="tab" aria-expanded="true"> Details </a>
+              </li>
+              <li class="">
+                <a href="#timeline1" data-toggle="tab" aria-expanded="false">Purchase History </a>
+              </li>
+              <li class="">
+                <a href="#sell1" data-toggle="tab" aria-expanded="false"> Sales History </a>
+              </li>
+              <li class="">
+                <a href="#damage1" data-toggle="tab" aria-expanded="false"> Damage History </a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="details1">
+                <form>
+                  <!--  <div class="row">
+                  <div class="col-md-12">
+                    <label>Cost Price</label>
+                    <input type="text" class="form-control" value="DH 2000" disabled="true">
+                  </div>
+                </div> -->
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-      </button>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label>prix de revient</label>
+                      <input type="text" class="form-control" [value]="product.costPrice + 'Dh'" disabled="true" />
+                    </div>
 
-      <button type="button" [routerLink]="['/product', product.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-      </button>
+                    <div class="col-md-6">
+                      <label>prix de vente</label>
+                      <input type="text" class="form-control" [value]="product.minimumRetailPrice + 'Dh'" disabled="true" />
+                    </div>
+                  </div>
+                </form>
+                <hr />
+
+                <h4>Stock</h4>
+                <hr />
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td class="text-center">Opening Stock (+)</td>
+                      <td class="text-center">{{ (product.openingStock ?? 0) + ' ' + (product.unit ?? '') }}</td>
+                    </tr>
+
+                    <tr>
+                      <td class="text-center">Total Purchase (+)</td>
+                      <td class="text-center">{{ totalPurchasesQte() + ' ' + (product.unit ?? '') }}</td>
+                    </tr>
+
+                    <tr>
+                      <td class="text-center">Total Sale (-)</td>
+                      <td class="text-center">{{ totalSellsQte() + ' ' + (product.unit ?? '') }}</td>
+                    </tr>
+
+                    <tr>
+                      <td class="text-center">Total Damage (-)</td>
+                      <td class="text-center">0 unite</td>
+                    </tr>
+
+                    <tr class="bg-khaki">
+                      <td class="text-center"><b>En Stock</b></td>
+                      <td class="text-center">
+                        <b> {{ (product.quantity ?? 0) + ' ' + (product.unit ?? '') }}</b>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="form-group">
+                  <label
+                    class="tooltip-button"
+                    title=""
+                    data-original-title="Stock Integrity is ok if the summation of opening stocks and purchase items is equal to sales items"
+                  >
+                    Stock Integrity
+                  </label>
+                  <input type="text" class="form-control" value=" Not Ok " disabled="true" />
+                </div>
+              </div>
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="timeline1">
+                <!-- <div class="input-group col-md-3 pull-right" >
+                <div class="input-group-addon">
+                  <i class="fa fa-search"></i>
+                </div>
+              <input type="text" class="form-control inline pull-right" id="search_field" placeholder="Search..">
+            </div> -->
+                <div *ngIf="purchaseTansactions.length <= 0">Pas d'historique d'achats pour ce produit</div>
+                <table class="table table-bordered" *ngIf="purchaseTansactions.length > 0">
+                  <tbody>
+                    <tr class="bg-khaki">
+                      <td class="text-center">Date</td>
+                      <td class="text-center">Fournisseur</td>
+                      <td class="text-center">Quantité</td>
+                    </tr>
+                  </tbody>
+                  <tbody style="background-color: #fff" id="myTable">
+                    <tr *ngFor="let transaction of purchaseTansactions">
+                      <td class="text-center">{{ transaction.createdAt | formatMediumDatetime }}</td>
+                      <td class="text-center">{{ (transaction.person?.firstName ?? '') + ' ' + (transaction.person?.lastName ?? '') }}</td>
+                      <td class="text-center">{{ totalPurchasesQteOfTansaction(transaction.referenceNo ?? '-1') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="sell1">
+                <div *ngIf="sellTansactions.length <= 0">Pas d'historique de vente pour ce produit</div>
+                <table class="table table-bordered" *ngIf="sellTansactions.length > 0">
+                  <tbody>
+                    <tr class="bg-khaki">
+                      <td class="text-center">Date</td>
+                      <td class="text-center">Client</td>
+                      <td class="text-center">Quantité</td>
+                    </tr>
+
+                    <tr *ngFor="let transaction of sellTansactions">
+                      <td class="text-center">{{ transaction.createdAt | formatMediumDatetime }}</td>
+                      <td class="text-center">{{ (transaction.person?.firstName ?? '') + ' ' + (transaction.person?.lastName ?? '') }}</td>
+                      <td class="text-center">{{ totalSellsQteOfTansaction(transaction.referenceNo ?? '-1') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.tab-pane -->
+
+              <!-- Damage Tab Starts-->
+              <div class="tab-pane" id="damage1">No damaged history for this product</div>
+              <!-- Damage Tab -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+
+    <div class="panel-footer">
+      <span style="padding: 10px"> </span>
+      <a class="btn btn-border btn-alt border-primary font-black btn-xs pull-right" (click)="previousState()">
+        <i class="fa fa-backward"></i> Back
+      </a>
     </div>
   </div>
 </div>
