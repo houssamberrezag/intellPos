@@ -497,4 +497,11 @@ public class SellResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
+    @GetMapping("/sells/totalQuantity")
+    public ResponseEntity<Integer> totalQuantity(@RequestParam Long personId) {
+        log.debug("REST request to get a total of Sells quantity by person id");
+        int total = sellService.findtotalQuantityByPersonId(personId);
+        return ResponseEntity.ok(total);
+    }
 }

@@ -52,6 +52,13 @@ export class PaymentService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  findByPersonId(personId: number, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IPayment[]>(`${this.resourceUrl}ByPersonId?personId=${personId}`, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
@@ -78,6 +85,10 @@ export class PaymentService {
     return this.http
       .get<IPayment[]>('api/paymentsByReference', { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  totalAmountByPersonId(personId: number): Observable<number> {
+    return this.http.get<number>(`${this.resourceUrl}/totalAmountByPersonId?personId=${personId}`, { observe: 'body' });
   }
 
   protected convertDateFromClient(payment: IPayment): IPayment {

@@ -85,6 +85,7 @@
     "bootstrap-icons": "^1.5.0",
     "dayjs": "1.10.5",
     "file-saver": "^2.0.5",
+    "ngx-barcode": "^0.3.0",
     "ngx-infinite-scroll": "10.0.1",
     "ngx-webstorage": "8.0.0",
     "rxjs": "6.6.7",

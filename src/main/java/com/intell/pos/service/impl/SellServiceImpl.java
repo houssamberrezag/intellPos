@@ -105,4 +105,9 @@ public class SellServiceImpl implements SellService {
         log.debug("Request to get page of sells By product id");
         return sellRepository.findByProductId(productId, pageable);
     }
+
+    @Override
+    public int findtotalQuantityByPersonId(Long personId) {
+        return sellRepository.findtotalQuantityByPersonId(personId);
+    }
 }

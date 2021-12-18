@@ -72,6 +72,19 @@ export class TransactionService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  purchasesByPersonId(personId: number, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ITransaction[]>(`${this.resourceUrl}/purchasesByPersonId?personId=${personId}`, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  sellsByPersonId(personId: number, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ITransaction[]>(`${this.resourceUrl}/sellsByPersonId?personId=${personId}`, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
   transactionsSellByProductId(productId: number, req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -94,6 +107,18 @@ export class TransactionService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  countByPersonId(personId: number): Observable<number> {
+    return this.http.get<number>(`${this.resourceUrl}/countByPersonId?personId=${personId}`, { observe: 'body' });
+  }
+
+  countByProductId(productId: number): Observable<number> {
+    return this.http.get<number>(`${this.resourceUrl}/countByProductId?productId=${productId}`, { observe: 'body' });
+  }
+
+  totalAmountByPersonId(personId: number): Observable<number> {
+    return this.http.get<number>(`${this.resourceUrl}/totalAmountByPersonId?personId=${personId}`, { observe: 'body' });
   }
 
   addTransactionToCollectionIfMissing(

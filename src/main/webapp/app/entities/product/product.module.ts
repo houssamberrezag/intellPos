@@ -5,10 +5,18 @@ import { ProductDetailComponent } from './detail/product-detail.component';
 import { ProductUpdateComponent } from './update/product-update.component';
 import { ProductDeleteDialogComponent } from './delete/product-delete-dialog.component';
 import { ProductRoutingModule } from './route/product-routing.module';
+import { PrintSingleBarcodeComponent } from './print-single-barcode/print-single-barcode.component';
+import { NgxBarcodeModule } from 'ngx-barcode';
 
 @NgModule({
-  imports: [SharedModule, ProductRoutingModule],
-  declarations: [ProductComponent, ProductDetailComponent, ProductUpdateComponent, ProductDeleteDialogComponent],
+  imports: [SharedModule, ProductRoutingModule, NgxBarcodeModule],
+  declarations: [
+    ProductComponent,
+    ProductDetailComponent,
+    ProductUpdateComponent,
+    ProductDeleteDialogComponent,
+    PrintSingleBarcodeComponent,
+  ],
   entryComponents: [ProductDeleteDialogComponent],
 })
 export class ProductModule {}

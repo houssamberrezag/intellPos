@@ -62,6 +62,8 @@ public interface TransactionService {
 
     Page<Transaction> findByTransactiontype(TransactionTypes transactionType, Pageable pageable);
 
+    Page<Transaction> findByTransactiontypeAndPersonId(TransactionTypes transactionType, Long personId, Pageable pageable);
+
     /**
      * Get transactions type sell by product ID.
      *
@@ -77,4 +79,10 @@ public interface TransactionService {
      * @return the list of entities.
      */
     Page<Transaction> findByProductIdTypePurchase(Long productId, Pageable pageable);
+
+    int countByPersonId(Long personId);
+
+    int countByProductId(Long productId);
+
+    double totalAmountByPersonId(Long personId);
 }

@@ -43,8 +43,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     $('#close-sidebar').removeClass('hidden');
   }
 
-  printDiv(divName: string): void {
-    const printContents = document.getElementById(divName)?.innerHTML;
+  printDiv(divId: string): void {
+    const printContents = document.getElementById(divId)?.innerHTML;
     const originalContents = document.body.innerHTML;
     if (printContents) {
       document.body.innerHTML = printContents;

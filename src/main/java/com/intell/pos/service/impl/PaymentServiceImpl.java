@@ -116,4 +116,16 @@ public class PaymentServiceImpl implements PaymentService {
         }
         return paymentRepository.save(payment);
     }
+
+    @Override
+    public Page<Payment> findByPersonId(Long personId, Pageable pageable) {
+        log.debug("Request to get page of Payments by person id");
+        return paymentRepository.findByPersonId(personId, pageable);
+    }
+
+    @Override
+    public double totalAmountByPersonId(Long personId) {
+        // TODO Auto-generated method stub
+        return paymentRepository.totalAmountByPersonId(personId);
+    }
 }

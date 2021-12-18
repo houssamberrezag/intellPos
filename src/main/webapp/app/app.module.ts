@@ -26,6 +26,7 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
 import { SidebarComponent } from './layouts/sidebar/sidebar.component';
+import { NgxBarcodeModule } from 'ngx-barcode';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { SidebarComponent } from './layouts/sidebar/sidebar.component';
     // jhipster-needle-angular-add-module JHipster will add new module here
     EntityRoutingModule,
     AppRoutingModule,
+    NgxBarcodeModule,
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,

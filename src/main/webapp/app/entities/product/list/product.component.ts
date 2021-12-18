@@ -4,13 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IProduct } from '../product.model';
+import { IProduct, Product } from '../product.model';
 
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { ProductService } from '../service/product.service';
 import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { ExportExcelService } from 'app/core/util/export-excel.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { SweetAlertService } from 'app/core/util/sweet-alert.service';
+import { TransactionService } from 'app/entities/transaction/service/transaction.service';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'jhi-product',
@@ -18,6 +22,7 @@ import { ExportExcelService } from 'app/core/util/export-excel.service';
 })
 export class ProductComponent implements OnInit {
   products?: IProduct[];
+  selectedProduct: IProduct | null = null;
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -25,6 +30,11 @@ export class ProductComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  countOfTransactionAtSelectedProduct = 0;
+  editPriceForm = this.fb.group({
+    costPrice: [null, [Validators.required, Validators.min(0)]],
+    minimumRetailPrice: [null, [Validators.required, Validators.min(0)]],
+  });
 
   constructor(
     protected productService: ProductService,
@@ -32,7 +42,10 @@ export class ProductComponent implements OnInit {
     protected dataUtils: DataUtils,
     protected router: Router,
     protected modalService: NgbModal,
-    private exportExcelService: ExportExcelService
+    private exportExcelService: ExportExcelService,
+    private fb: FormBuilder,
+    private alertService: SweetAlertService,
+    private transactionService: TransactionService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -59,6 +72,60 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleNavigation();
+  }
+  setSelectedProduct(product: IProduct, updatePrice?: boolean): void {
+    this.selectedProduct = product;
+    if (updatePrice) {
+      this.editPriceForm.patchValue({
+        costPrice: product.costPrice,
+        minimumRetailPrice: product.minimumRetailPrice,
+      });
+    } else {
+      this.loadCountTransactions(product.id ?? -1);
+    }
+  }
+
+  saveUpdatePrice(): void {
+    if (this.editPriceForm.valid && this.selectedProduct) {
+      const { costPrice, minimumRetailPrice } = this.editPriceForm.value;
+      this.selectedProduct.costPrice = costPrice;
+      this.selectedProduct.minimumRetailPrice = minimumRetailPrice;
+      const patchObject = Object.assign({
+        id: this.selectedProduct.id,
+        costPrice,
+        minimumRetailPrice,
+      });
+      this.productService
+        .partialUpdate({
+          id: this.selectedProduct.id,
+          costPrice,
+          minimumRetailPrice,
+        })
+        .subscribe(res => {
+          document.getElementById('closeModal')?.click();
+          this.alertService.create('', 'prix modifié avec succées', 'success');
+        });
+    }
+  }
+
+  loadCountTransactions(productId: number): void {
+    this.transactionService.countByProductId(productId).subscribe(
+      count => (this.countOfTransactionAtSelectedProduct = count ?? 0),
+      () => (this.countOfTransactionAtSelectedProduct = 0)
+    );
+  }
+  deleteProduct(): void {
+    if (this.selectedProduct && this.countOfTransactionAtSelectedProduct === 0) {
+      this.productService
+        .partialUpdate({
+          id: this.selectedProduct.id,
+          deletedAt: dayjs(),
+        })
+        .subscribe(res => {
+          this.loadPage();
+          document.getElementById('closeModal2')?.click();
+        });
+    }
   }
 
   trackId(index: number, item: IProduct): number {

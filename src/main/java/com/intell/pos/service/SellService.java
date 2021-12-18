@@ -52,4 +52,6 @@ public interface SellService {
     List<Sell> findByReference(String reference);
 
     Page<Sell> findByProductId(Long productId, Pageable pageable);
+
+    int findtotalQuantityByPersonId(Long personId);
 }

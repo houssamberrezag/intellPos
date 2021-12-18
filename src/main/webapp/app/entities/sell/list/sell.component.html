@@ -1,8 +1,10 @@
 <div id="page-title">
-  <h3>liste de ventes</h3>
+  <h3>
+    liste de ventes <span *ngIf="person?.id">{{ ' - ' + (person?.firstName ?? '') + ' ' + (person?.lastName ?? '') }}</span>
+  </h3>
 </div>
 <div class="panel">
-  <div class="panel-heading">
+  <div class="panel-heading" *ngIf="!person?.id">
     <a routerLink="/sell/new" class="btn btn-success btn-alt btn-xs" style="border-radius: 0px !important">
       <i class="fa fa-plus"></i>
       ajouter nouvelle vente

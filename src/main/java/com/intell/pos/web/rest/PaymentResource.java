@@ -192,4 +192,24 @@ public class PaymentResource {
         List<Payment> payments = paymentService.findByReference(reference);
         return ResponseEntity.ok(payments);
     }
+
+    /**
+     * {@code GET  /payments} : get page of payments by person id.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of payments in body.
+     */
+    @GetMapping("/paymentsByPersonId")
+    public ResponseEntity<List<Payment>> getPaymentsByPersonId(Pageable pageable, @RequestParam Long personId) {
+        log.debug("REST request to get a page of Payments by person id");
+        Page<Payment> page = paymentService.findByPersonId(personId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/payments/totalAmountByPersonId")
+    public ResponseEntity<Double> totalAmountByPersonId(@RequestParam Long personId) {
+        log.debug("REST request to get a sum of amout of payments by person id");
+        return ResponseEntity.ok(paymentService.totalAmountByPersonId(personId));
+    }
 }

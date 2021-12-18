@@ -10,6 +10,8 @@ import { ListClientsComponent } from '../list-clients/list-clients.component';
 import { UpdateClientComponent } from '../update-client/update-client.component';
 import { ListFounisseursComponent } from '../founisseur/list-founisseurs/list-founisseurs.component';
 import { UpdateFournisseurComponent } from '../founisseur/update-fournisseur/update-fournisseur.component';
+import { PurchaseComponent } from 'app/entities/purchase/list/purchase.component';
+import { SellComponent } from 'app/entities/sell/list/sell.component';
 
 const personRoute: Routes = [
   /*   {
@@ -44,6 +46,36 @@ const personRoute: Routes = [
     },
     canActivate: [UserRouteAccessService],
   }, */
+  {
+    path: ':id/view',
+    component: PersonDetailComponent,
+    resolve: {
+      person: PersonRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/purchases',
+    component: PurchaseComponent,
+    resolve: {
+      person: PersonRoutingResolveService,
+    },
+    data: {
+      defaultSort: 'id,desc',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/sells',
+    component: SellComponent,
+    resolve: {
+      person: PersonRoutingResolveService,
+    },
+    data: {
+      defaultSort: 'id,desc',
+    },
+    canActivate: [UserRouteAccessService],
+  },
   {
     path: 'client',
     component: ListClientsComponent,

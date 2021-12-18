@@ -18,4 +18,7 @@ public interface SellRepository extends JpaRepository<Sell, Long> {
     List<Sell> findByReference(String reference);
 
     Page<Sell> findByProductId(Long productId, Pageable pageable);
+
+    @Query("select sum(s.quantity) from Sell s where s.person.id = ?1")
+    int findtotalQuantityByPersonId(Long personId);
 }

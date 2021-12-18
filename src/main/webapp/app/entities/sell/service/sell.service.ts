@@ -130,6 +130,10 @@ export class SellService {
     return sellCollection;
   }
 
+  totalQuantity(personId: number): Observable<number> {
+    return this.http.get<number>(`${this.resourceUrl}/totalQuantity?personId=${personId}`, { observe: 'body' });
+  }
+
   protected convertDateFromClient(sell: ISell): ISell {
     return Object.assign({}, sell, {
       date: sell.date?.isValid() ? sell.date.toJSON() : undefined,

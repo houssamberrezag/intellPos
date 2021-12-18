@@ -17,4 +17,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     List<Purchase> findByReference(String reference);
 
     Page<Purchase> findByProductId(Long productId, Pageable pageable);
+
+    @Query("select sum(p.quantity) from Purchase p where p.person.id = ?1")
+    int findtotalQuantityByPersonId(Long personId);
 }

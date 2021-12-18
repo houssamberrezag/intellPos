@@ -103,4 +103,9 @@ public class PurchaseServiceImpl implements PurchaseService {
         log.debug("Request to get page of Purchases By product id");
         return purchaseRepository.findByProductId(productId, pageable);
     }
+
+    @Override
+    public int findtotalQuantityByPersonId(Long personId) {
+        return purchaseRepository.findtotalQuantityByPersonId(personId);
+    }
 }

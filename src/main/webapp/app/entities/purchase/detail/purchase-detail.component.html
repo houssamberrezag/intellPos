@@ -270,47 +270,50 @@
 
             <!--Make payment form-->
             <div class="tab-pane animated fadeIn" id="make-payment">
-              <h3 style="text-align: center">Make Payment</h3>
-              <form [formGroup]="paymentForm">
-                <div class="form-group">
-                  <label>Date</label>
-                  <input
-                    id="field_date"
-                    data-cy="date"
-                    type="datetime-local"
-                    class="form-control"
-                    name="date"
-                    formControlName="date"
-                    placeholder="YYYY-MM-DD HH:mm"
-                  />
-                  <br />
+              <h1 class="no-due" *ngIf="(transaction?.netTotal ?? 0) - (transaction?.paid ?? 0) <= 0">No Due</h1>
+              <div class="" *ngIf="(transaction?.netTotal ?? 0) - (transaction?.paid ?? 0) > 0">
+                <h3 style="text-align: center">Make Payment</h3>
+                <form [formGroup]="paymentForm">
+                  <div class="form-group">
+                    <label>Date</label>
+                    <input
+                      id="field_date"
+                      data-cy="date"
+                      type="datetime-local"
+                      class="form-control"
+                      name="date"
+                      formControlName="date"
+                      placeholder="YYYY-MM-DD HH:mm"
+                    />
+                    <br />
 
-                  <label>Amount</label>
-                  <input type="number" class="form-control number" formControlName="amount" required />
-                  <p
-                    id="message"
-                    style="color: red"
-                    *ngIf="(paymentForm.get(['amount'])?.value ?? 0) > (transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)"
-                  >
-                    Le montant payé ( {{ paymentForm.get(['amount'])!.value }} Dhs) ne peut pas être supérieur au montant dû (
-                    {{ ((transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)).toFixed(2) }} Dhs )
-                  </p>
+                    <label>Amount</label>
+                    <input type="number" class="form-control number" formControlName="amount" required />
+                    <p
+                      id="message"
+                      style="color: red"
+                      *ngIf="(paymentForm.get(['amount'])?.value ?? 0) > (transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)"
+                    >
+                      Le montant payé ( {{ paymentForm.get(['amount'])!.value }} Dhs) ne peut pas être supérieur au montant dû (
+                      {{ ((transaction?.netTotal ?? 0) - (transaction?.paid ?? 0)).toFixed(2) }} Dhs )
+                    </p>
 
-                  <br />
+                    <br />
 
-                  <label>Payment Method</label>
-                  <select class="form-control" formControlName="method">
-                    <option value="cash">Cash</option>
-                    <option value="card">Card</option>
-                    <option value="cheque">Cheque</option>
-                    <option value="others">Others</option>
-                  </select>
-                  <br />
-                  <label>Note</label>
-                  <textarea name="note" class="form-control" formControlName="note"></textarea>
-                </div>
-                <button (click)="savePayment()" class="btn btn-success" [disabled]="!paymentValid()">Save</button>
-              </form>
+                    <label>Payment Method</label>
+                    <select class="form-control" formControlName="method">
+                      <option value="cash">Cash</option>
+                      <option value="card">Card</option>
+                      <option value="cheque">Cheque</option>
+                      <option value="others">Others</option>
+                    </select>
+                    <br />
+                    <label>Note</label>
+                    <textarea name="note" class="form-control" formControlName="note"></textarea>
+                  </div>
+                  <button (click)="savePayment()" class="btn btn-success" [disabled]="!paymentValid()">Save</button>
+                </form>
+              </div>
             </div>
             <!--Make payment div ends-->
           </div>

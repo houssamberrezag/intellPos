@@ -1,4 +1,304 @@
-<div class="row justify-content-center">
+<div *ngIf="person">
+  <div id="page-title">
+    <h3>Details: {{ (person.firstName ?? '') + ' ' + (person.lastName ?? '') }}</h3>
+  </div>
+
+  <div class="panel">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="panel-layout">
+            <div class="panel-box">
+              <div class="panel-content bg-primary">
+                <div class="image-content font-white">
+                  <div class="center-vertical">
+                    <div class="meta-box center-content">
+                      <h3 class="meta-heading">{{ person.companyName }}</h3>
+                      <h4 class="meta-subheading">{{ (person.firstName ?? '') + ' ' + (person.lastName ?? '') }}</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-content bg-white">
+                <ul class="list-group list-group-separator mrg0A row list-group-icons">
+                  <li class="col-md-12 list-group-item">Phone : {{ person.phone }}</li>
+
+                  <li class="col-md-12 list-group-item">Email: {{ person.email }}</li>
+
+                  <li class="col-md-12 list-group-item">Address: {{ person.address }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.col -->
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="panel-layout">
+            <div class="panel-box">
+              <div class="panel-content bg-blue-alt">
+                <div class="image-content font-white">
+                  <div class="center-vertical">
+                    <div class="meta-box center-content">
+                      <h3 class="meta-heading">
+                        {{ person.personType === personType.CLIENT ? 'Total Sale' : 'Total Purchase' }}
+                      </h3>
+                      <h4 class="meta-subheading">&nbsp;</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-content bg-white" style="min-height: 190px">
+                <ul class="list-group list-group-separator mrg0A row list-group-icons">
+                  <li class="col-md-12 list-group-item">
+                    <h3>
+                      {{ quantity }}
+                      Product
+                    </h3>
+                  </li>
+
+                  <li class="col-md-12 list-group-item">
+                    <!-- <a href="http://localhost/intell/public/admin/client/transaction/1" >
+                                  <i class="glyph-icon font-red fa-arrow-circle-right"></i>
+                                  Details
+                              </a> -->
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.col -->
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="panel-layout">
+            <div class="panel-box">
+              <div class="panel-content bg-purple">
+                <div class="image-content font-white">
+                  <div class="center-vertical">
+                    <div class="meta-box center-content">
+                      <h3 class="meta-heading">Total Invoice</h3>
+                      <h4 class="meta-subheading">&nbsp;</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-content bg-white" style="min-height: 190px">
+                <ul class="list-group list-group-separator mrg0A row list-group-icons">
+                  <li class="col-md-12 list-group-item">
+                    {{ countTransactions }}
+                  </li>
+
+                  <li class="col-md-12 list-group-item">
+                    <a [routerLink]="['/person', person.id, person.personType === personType.CLIENT ? 'sells' : 'purchases']">
+                      <i class="glyph-icon font-red fa-arrow-circle-right"></i>
+                      Details
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- ./row -->
+
+      <!--second row-->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a href="#transaction_details" data-toggle="tab"> Transaction Summary </a>
+              </li>
+
+              <li>
+                <a href="#payments" data-toggle="tab"> Payment History </a>
+              </li>
+
+              <li>
+                <a href="#make-payment" data-toggle="tab"> Make Payment </a>
+              </li>
+            </ul>
+            <!--nav tab ends-->
+
+            <div class="tab-content">
+              <!--transaction history-->
+              <div class="active tab-pane animated fadeIn" id="transaction_details" style="padding-bottom: 50px">
+                <h3 class="text-center">Transaction Summary</h3>
+
+                <div class="box-body">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td class="text-center">
+                          <b>Opening Balance</b>
+                        </td>
+
+                        <td class="text-center" style="width: 40%">{{ person.proviousDue ?? 0 }} DH</td>
+                      </tr>
+
+                      <tr>
+                        <td class="text-center">
+                          <b> Total Selling Price (+) </b>
+                        </td>
+
+                        <td class="text-center" style="width: 40%">
+                          {{ totalTransactionsAmount ?? 0 }}
+                          DH
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td class="text-center">
+                          <b>Total Received (-)</b>
+                        </td>
+                        <td class="text-center">
+                          {{ totalPaymentsAmount ?? 0 }}
+                          DH
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td class="text-center">
+                          <b>Current Due</b>
+                        </td>
+                        <td class="text-center">
+                          {{ totalDue() }}
+                          DH
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- box body ends -->
+              </div>
+              <!--transaction history ends-->
+
+              <!-- Payment list table -->
+              <div class="tab-pane animated fadeIn" id="payments">
+                <h3 class="text-center">Payment History</h3>
+
+                <div class="box-body">
+                  <table class="table table-bordered" id="example">
+                    <tbody>
+                      <tr class="table-header-color">
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Method</th>
+                        <th class="text-center">Note</th>
+                        <th class="text-center">Received Amount</th>
+                        <th class="text-center">Receipt</th>
+                      </tr>
+                    </tbody>
+                    <tbody id="myTable">
+                      <tr *ngFor="let payment of payments">
+                        <td>{{ payment.date | formatMediumDatetime }}</td>
+                        <td>{{ payment.method }}</td>
+                        <td>{{ payment.note }}</td>
+                        <td>
+                          {{ payment.amount }}
+                          DH
+                        </td>
+
+                        <td>
+                          <a target="_BLINK" class="btn btn-alt btn-warning btn-xs">
+                            <i class="fa fa-print"></i>
+                            Print
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- box body ends -->
+
+                <div class="row justify-content-center" style="text-align: center">
+                  <ngb-pagination
+                    [collectionSize]="totalItems"
+                    [(page)]="ngbPaginationPage"
+                    [pageSize]="itemsPerPage"
+                    [maxSize]="5"
+                    [rotate]="true"
+                    [boundaryLinks]="true"
+                    (pageChange)="loadPage($event)"
+                  ></ngb-pagination>
+                </div>
+              </div>
+              <!-- Payment list table ends -->
+
+              <!--Make payment form-->
+              <div class="tab-pane animated fadeIn" id="make-payment">
+                <div class="box-body">
+                  <h1 class="no-due" *ngIf="totalDue() <= 0">No Due</h1>
+                  <div class="" *ngIf="totalDue() > 0">
+                    <h3 style="text-align: center">Make Payment</h3>
+                    <form [formGroup]="paymentForm">
+                      <div class="form-group">
+                        <label>Date</label>
+                        <input
+                          id="field_date"
+                          data-cy="date"
+                          type="datetime-local"
+                          class="form-control"
+                          name="date"
+                          formControlName="date"
+                          placeholder="YYYY-MM-DD HH:mm"
+                        />
+
+                        <br />
+
+                        <label>Amount</label>
+                        <input type="number" class="form-control number" formControlName="amount" required />
+                        <p id="message" style="color: red" *ngIf="(paymentForm.get(['amount'])?.value ?? 0) > totalDue()">
+                          Le montant payé ( {{ paymentForm.get(['amount'])!.value }} Dhs) ne peut pas être supérieur au montant dû (
+                          {{ totalDue().toFixed(2) }} Dh )
+                        </p>
+
+                        <br />
+
+                        <label>Payment Method</label>
+                        <select class="form-control" formControlName="method">
+                          <option value="cash">Cash</option>
+                          <option value="card">Card</option>
+                          <option value="cheque">Cheque</option>
+                          <option value="others">Others</option>
+                        </select>
+                        <br />
+                        <label>Note</label>
+                        <textarea name="note" class="form-control" formControlName="note"></textarea>
+                      </div>
+                      <button (click)="savePayment()" class="btn btn-success" [disabled]="!paymentValid()">Save</button>
+                    </form>
+                  </div>
+                </div>
+                <!-- box body -->
+              </div>
+              <!--Make payment div ends-->
+            </div>
+            <!--  tab-content -->
+          </div>
+          <!-- nav-tabs-custom -->
+        </div>
+        <!-- col -->
+      </div>
+      <!-- ./second row ends-->
+    </div>
+
+    <div class="panel-footer">
+      <span style="padding: 10px"> </span>
+
+      <a class="btn btn-border btn-alt border-black font-black btn-xs pull-right" (click)="previousState()">
+        <i class="fa fa-backward"></i> Back
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="row justify-content-center">
   <div class="col-8">
     <div *ngIf="person">
       <h2 data-cy="personDetailsHeading"><span>Person</span></h2>
@@ -74,3 +374,4 @@
     </div>
   </div>
 </div>
+ -->

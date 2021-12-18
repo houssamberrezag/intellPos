@@ -6,6 +6,7 @@ import com.intell.pos.service.ProductService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -60,6 +61,9 @@ public class ProductResource {
         if (product.getId() != null) {
             throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        product.setCreatedAt(Instant.now());
+        product.setUpdatedAt(null);
+        product.setDeletedAt(null);
         Product result = productService.save(product);
         return ResponseEntity
             .created(new URI("/api/products/" + result.getId()))
@@ -112,7 +116,7 @@ public class ProductResource {
      * or with status {@code 500 (Internal Server Error)} if the product couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/products/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/products/{id}")
     public ResponseEntity<Product> partialUpdateProduct(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Product product
@@ -213,5 +217,10 @@ public class ProductResource {
         Page<Product> page = productService.findByCategoryId(categoryId, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<List<?>> test() {
+        return ResponseEntity.ok(productRepository.test());
     }
 }

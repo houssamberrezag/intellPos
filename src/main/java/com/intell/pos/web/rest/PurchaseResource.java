@@ -328,4 +328,11 @@ public class PurchaseResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
+    @GetMapping("/purchases/totalQuantity")
+    public ResponseEntity<Integer> totalQuantity(@RequestParam Long personId) {
+        log.debug("REST request to get a total of purchases quantity by person id");
+        int total = purchaseService.findtotalQuantityByPersonId(personId);
+        return ResponseEntity.ok(total);
+    }
 }

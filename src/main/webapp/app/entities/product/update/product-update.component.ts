@@ -44,9 +44,9 @@ export class ProductUpdateComponent implements OnInit {
     image: [null, [Validators.maxLength(255)]],
     openingStock: [],
     alertQuantity: [],
-    createdAt: [],
+    /* createdAt: [],
     updatedAt: [],
-    deletedAt: [],
+    deletedAt: [], */
     categorie: [null, Validators.required],
     subCategorie: [],
     taxe: [],
@@ -65,12 +65,12 @@ export class ProductUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ product }) => {
-      if (product.id === undefined) {
+      /*if (product.id === undefined) {
         const today = dayjs().startOf('day');
         product.createdAt = today;
         product.updatedAt = today;
         product.deletedAt = today;
-      }
+      }*/
 
       this.updateForm(product);
 
@@ -170,9 +170,9 @@ export class ProductUpdateComponent implements OnInit {
       image: product.image,
       openingStock: product.openingStock,
       alertQuantity: product.alertQuantity,
-      createdAt: product.createdAt ? product.createdAt.format(DATE_TIME_FORMAT) : null,
+      /* createdAt: product.createdAt ? product.createdAt.format(DATE_TIME_FORMAT) : null,
       updatedAt: product.updatedAt ? product.updatedAt.format(DATE_TIME_FORMAT) : null,
-      deletedAt: product.deletedAt ? product.deletedAt.format(DATE_TIME_FORMAT) : null,
+      deletedAt: product.deletedAt ? product.deletedAt.format(DATE_TIME_FORMAT) : null, */
       categorie: product.categorie,
       subCategorie: product.subCategorie,
       taxe: product.taxe,
@@ -232,9 +232,7 @@ export class ProductUpdateComponent implements OnInit {
       image: this.editForm.get(['image'])!.value,
       openingStock: this.editForm.get(['openingStock'])!.value,
       alertQuantity: this.editForm.get(['alertQuantity'])!.value,
-      createdAt: this.editForm.get(['createdAt'])!.value ? dayjs(this.editForm.get(['createdAt'])!.value, DATE_TIME_FORMAT) : undefined,
-      updatedAt: this.editForm.get(['updatedAt'])!.value ? dayjs(this.editForm.get(['updatedAt'])!.value, DATE_TIME_FORMAT) : undefined,
-      deletedAt: this.editForm.get(['deletedAt'])!.value ? dayjs(this.editForm.get(['deletedAt'])!.value, DATE_TIME_FORMAT) : undefined,
+
       categorie: this.editForm.get(['categorie'])!.value,
       subCategorie: this.editForm.get(['subCategorie'])!.value,
       taxe: this.editForm.get(['taxe'])!.value,

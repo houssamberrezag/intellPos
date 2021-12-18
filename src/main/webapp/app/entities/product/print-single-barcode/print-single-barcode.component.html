@@ -1,0 +1,95 @@
+<div id="page-title">
+  <h3>
+    Print Barcode
+    <b>({{ product?.name ?? '' }})</b>
+  </h3>
+</div>
+<div class="panel" *ngIf="product">
+  <div id="app">
+    <div class="panel-heading" style="background-color: rgba(197, 213, 211, 0.3)">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-6">
+            <label>Quantité</label>
+            <input type="number" class="form-control" [(ngModel)]="items" />
+          </div>
+          <div class="col-md-6">
+            <label>Print Per Page</label>
+            <select class="form-control" [(ngModel)]="printPerPage">
+              <option disabled="disabled" value="">Please select one</option>
+              <option value="pp10">Per Page 10</option>
+              <option value="pp24">Per Page 24</option>
+              <option value="pp40">Per Page 40</option>
+              <option value="pp50">Per Page 50</option>
+              <option value="pp60">Per Page 60</option>
+              <option value="pp70">Per Page 70</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="checkbox-custom checkbox-custom-success">
+              <input id="checkbox3" type="checkbox" [(ngModel)]="appName" />
+              <label for="checkbox3">nom d'application</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="checkbox-custom checkbox-custom-success">
+              <input id="checkbox4" type="checkbox" [(ngModel)]="productName" />
+              <label for="checkbox4">Nom de produit</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="checkbox-custom checkbox-custom-success">
+              <input id="checkbox1" type="checkbox" [(ngModel)]="price" />
+              <label for="checkbox1">Prix de produit</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <a
+            class="btn btn-block btn-xs"
+            (click)="printDiv('printableArea')"
+            style="background-color: rgb(45, 92, 138); color: rgb(255, 255, 255)"
+          >
+            Print
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div id="printableArea" class="a4paper">
+        <div class="barcode-single-item" *ngFor="let item of [].constructor(items)">
+          <div [class]="printPerPage">
+            <p class="barcode-info-p" *ngIf="appName">Intelle POS</p>
+            <p class="barcode-info-p" *ngIf="productName">
+              {{ product.name }}
+            </p>
+            <ngx-barcode
+              [bc-width]="1"
+              [bc-height]="35"
+              [bc-value]="product.code ?? ''"
+              [bc-display-value]="false"
+              [bc-margin-top]="-10"
+            ></ngx-barcode>
+            <!-- <img
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGUAAAAhAQMAAAD6e/f2AAAABlBMVEX///8BAQE6HLieAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABxJREFUGJVjuDB5dlHZm52nrdKcjkcwjPKGNA8AH9HyOOITutYAAAAASUVORK5CYII=">
+                         -->
+            <div style="margin-top: -30 !important">
+              <small style="font-size: 8px !important">
+                <b>{{ product.code }}</b>
+              </small>
+              <p *ngIf="price" style="line-height: 12px !important; font-size: 8px !important">
+                <b>Prix: {{ product.minimumRetailPrice }} DH</b>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

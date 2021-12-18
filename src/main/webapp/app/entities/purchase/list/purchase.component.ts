@@ -8,12 +8,14 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants
 import { ITransaction } from 'app/entities/transaction/transaction.model';
 import { TransactionDeleteDialogComponent } from 'app/entities/transaction/delete/transaction-delete-dialog.component';
 import { TransactionService } from 'app/entities/transaction/service/transaction.service';
+import { IPerson } from 'app/entities/person/person.model';
 
 @Component({
   selector: 'jhi-purchase',
   templateUrl: './purchase.component.html',
 })
 export class PurchaseComponent implements OnInit {
+  person: IPerson | null = null;
   transactions?: ITransaction[];
   isLoading = false;
   totalItems = 0;
@@ -23,6 +25,7 @@ export class PurchaseComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  showenSummary = false;
   constructor(
     protected transactionService: TransactionService,
     protected activatedRoute: ActivatedRoute,
@@ -30,30 +33,51 @@ export class PurchaseComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ person }) => {
+      this.person = person;
+      this.handleNavigation();
+    });
+  }
+
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
-
-    this.transactionService
-      .purchases({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<ITransaction[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        () => {
-          this.isLoading = false;
-          this.onError();
-        }
-      );
-  }
-
-  ngOnInit(): void {
-    this.handleNavigation();
+    if (this.person?.id) {
+      this.transactionService
+        .purchasesByPersonId(this.person.id, {
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ITransaction[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    } else {
+      this.transactionService
+        .purchases({
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ITransaction[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    }
   }
 
   trackId(index: number, item: ITransaction): number {
@@ -98,7 +122,8 @@ export class PurchaseComponent implements OnInit {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     if (navigate) {
-      this.router.navigate(['/purchase'], {
+      const route = this.person?.id ? ['/person', this.person.id, 'purchases'] : ['/purchase'];
+      this.router.navigate(route, {
         queryParams: {
           page: this.page,
           size: this.itemsPerPage,

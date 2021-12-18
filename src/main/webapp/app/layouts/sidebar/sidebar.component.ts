@@ -13,10 +13,11 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('init');
-    $('[data-widget="treeview"]').Treeview('init');
+    // $('[data-widget="treeview"]').Treeview('init');
   }
   ngAfterViewInit(): void {
     //$('[data-widget="treeview"]').Treeview('init');
-    $('[data-widget="treeview"]').Treeview('init');
+    //$('[data-widget="treeview"]').Treeview('init');
+    console.log('dkqj');
   }
 }

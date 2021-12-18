@@ -222,6 +222,34 @@ public class TransactionResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    /**
+     * {@code GET  /transactions} : get sell transactions by person id.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
+     */
+    @GetMapping("/transactions/sellsByPersonId")
+    public ResponseEntity<List<Transaction>> getSellTransactionsByPersonId(Pageable pageable, @RequestParam Long personId) {
+        log.debug("REST request to get a page of Transactions");
+        Page<Transaction> page = transactionService.findByTransactiontypeAndPersonId(TransactionTypes.SELL, personId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /transactions} : get purchases transactions by person Id.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
+     */
+    @GetMapping("/transactions/purchasesByPersonId")
+    public ResponseEntity<List<Transaction>> getPurchasesTransactionsByPersonId(Pageable pageable, @RequestParam Long personId) {
+        log.debug("REST request to get a page of Transactions");
+        Page<Transaction> page = transactionService.findByTransactiontypeAndPersonId(TransactionTypes.PURCHASE, personId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
     @GetMapping("/transactions/purchaseByProductId")
     public ResponseEntity<List<Transaction>> getPurchasesTransactionsByProductId(Pageable pageable, @RequestParam Long productId) {
         log.debug("REST request to get a page of Transactions");
@@ -236,5 +264,23 @@ public class TransactionResource {
         Page<Transaction> page = transactionService.findByProductIdTypeSell(productId, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/transactions/countByPersonId")
+    public ResponseEntity<Integer> countByPersonId(@RequestParam Long personId) {
+        log.debug("REST request to get a count of Transactions by person id");
+        return ResponseEntity.ok(transactionService.countByPersonId(personId));
+    }
+
+    @GetMapping("/transactions/countByProductId")
+    public ResponseEntity<Integer> countByProductId(@RequestParam Long productId) {
+        log.debug("REST request to get a count of Transactions by product id");
+        return ResponseEntity.ok(transactionService.countByProductId(productId));
+    }
+
+    @GetMapping("/transactions/totalAmountByPersonId")
+    public ResponseEntity<Double> totalAmountByPersonId(@RequestParam Long personId) {
+        log.debug("REST request to get a sum of amout of  Transactions by person id");
+        return ResponseEntity.ok(transactionService.totalAmountByPersonId(personId));
     }
 }

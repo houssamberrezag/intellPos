@@ -58,4 +58,6 @@ public interface PurchaseService {
     List<Purchase> findByReference(String reference);
 
     Page<Purchase> findByProductId(Long productId, Pageable pageable);
+
+    int findtotalQuantityByPersonId(Long personId);
 }

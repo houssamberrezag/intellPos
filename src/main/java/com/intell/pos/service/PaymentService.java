@@ -43,6 +43,14 @@ public interface PaymentService {
     Page<Payment> findAll(Pageable pageable);
 
     /**
+     * Get payments by person id.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<Payment> findByPersonId(Long personId, Pageable pageable);
+
+    /**
      * Get the "id" payment.
      *
      * @param id the id of the entity.
@@ -64,4 +72,6 @@ public interface PaymentService {
      * @return the list of entities.
      */
     List<Payment> findByReference(String reference);
+
+    double totalAmountByPersonId(Long personId);
 }

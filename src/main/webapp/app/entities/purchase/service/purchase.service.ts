@@ -95,6 +95,10 @@ export class PurchaseService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  totalQuantity(personId: number): Observable<number> {
+    return this.http.get<number>(`${this.resourceUrl}/totalQuantity?personId=${personId}`, { observe: 'body' });
+  }
+
   protected convertDateFromClient(purchase: IPurchase): IPurchase {
     return Object.assign({}, purchase, {
       date: purchase.date?.isValid() ? purchase.date.toJSON() : undefined,

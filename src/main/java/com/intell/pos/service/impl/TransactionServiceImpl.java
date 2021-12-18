@@ -152,4 +152,24 @@ public class TransactionServiceImpl implements TransactionService {
         // TODO Auto-generated method stub
         return transactionRepository.findTansactionPurchaseByProductId(productId, pageable);
     }
+
+    @Override
+    public int countByPersonId(Long personId) {
+        return transactionRepository.countByPersonId(personId);
+    }
+
+    @Override
+    public int countByProductId(Long productId) {
+        return transactionRepository.countByProductId(productId);
+    }
+
+    @Override
+    public Page<Transaction> findByTransactiontypeAndPersonId(TransactionTypes transactionType, Long personId, Pageable pageable) {
+        return transactionRepository.findByTransactionTypeAndPersonId(transactionType, personId, pageable);
+    }
+
+    @Override
+    public double totalAmountByPersonId(Long personId) {
+        return transactionRepository.totalAmountByPersonId(personId);
+    }
 }

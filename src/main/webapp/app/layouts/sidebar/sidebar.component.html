@@ -58,21 +58,21 @@
               <span>{{ 'nouveau produit' }} </span>
             </a>
           </li>
-          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <!-- <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <a routerLink="subcategorie" class="nav-link">
               <span>{{ 'Télécharger produit vrac' }} </span>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a routerLink="subcategorie" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <span>{{ 'imprimer le code à barres' }} </span>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a routerLink="subcategorie" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <span>{{ 'Imprimer CB par facture' }} </span>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a routerLink="subcategorie" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <span>{{ 'Articles endommagés' }}</span>
@@ -144,22 +144,22 @@
               <span>{{ 'POS vente' }}</span>
             </a>
           </li>
-          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <!-- <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <a routerLink="sell/new">
               <span>{{ 'Retour de vente' }}</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li>
 
-      <li class="no-menu">
-        <a routerLink="transaction" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <li class="no-menu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a routerLink="transaction">
           <i class="fas fa-money"></i>
           <span>{{ 'Transactions' }}</span>
         </a>
       </li>
 
-      <li>
+      <!-- <li>
         <a href="javascript:void(0);">
           <i class="fas fa-usd"></i>
           <span>{{ 'Expenses' }}</span>
@@ -178,7 +178,7 @@
             </li>
           </ul>
         </div>
-      </li>
+      </li> -->
 
       <li>
         <a href="javascript:void(0);"
@@ -212,15 +212,15 @@
         </div>
       </li>
 
-      <li class="no-menu">
+      <!-- <li class="no-menu">
         <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <i class="fas fa-industry"></i>
           <span>{{ 'dépot' }}</span>
         </a>
-      </li>
+      </li> -->
 
-      <li class="no-menu" *ngIf="true">
-        <a routerLink="subcategorie" routerLinkActive="active">
+      <li class="no-menu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a routerLink="report">
           <i class="fas fa-pie-chart"></i>
           <span>report</span>
         </a>

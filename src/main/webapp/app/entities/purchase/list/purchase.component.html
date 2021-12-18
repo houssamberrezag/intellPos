@@ -1,8 +1,10 @@
 <div id="page-title">
-  <h3>Purchase List</h3>
+  <h3>
+    Purchase List <span *ngIf="person?.id">{{ ' - ' + (person?.firstName ?? '') + ' ' + (person?.lastName ?? '') }}</span>
+  </h3>
 </div>
 <div class="panel">
-  <div class="panel-heading">
+  <div class="panel-heading" *ngIf="!person?.id">
     <a routerLink="/purchase/new" class="btn btn-success btn-alt btn-xs" style="border-radius: 0px !important">
       <i class="fa fa-plus"></i>
       Create New Purchase
@@ -13,11 +15,17 @@
       Search
     </a>
 
-    <input type="button" class="btn btn-alt bg-purple btn-xs" onclick="showSummary()" id="summaryBtn" value="Summary" />
+    <input
+      type="button"
+      class="btn btn-alt bg-purple btn-xs"
+      (click)="showenSummary = !showenSummary"
+      id="summaryBtn"
+      [value]="showenSummary ? 'Liste d\'achat' : 'Résumé'"
+    />
   </div>
 
   <div class="panel-body">
-    <div id="summaryDiv" style="display: none">
+    <div id="summaryDiv" *ngIf="showenSummary">
       <table style="width: 100%" class="table table-bordered">
         <tbody>
           <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
@@ -44,7 +52,7 @@
       </table>
     </div>
 
-    <div class="table-responsive" style="min-height: 250px" id="tableDIv">
+    <div class="table-responsive" style="min-height: 250px" id="tableDIv" *ngIf="!showenSummary">
       <table class="table table-bordered table-striped">
         <thead class="bg-gradient-9">
           <tr>
@@ -99,7 +107,7 @@
                     </a>
                   </li>
                   <li>
-                    <a target="_BLINK" href="http://localhost/intell/public/admin/purchase/5/invoice">
+                    <a target="_BLINK">
                       <i class="fa fa-print" style="color: #edb426"></i>
                       Bill
                     </a>

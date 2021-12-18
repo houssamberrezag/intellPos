@@ -1,0 +1,77 @@
+<div id="page-title">
+  <h3>Product Report</h3>
+</div>
+
+<div class="panel">
+  <div class="panel-heading">
+    <a href="#" class="btn btn-border btn-alt border-orange font-orange btn-xs" onclick="printDiv('printableArea')">
+      <i class="fa fa-print"></i>
+      Print
+    </a>
+  </div>
+
+  <div id="printableArea" class="panel-body">
+    <h4 class="text-center">
+      <b>Product Report:</b>
+      December 18th, 2021
+      <b>To</b>
+      December 18th, 2021
+      <br />
+      <b>Branch: </b>All Branch
+    </h4>
+
+    <br />
+
+    <table class="table table-bordered" width="100%">
+      <thead class="table-header-color">
+        <tr>
+          <th class="text-center">Product</th>
+          <th class="text-center">Purchase</th>
+          <th class="text-center">Sales</th>
+          <th class="text-center">Stock</th>
+          <th class="text-center">Profit</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td class="text-center">hp probook 4530s</td>
+          <td class="text-center">76 unite</td>
+          <td class="text-center">70 unite</td>
+          <td class="text-center">17 unite</td>
+          <td class="text-center">21000 DH</td>
+        </tr>
+        <tr>
+          <td class="text-center">lenovo thinkcentre m93p</td>
+          <td class="text-center">32 unite</td>
+          <td class="text-center">27 unite</td>
+          <td class="text-center">25 unite</td>
+          <td class="text-center">0 DH</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table style="width: 60%; font-weight: bold" align="right" class="table table-bordered visible-lg">
+      <tbody>
+        <tr style="background-color: #f8f9f9; border: 2px solid #ddd">
+          <td width="50%">Total Profit *</td>
+          <td style="text-align: center; font-weight: bold">DH 21000.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!--Printable area-->
+
+  <div class="panel-footer">
+    <span style="padding: 10px"> </span>
+
+    <a class="btn btn-border btn-alt border-black font-black btn-xs pull-right" href="http://localhost/intell/public/admin/report">
+      <i class="fa fa-backward"></i>
+      Back
+    </a>
+  </div>
+
+  <div class="pull-right visible-lg">
+    <small> <b>*Note:</b> Total Profit = Total Selling Price - Total Cost price (Excluding Vat) </small>
+  </div>
+</div>
