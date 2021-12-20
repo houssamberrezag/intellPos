@@ -128,6 +128,7 @@ export class PurchaseUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
+    this.productService.loadProductsAlert();
     this.previousState();
   }
 

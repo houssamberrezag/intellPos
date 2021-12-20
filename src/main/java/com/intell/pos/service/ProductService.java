@@ -59,4 +59,6 @@ public interface ProductService {
     Page<Product> findBySubcategoryId(Long subcategoryId, Pageable pageable);
 
     Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
+
+    Page<Product> findProductsInAlertQuantity(Pageable pageable);
 }

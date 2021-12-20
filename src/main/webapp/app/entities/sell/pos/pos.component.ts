@@ -210,6 +210,7 @@ export class PosComponent implements OnInit, OnDestroy {
     this.sells = [];
     document.getElementById('closeModalButton')?.click();
     this.loadProducts();
+    this.productService.loadProductsAlert();
     this.router.navigate(['/sell/invoice', sell.referenceNo]);
   }
 

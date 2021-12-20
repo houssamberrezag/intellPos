@@ -126,4 +126,9 @@ public class ProductServiceImpl implements ProductService {
         // TODO Auto-generated method stub
         return productRepository.findByCode(code);
     }
+
+    @Override
+    public Page<Product> findProductsInAlertQuantity(Pageable pageable) {
+        return productRepository.findProductsInAlertQuantity(pageable);
+    }
 }

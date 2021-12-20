@@ -349,28 +349,37 @@
     <div class="user-account-btn dropdown">
       <a href="#" title="My Account" class="user-profile clearfix" data-toggle="dropdown">
         <img src="content/img/default.png" class="user-image" alt="user imf" />
-        <span style="display: block; height: 20px">{{ 'first_name' }} </span>
+        <span style="display: block; height: 20px">{{ account?.firstName }} </span>
         <i class="fas fa-angle-down"></i>
       </a>
       <div class="dropdown-menu float-left">
         <div class="box-sm">
           <div class="login-box clearfix">
             <div class="user-img">
-              <a href="#" title="" class="change-img">Change photo</a>
+              <!-- <a href="#" title="" class="change-img">Change photo</a> -->
               <img src="content/img/default.png" class="user-image" alt="" />
             </div>
             <div class="user-info">
               <span>
-                {{ 'first_name' }}
-                {{ 'last_name' }}
-                <i>Member since </i>
+                {{ (account?.firstName ?? '') + ' ' + (account?.lastName ?? '') }}
               </span>
             </div>
+            <a
+              class="dropdown-item"
+              routerLink="account/password"
+              routerLinkActive="active"
+              (click)="collapseNavbar()"
+              data-cy="passwordItem"
+            >
+              <fa-icon icon="lock" [fixedWidth]="true"></fa-icon>
+              <span>Changer mon mot de passe</span>
+            </a>
+            <!-- <a  href="">changer mon mot de passe</a> -->
           </div>
           <div class="divider"></div>
           <ul class="reset-ul mrg5B">
             <li>
-              <a href="#">
+              <a routerLink="account/settings">
                 <i class="fa float-right fa-caret-right"></i>
                 View account details
               </a>
@@ -390,14 +399,22 @@
 
   <div id="header-nav-right">
     <!--fulscreen-->
-    <a href="#" class="hdr-btn tooltip-button hidden-xs" id="fullscreen-btn" data-placement="bottom" title="Fullscreen">
-      <i class="fas fa-expand-arrows-alt"></i>
+    <a
+      (click)="isFullScreenMode ? closeFullscreen() : openFullscreen()"
+      class="hdr-btn tooltip-button hidden-xs"
+      id="fullscreen-btn"
+      data-placement="bottom"
+      title="Fullscreen"
+      style="cursor: pointer"
+    >
+      <i class="fas fa-expand-arrows-alt" *ngIf="!isFullScreenMode"></i>
+      <i class="far fa-compress-arrows-alt" *ngIf="isFullScreenMode"></i>
     </a>
     <!--ends-->
 
     <!--View cash status-->
 
-    <a
+    <!-- <a
       data-toggle="modal"
       data-target="#myCashStatus"
       href="#"
@@ -406,27 +423,27 @@
       title="Cash Status"
     >
       <i class="far fa-money-bill-alt"></i>
-    </a>
+    </a> -->
     <!--cash status ends-->
 
     <!--View Today's profit-->
-    <a onclick="profitCalc()" href="#" class="hdr-btn tooltip-button" data-placement="bottom" title="Profit / Loss">
+    <!-- <a onclick="profitCalc()" href="#" class="hdr-btn tooltip-button" data-placement="bottom" title="Profit / Loss">
       <i class="far fa-line-chart"></i>
-    </a>
+    </a> -->
     <!--View Today's profit Ends-->
 
     <!--Calculator-->
-    <div class="dropdown hidden-xs" id="notifications-btn">
+    <!-- <div class="dropdown hidden-xs" id="notifications-btn">
       <a href="#" data-toggle="dropdown" data-placement="bottom" title="Calculator" class="tooltip-button">
         <i class="far fa-calculator" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-right @else float-right @endif box-md">
         <div class="scrollable-content scrollable-slim-box"></div>
       </div>
-    </div>
+    </div> -->
     <!--Calculator-->
 
-    <a class="header-btn tooltip-button hidden-xs" data-placement="bottom" href="#" title="POS" target="_BLINK">
+    <a routerLink="sell/pos" class="header-btn tooltip-button hidden-xs" data-placement="bottom" title="POS">
       <i class="far fa-desktop" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
     </a>
 
@@ -439,30 +456,37 @@
         data-placement="bottom"
         title="Alert Products"
         class="tooltip-button"
-        style="background-color: #ffe941cc !important"
+        [ngStyle]="{ 'background-color': productsAlertQuantity.length > 0 ? '#ffe941cc' : 'transparent' }"
       >
-        <i class="far fa-bell" style="color: red; opacity: 0.8; font-size: 20px; text-shadow: 1px 1px 1px #ccc"> </i>
+        <i
+          class="far fa-bell"
+          [ngClass]="{ 'icon-product-alert': productsAlertQuantity.length > 0, 'icon-product-no-alert': productsAlertQuantity.length <= 0 }"
+        >
+        </i>
       </a>
 
       <div class="dropdown-menu float-right box-md">
         <div class="popover-title display-block clearfix pad10A">
-          {{ 'alert_title' }}
-          {{ '0' }}
-          {{ 'p' }}
+          {{ 'Alerte pour ' + productsAlertQuantity.length + ' produits' }}
         </div>
 
         <div class="scrollable-content scrollable-slim-box">
           <ul class="no-border notifications-box">
             <li>
               <ul>
-                <li>
-                  <span class="bg-danger icon-notification fas fa-bullhorn"></span>
-                  {{ '$product_alert' }}
+                <li *ngFor="let product of productsAlertQuantity">
+                  <ul>
+                    <li>
+                      <span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span>
+                      {{ product.name + ' ( ' + (product.quantity ?? 0) + ' ' + (product.unit ?? '') + ' )' }}
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </li>
           </ul>
         </div>
+
         <div class="pad10A button-pane button-pane-alt text-center">
           <a href="" class="btn btn-primary" title="View all notifications"> View all notifications </a>
         </div>
@@ -472,7 +496,7 @@
     <!--Notification Ends-->
 
     <!--Language Swithcer -->
-    <div class="dropdown" id="dashnav-btn">
+    <!-- <div class="dropdown" id="dashnav-btn">
       <a href="#" data-toggle="dropdown" data-placement="bottom" class="popover-button-header tooltip-button" title="Language">
         <i class="fas fa-language" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
       </a>
@@ -544,7 +568,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!--Language Swithcer Ends-->
 
     <!--Quick Menu-->
@@ -556,47 +580,47 @@
         <div class="box-sm">
           <div class="divider"></div>
           <div class="pad5T pad5B pad10L dashboard-buttons clearfix">
-            <a href="" class="btn vertical-button remove-border btn-success" title="Product List">
+            <a routerLink="product" class="btn vertical-button remove-border btn-success" title="Product List">
               <span class="fas fa-separator-vertical pad0A medium">
                 <i class="far fa-cubes opacity-80 font-size-20"></i>
               </span>
               {{ 'produits' }}
             </a>
 
-            <a href="" class="btn vertical-button remove-border btn-info" title="Add New Sell">
+            <a routerLink="sell/new" class="btn vertical-button remove-border btn-info" title="Add New Sell">
               <span class="fas fa-separator-vertical pad0A medium">
                 <i class="far fa-shopping-cart opacity-80 font-size-20"></i>
               </span>
               <i class="fa fa-plus"></i>
-              {{ 'achats' }}
+              {{ 'Vente' }}
             </a>
-            <a href="" class="btn vertical-button remove-border btn-danger" title="Sells List">
+            <a routerLink="sell" class="btn vertical-button remove-border btn-danger" title="Sells List">
               <span class="fas fa-separator-vertical pad0A medium">
                 <i class="far fa-file-excel-o opacity-80 font-size-20"></i>
               </span>
               {{ 'ventes' }}
             </a>
-            <a href="" class="btn vertical-button remove-border btn-purple" title="Transaction List">
+            <a routerLink="transaction" class="btn vertical-button remove-border btn-purple" title="Transaction List">
               <span class="fas fa-separator-vertical pad0A medium">
                 <i class="far fa-money opacity-80 font-size-20"></i>
               </span>
               {{ 'transaction' }}
             </a>
-            <a href="" class="btn vertical-button remove-border btn-azure" title="">
+            <a routerLink="purchase/new" class="btn vertical-button remove-border btn-azure" title="">
               <span class="fas fa-separator-vertical pad0A medium">
                 <i class="far fa-ship opacity-80 font-size-20"></i>
               </span>
               <i class="fa fa-plus"></i>
-              {{ 'achats' }}
+              {{ 'achat' }}
             </a>
-            <a href="" class="btn vertical-button remove-border btn-yellow" title="Purchase List">
+            <a routerLink="purchase" class="btn vertical-button remove-border btn-yellow" title="Purchase List">
               <span class="fas fa-separator-vertical pad0A medium">
                 <i class="far fa-file opacity-80 font-size-20"></i>
               </span>
               {{ 'achat liste' }}
             </a>
             <a
-              href=""
+              routerLink="person/client/new"
               class="btn vertical-button remove-border"
               title="Add New Customer"
               style="background-color: #4ecd00 !important; color: #fff !important"
@@ -605,9 +629,9 @@
                 <i class="far fa-user opacity-80 font-size-20"></i>
               </span>
               <i class="fa fa-plus"></i>
-              {{ 'clients' }}
+              {{ 'Client' }}
             </a>
-            <a href="" class="btn vertical-button remove-border btn-black-opacity" title="'expense">
+            <!-- <a href="" class="btn vertical-button remove-border btn-black-opacity" title="'expense">
               <span class="fas fa-separator-vertical pad0A medium">
                 <i class="far fa-usd opacity-80 font-size-20"></i>
               </span>
@@ -618,23 +642,23 @@
                 <i class="fas fa-cog opacity-80 font-size-20"></i>
               </span>
               {{ 'paramétre' }}
-            </a>
+            </a> -->
           </div>
         </div>
       </div>
     </div>
     <!--Quick Menu Ends-->
 
-    <a class="header-btn tooltip-button hidden-xs" data-placement="bottom" id="logout-btn" href="" title="Lock">
+    <!-- <a class="header-btn tooltip-button hidden-xs" data-placement="bottom" id="logout-btn" href="" title="Lock">
       <i class="far fa-lock" style="color: #fff; opacity: 0.8; font-size: 20px"></i>
-    </a>
+    </a> -->
   </div>
   <!-- #header-nav-right -->
 </div>
 <!-- header ends -->
 
 <!-- Modal for cash register, if cash if not opened yet -->
-<div class="modal fade" id="myCashStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- <div class="modal fade" id="myCashStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form>
@@ -661,7 +685,7 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 <!--Modal ends-->
 <!-- 
 

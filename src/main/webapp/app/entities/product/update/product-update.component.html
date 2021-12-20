@@ -108,7 +108,10 @@
             </div>
           </div>
 
-          <label class="col-sm-2 control-label"> prix de vente </label>
+          <label class="col-sm-2 control-label">
+            prix de vente
+            <span class="required">*</span>
+          </label>
           <div class="col-sm-4">
             <input
               type="number"
@@ -132,7 +135,10 @@
         </div> -->
 
         <div class="form-group">
-          <label class="col-sm-2 control-label"> Unit </label>
+          <label class="col-sm-2 control-label">
+            Unite
+            <span class="required">*</span>
+          </label>
           <div class="col-sm-4">
             <input type="text" class="form-control" name="unit" id="field_unit" data-cy="unit" formControlName="unit" />
             <div *ngIf="editForm.get('unit')!.invalid && (editForm.get('unit')!.dirty || editForm.get('unit')!.touched)">
@@ -142,7 +148,10 @@
             </div>
           </div>
 
-          <label for="featured" class="col-sm-2 control-label"> Status </label>
+          <label for="featured" class="col-sm-2 control-label">
+            Status
+            <span class="required">*</span>
+          </label>
           <div class="col-sm-4 tooltip-button" title="" data-original-title="Only active products shows in new sell &amp; purchases">
             <select class="form-control selectpickerLive" name="status" id="field_status" data-cy="status" formControlName="status">
               <option [ngValue]="true">Active</option>
@@ -165,6 +174,7 @@
             data-original-title="Opening stock is the value of goods available for sale in the beginning of an accounting period"
           >
             Opening Stock
+            <span class="required">*</span>
           </label>
           <div class="col-sm-4">
             <input
@@ -177,7 +187,10 @@
             />
           </div>
 
-          <label class="col-sm-2 control-label"> Product Alert Quantity </label>
+          <label class="col-sm-2 control-label">
+            Product Alert Quantity
+            <span class="required">*</span>
+          </label>
           <div class="col-sm-4">
             <input
               type="number"
@@ -190,22 +203,12 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label class="col-sm-2 control-label"> Image </label>
           <div class="col-sm-4">
             <input class="form-control" name="image" type="file" />
           </div>
-
-          <!-- <div class="col-sm-3">
-            <p>
-              <a href="http://localhost/intell/public/uploads/products/ZBy1iqjmf9Lf.jpg">
-                <abbr title="Show Product Image">
-                  <img src="http://localhost/intell/public/uploads/products/ZBy1iqjmf9Lf.jpg" class="img-thumbnail img-responsive" alt="" />
-                </abbr>
-              </a>
-            </p>
-          </div> -->
-        </div>
+        </div> -->
       </div>
 
       <div class="bg-default content-box text-center pad20A mrg25T">

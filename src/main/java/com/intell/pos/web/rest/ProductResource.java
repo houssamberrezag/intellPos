@@ -1,6 +1,7 @@
 package com.intell.pos.web.rest;
 
 import com.intell.pos.domain.Product;
+import com.intell.pos.domain.projection.IProductReportProjection;
 import com.intell.pos.repository.ProductRepository;
 import com.intell.pos.service.ProductService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
@@ -219,8 +220,16 @@ public class ProductResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<List<?>> test() {
-        return ResponseEntity.ok(productRepository.test());
+    @GetMapping("/products/reporting")
+    public ResponseEntity<List<IProductReportProjection>> test() {
+        return ResponseEntity.ok(productRepository.productReport());
+    }
+
+    @GetMapping("/products/alert")
+    public ResponseEntity<List<Product>> getProductsInAlertQuantity(Pageable pageable) {
+        log.debug("REST request to get a page of Products with quantity moin que la quantité minimal");
+        Page<Product> page = productService.findProductsInAlertQuantity(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

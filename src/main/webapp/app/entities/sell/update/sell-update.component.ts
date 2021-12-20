@@ -142,6 +142,7 @@ export class SellUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
+    this.productService.loadProductsAlert();
     this.router.navigate(['/sell']);
   }
 

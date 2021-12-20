@@ -203,10 +203,14 @@
                     class="col-md-2 pos-product-col"
                     *ngFor="let product of products"
                     (click)="addProductToList(product)"
-                    style="min-height: 170px; max-height: 170px; background-color: rgb(255, 255, 255)"
+                    style="min-height: 170px; max-height: 170px; background-color: rgb(255, 255, 255); text-align: center"
                   >
                     <div>
-                      <img src="./../uploads/products/ZBy1iqjmf9Lf.jpg" alt="hp probook 4530s" class="img-responsive img-rounded" />
+                      <img
+                        src="/content/assets/image-resources/no-product-img.png"
+                        alt="hp probook 4530s"
+                        class="img-responsive img-rounded"
+                      />
                       <p style="min-height: 60px">{{ product.name }}</p>
                       <small *ngIf="(product?.quantity ?? 0) <= 0">Out Of Stock</small>
                       <small *ngIf="(product?.quantity ?? 0) > 0"

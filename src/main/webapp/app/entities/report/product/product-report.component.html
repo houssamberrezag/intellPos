@@ -34,19 +34,12 @@
       </thead>
 
       <tbody>
-        <tr>
-          <td class="text-center">hp probook 4530s</td>
-          <td class="text-center">76 unite</td>
-          <td class="text-center">70 unite</td>
-          <td class="text-center">17 unite</td>
-          <td class="text-center">21000 DH</td>
-        </tr>
-        <tr>
-          <td class="text-center">lenovo thinkcentre m93p</td>
-          <td class="text-center">32 unite</td>
-          <td class="text-center">27 unite</td>
-          <td class="text-center">25 unite</td>
-          <td class="text-center">0 DH</td>
+        <tr *ngFor="let rp of reportingProducts">
+          <td class="text-center">{{ rp.name }}</td>
+          <td class="text-center">{{ rp.purchaseQuantity ?? 0 }} {{ rp.unite }}</td>
+          <td class="text-center">{{ rp.sellQuantity ?? 0 }} {{ rp.unite }}</td>
+          <td class="text-center">{{ rp.stock }} {{ rp.unite }}</td>
+          <td class="text-center">{{ rp.sellTotal - rp.purchasesTotal }} DH</td>
         </tr>
       </tbody>
     </table>
@@ -55,7 +48,7 @@
       <tbody>
         <tr style="background-color: #f8f9f9; border: 2px solid #ddd">
           <td width="50%">Total Profit *</td>
-          <td style="text-align: center; font-weight: bold">DH 21000.00</td>
+          <td style="text-align: center; font-weight: bold">{{ calculateTotalProfit() }} DH</td>
         </tr>
       </tbody>
     </table>

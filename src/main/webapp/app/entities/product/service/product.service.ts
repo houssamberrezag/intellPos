@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IProduct, getProductIdentifier } from '../product.model';
+import { IProduct, getProductIdentifier, Product } from '../product.model';
 
 export type EntityResponseType = HttpResponse<IProduct>;
 export type EntityArrayResponseType = HttpResponse<IProduct[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
+  productsAlert = new Subject<IProduct[]>();
+
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/products');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
@@ -58,6 +60,16 @@ export class ProductService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  loadProductsAlert(req?: any): void {
+    const options = createRequestOption(req);
+    this.http
+      .get<IProduct[]>(this.resourceUrl + '/alert', { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)))
+      .subscribe(res => {
+        this.productsAlert.next(res.body ?? []);
+      });
+  }
+
   productsBySubcategoryId(subcategoryId: string, req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     options.set('subcategoryId', subcategoryId);
@@ -75,6 +87,10 @@ export class ProductService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  reporting(): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(this.resourceUrl + '/reporting', { observe: 'response' });
   }
 
   addProductToCollectionIfMissing(productCollection: IProduct[], ...productsToCheck: (IProduct | null | undefined)[]): IProduct[] {

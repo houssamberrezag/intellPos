@@ -66,13 +66,21 @@
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">Date</td>
               <td colspan="2">
-                <input type="datetime" class="datepicker form-control text-center" formControlName="date" />
+                <input
+                  id="field_date"
+                  data-cy="date"
+                  type="datetime-local"
+                  class="form-control"
+                  name="date"
+                  formControlName="date"
+                  placeholder="YYYY-MM-DD HH:mm"
+                />
               </td>
             </tr>
             <tr>
               <td colspan="3" style="text-align: right; font-weight: bold">
                 Total
-                <span class="font-size-9"> (Excluding Vat) </span>
+                <!-- <span class="font-size-9"> (Excluding Vat) </span> -->
               </td>
               <td colspan="2"><input type="text" disabled="disabled" class="form-control text-center" [value]="calculeTotal()" /></td>
             </tr>

@@ -493,7 +493,7 @@ public class SellResource {
     @GetMapping("/sellsByProductId")
     public ResponseEntity<List<Sell>> getSellsByProductId(Pageable pageable, @RequestParam Long productId) {
         log.debug("REST request to get a page of Sells by product id");
-        Page<Sell> page = sellService.findAll(pageable);
+        Page<Sell> page = sellService.findByProductId(productId, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
