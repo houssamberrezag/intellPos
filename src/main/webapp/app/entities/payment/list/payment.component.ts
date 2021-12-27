@@ -9,6 +9,8 @@ import { IPayment } from '../payment.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { PaymentService } from '../service/payment.service';
 import { PaymentDeleteDialogComponent } from '../delete/payment-delete-dialog.component';
+import { PaymentTypes } from 'app/entities/enumerations/payment-types.model';
+import { PaymentBillService } from '../service/payment-bill.service';
 
 @Component({
   selector: 'jhi-payment',
@@ -23,12 +25,14 @@ export class PaymentComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  paymentTypes = PaymentTypes;
 
   constructor(
     protected paymentService: PaymentService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private billService: PaymentBillService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -70,6 +74,10 @@ export class PaymentComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  generateBill(payment: IPayment): void {
+    this.billService.generatePdf(payment);
   }
 
   protected sort(): string[] {

@@ -9,6 +9,7 @@ import { PaymentService } from 'app/entities/payment/service/payment.service';
 import { ITransaction } from 'app/entities/transaction/transaction.model';
 import * as dayjs from 'dayjs';
 import { ISell } from '../sell.model';
+import { SellBillService } from '../service/sell-bill.service';
 import { SellService } from '../service/sell.service';
 
 @Component({
@@ -32,13 +33,12 @@ export class SellDetailComponent implements OnInit {
     private sellService: SellService,
     private paymentService: PaymentService,
     private fb: FormBuilder,
-    private alertService: SweetAlertService
+    private alertService: SweetAlertService,
+    private billService: SellBillService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ transaction }) => {
-      console.log(transaction);
-
       this.transaction = transaction;
       this.loadSells();
       this.loadPayments();
@@ -96,6 +96,12 @@ export class SellDetailComponent implements OnInit {
       this.paymentForm.valid &&
       (this.paymentForm.get(['amount'])?.value ?? 0) <= (this.transaction?.netTotal ?? 0) - (this.transaction?.paid ?? 0)
     );
+  }
+
+  generateBill(): void {
+    if (this.transaction) {
+      this.billService.generatePdf(this.transaction);
+    }
   }
 
   protected createFromForm(): IPayment {

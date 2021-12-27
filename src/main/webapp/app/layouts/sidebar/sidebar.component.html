@@ -180,36 +180,11 @@
         </div>
       </li> -->
 
-      <li>
-        <a href="javascript:void(0);"
-          ><i class="fas fa-cog"></i><span> {{ 'Parametre' }}</span></a
-        >
-        <div class="sidebar-submenu">
-          <ul>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'paramétre générale' }}</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'roles' }}</span>
-              </a>
-            </li>
-
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'taxe' }}</span>
-              </a>
-            </li>
-
-            <li>
-              <a routerLink="subcategorie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <span>{{ 'backup' }}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+      <li class="no-menu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a routerLink="settings">
+          <i class="fas fa-pie-chart"></i>
+          <span>paramétres</span>
+        </a>
       </li>
 
       <!-- <li class="no-menu">

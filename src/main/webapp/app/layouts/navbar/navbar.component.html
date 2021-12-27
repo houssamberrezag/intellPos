@@ -332,14 +332,8 @@
   </div>
 
   <div id="header-logo" class="logo-bg">
-    <a href="/" class="logo-content-big" title="site_name">
-      {{ 'site_name' }}
-      <span>{{ 'site_slogan' }}</span>
-    </a>
-    <a href="/" class="logo-content-small" title="site_name">
-      {{ 'site_name' }}
-      <span>{{ 'site_slogan' }}</span>
-    </a>
+    <a routerLink="/" class="logo-content-big" title="site_name"> </a>
+    <a routerLink="/" class="logo-content-small" title="site_name"> </a>
     <a id="close-sidebar" (click)="toggleSidebar()" title="Close sidebar">
       <i class="fas" [ngClass]="{ 'fa-angle-left': isSidebarCollapsed, 'fa-angle-right': !isSidebarCollapsed }"></i>
     </a>
@@ -381,7 +375,7 @@
             <li>
               <a routerLink="account/settings">
                 <i class="fa float-right fa-caret-right"></i>
-                View account details
+                Voir les détails du compte
               </a>
             </li>
           </ul>
@@ -488,7 +482,7 @@
         </div>
 
         <div class="pad10A button-pane button-pane-alt text-center">
-          <a href="" class="btn btn-primary" title="View all notifications"> View all notifications </a>
+          <a routerLink="product/alert" class="btn btn-primary" title="View all notifications"> View all notifications </a>
         </div>
       </div>
     </div>

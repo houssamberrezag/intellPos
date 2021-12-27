@@ -1,0 +1,75 @@
+<div id="page-title">
+  <h3>
+    Intelle POS
+    <small style="font-size: 12px; letter-spacing: 2px" class="hidden-xs">
+      <b>my branch</b>
+    </small>
+  </h3>
+</div>
+<div class="panel">
+  <div class="panel-body" style="min-height: 1020px">
+    <div class="nav-tabs-custom">
+      <div class="tab-content">
+        <!--Tab For Edit Settings-->
+        <div class="active tab-pane animated fadeIn" id="editSettings">
+          <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <div class="example-box-wrapper">
+              <div class="form-horizontal bordered-row">
+                <div class="form-group bg-khaki">
+                  <h3 class="control-label col-sm-2 title-hero">General Settings</h3>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2"> Shop Name </label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" formControlName="name" />
+                    <!--  -->
+                  </div>
+
+                  <label class="control-label col-sm-2"> Tagline </label>
+                  <div class="col-sm-4">
+                    <input class="form-control" formControlName="slogan" type="text" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2"> Phone </label>
+                  <div class="col-sm-4">
+                    <input class="form-control" formControlName="phone" type="text" />
+                  </div>
+
+                  <label class="control-label col-sm-2"> Email </label>
+                  <div class="col-sm-4">
+                    <input class="form-control" formControlName="email" type="text" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2"> Shop Address </label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" rows="3" formControlName="address" cols="50"></textarea>
+                  </div>
+                </div>
+
+                <div class="bg-default content-box text-center pad20A mrg25T">
+                  <button
+                    type="submit"
+                    id="save-entity"
+                    data-cy="entityCreateSaveButton"
+                    [disabled]="editForm.invalid || isSaving"
+                    class="btn btn-lg btn-primary"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!--Ends-->
+      </div>
+      <!--Tab Content Ends-->
+    </div>
+    <!--nav-tabs-custom-->
+  </div>
+</div>

@@ -7,6 +7,7 @@ import { ProductDetailComponent } from '../detail/product-detail.component';
 import { ProductUpdateComponent } from '../update/product-update.component';
 import { ProductRoutingResolveService } from './product-routing-resolve.service';
 import { PrintSingleBarcodeComponent } from '../print-single-barcode/print-single-barcode.component';
+import { ProductAlertComponent } from '../product-alert/product-alert.component';
 
 const productRoute: Routes = [
   {
@@ -38,6 +39,14 @@ const productRoute: Routes = [
     component: ProductUpdateComponent,
     resolve: {
       product: ProductRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'alert',
+    component: ProductAlertComponent,
+    data: {
+      defaultSort: 'id,desc',
     },
     canActivate: [UserRouteAccessService],
   },

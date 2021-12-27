@@ -108,6 +108,10 @@ export class ProductUpdateComponent implements OnInit {
     }
   }
 
+  getFiltredSubCategorys(): ISubcategorie[] {
+    return this.subcategoriesSharedCollection.filter(subC => subC.categorie?.id === this.editForm.get(['categorie'])!.value?.id);
+  }
+
   uploadPhoto(event: any): void {
     console.log('houssam');
   }

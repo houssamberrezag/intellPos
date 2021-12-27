@@ -12,6 +12,7 @@ import { SellDeleteDialogComponent } from '../delete/sell-delete-dialog.componen
 import { ITransaction } from 'app/entities/transaction/transaction.model';
 import { TransactionService } from 'app/entities/transaction/service/transaction.service';
 import { IPerson } from 'app/entities/person/person.model';
+import { SellBillService } from '../service/sell-bill.service';
 
 @Component({
   selector: 'jhi-sell',
@@ -32,7 +33,8 @@ export class SellComponent implements OnInit {
     protected transactionService: TransactionService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private billService: SellBillService
   ) {}
 
   ngOnInit(): void {
@@ -96,6 +98,10 @@ export class SellComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  generateBill(transaction: ITransaction): void {
+    this.billService.generatePdf(transaction);
   }
 
   protected sort(): string[] {

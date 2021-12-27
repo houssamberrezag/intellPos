@@ -9,6 +9,7 @@ import { ITransaction } from 'app/entities/transaction/transaction.model';
 import { TransactionDeleteDialogComponent } from 'app/entities/transaction/delete/transaction-delete-dialog.component';
 import { TransactionService } from 'app/entities/transaction/service/transaction.service';
 import { IPerson } from 'app/entities/person/person.model';
+import { PurchaseBillService } from '../service/purchase-bill.service';
 
 @Component({
   selector: 'jhi-purchase',
@@ -30,7 +31,8 @@ export class PurchaseComponent implements OnInit {
     protected transactionService: TransactionService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private billService: PurchaseBillService
   ) {}
 
   ngOnInit(): void {
@@ -93,6 +95,10 @@ export class PurchaseComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  generateBill(transaction: ITransaction): void {
+    this.billService.generatePdf(transaction);
   }
 
   protected sort(): string[] {

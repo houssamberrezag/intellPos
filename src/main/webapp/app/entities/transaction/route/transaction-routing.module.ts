@@ -6,11 +6,13 @@ import { TransactionComponent } from '../list/transaction.component';
 import { TransactionDetailComponent } from '../detail/transaction-detail.component';
 import { TransactionUpdateComponent } from '../update/transaction-update.component';
 import { TransactionRoutingResolveService } from './transaction-routing-resolve.service';
+import { PaymentComponent } from 'app/entities/payment/list/payment.component';
 
 const transactionRoute: Routes = [
   {
     path: '',
-    component: TransactionComponent,
+    //component: TransactionComponent,
+    component: PaymentComponent,
     data: {
       defaultSort: 'id,desc',
     },

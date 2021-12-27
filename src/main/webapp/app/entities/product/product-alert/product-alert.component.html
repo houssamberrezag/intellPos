@@ -1,0 +1,36 @@
+<div id="page-title">
+  <h3>alerte de quantité produit</h3>
+</div>
+<div class="panel">
+  <div class="panel-body">
+    <table class="table table-bordered">
+      <thead class="bg-gradient-9">
+        <tr>
+          <th class="text-center">Product Name</th>
+          <th class="text-center">In Stock</th>
+          <th class="text-center">Alert Quantity</th>
+        </tr>
+      </thead>
+
+      <tbody style="background-color: #fff" id="myTable">
+        <tr *ngFor="let product of products">
+          <td class="text-center">{{ product.name }}</td>
+          <td class="text-center">{{ product.quantity + ' ' + (product.unit ?? '') }}</td>
+          <td class="text-center">{{ product.alertQuantity + ' ' + (product.unit ?? '') }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row justify-content-center" style="text-align: center">
+    <ngb-pagination
+      [collectionSize]="totalItems"
+      [(page)]="ngbPaginationPage"
+      [pageSize]="itemsPerPage"
+      [maxSize]="5"
+      [rotate]="true"
+      [boundaryLinks]="true"
+      (pageChange)="loadPage($event)"
+    ></ngb-pagination>
+  </div>
+</div>

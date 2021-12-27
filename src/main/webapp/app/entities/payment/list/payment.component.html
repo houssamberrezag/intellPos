@@ -1,4 +1,314 @@
-<div>
+<div id="page-title">
+  <h3>Transaction List</h3>
+</div>
+<div class="panel">
+  <!-- <div class="panel-heading">
+    <a class="btn btn-warning btn-alt btn-xs"
+      ><i class="fa fa-print"></i> Print</a
+    >
+
+    <a class="btn btn-primary btn-alt btn-xs pull-right" id="searchButton" style="border-radius: 0px !important">
+      <i class="fa fa-search"></i>
+      Search
+    </a>
+
+    <input type="button" class="btn btn-alt bg-purple btn-xs" onclick="showSummary()" id="summaryBtn" value="Summary" />
+  </div> -->
+
+  <div class="panel-body">
+    <div id="summaryDiv" style="display: none">
+      <table style="width: 100%" class="table table-bordered">
+        <tbody>
+          <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
+            <td style="text-align: right">
+              <b>Total Debit :</b>
+            </td>
+            <td>DH 8200.00</td>
+          </tr>
+
+          <tr style="background-color: #f8f9f9; border: 2px solid #ddd">
+            <td style="text-align: right">
+              <b>Total Credit</b>
+            </td>
+            <td>DH 118390.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-responsive" id="tableDIv">
+      <table class="table table-bordered table-striped">
+        <thead class="bg-gradient-9">
+          <tr>
+            <td class="text-center font-white">Date</td>
+            <td class="text-center font-white">Invoice No</td>
+            <td class="text-center font-white">Name</td>
+            <td class="text-center font-white">Amount</td>
+            <td class="text-center font-white">Payment Method</td>
+            <td class="text-center font-white">Type</td>
+            <td class="text-center font-white">Print Receipt</td>
+          </tr>
+        </thead>
+
+        <tbody style="background-color: #fff">
+          <tr *ngFor="let payment of payments">
+            <td class="text-center tooltip-button" data-placement="bottom" title="">
+              {{ payment.createdAt | formatMediumDatetime }}
+            </td>
+
+            <td class="text-center">{{ payment.referenceNo ?? '-' }}</td>
+
+            <td class="text-center">{{ payment.person?.firstName + ' ' + payment.person?.lastName }}</td>
+
+            <td class="text-center">
+              {{ payment.amount }}
+              DH
+            </td>
+
+            <td class="text-center">Cash</td>
+
+            <td class="text-center">
+              <span
+                class="font-green"
+                [ngClass]="{
+                  'font-green': payment.type === paymentTypes.CREDIT,
+                  'font-red': payment.type === paymentTypes.DEBIT
+                }"
+              >
+                {{ payment.type === paymentTypes.CREDIT ? 'Credit' : 'Debit' }}
+              </span>
+            </td>
+
+            <td class="text-center">
+              <a (click)="generateBill(payment)" class="btn btn-border btn-alt border-orange btn-link font-orange btn-xs">
+                <i class="fa fa-print"></i>
+                Print
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!--Pagination-->
+      <div class="pull-right"></div>
+      <!--Ends-->
+    </div>
+    <div class="row justify-content-center" style="text-align: center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+
+  <!-- Transaction search modal -->
+  <!-- <div class="modal fade" id="searchModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" action="http://localhost/intell/public/admin/payment/all" accept-charset="UTF-8" class="form-horizontal">
+          <input name="_token" type="hidden" value="EC9zf7GhAwCPueWn2HostyR3Y951COIlAXFjLLhX" />
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h4 class="modal-title">Search Transaction</h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="col-sm-3" style="text-align: right">Transaction No</label>
+              <div class="col-sm-9">
+                <input class="form-control" name="receipt_no" type="text" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3" style="text-align: right">Invoice No</label>
+              <div class="col-sm-9">
+                <input class="form-control" name="invoice_no" type="text" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3" style="text-align: right">Client</label>
+              <div class="col-sm-9">
+                <div class="btn-group bootstrap-select form-control">
+                  <button
+                    type="button"
+                    class="btn dropdown-toggle bs-placeholder btn-default"
+                    data-toggle="dropdown"
+                    role="button"
+                    title="Please select a people"
+                  >
+                    <span class="filter-option pull-left">Please select a people</span>&nbsp;<span class="bs-caret"
+                      ><span class="caret"></span
+                    ></span>
+                  </button>
+                  <div class="dropdown-menu open" role="combobox">
+                    <div class="bs-searchbox">
+                      <input type="text" class="form-control" autocomplete="off" role="textbox" aria-label="Search" />
+                    </div>
+                    <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                      <li data-original-index="0" class="selected">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"
+                          ><span class="text">Please select a people</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="1">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Houssam</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="2">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Houssam</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <select class="form-control selectpicker" data-live-search="true" name="client" tabindex="-98">
+                    <option selected="selected" value="">Please select a people</option>
+                    <option value="1">Houssam</option>
+                    <option value="2">Houssam</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3" style="text-align: right">Type</label>
+              <div class="col-sm-9">
+                <div class="btn-group bootstrap-select form-control">
+                  <button
+                    type="button"
+                    class="btn dropdown-toggle bs-placeholder btn-default"
+                    data-toggle="dropdown"
+                    role="button"
+                    title="Please select a payment type"
+                  >
+                    <span class="filter-option pull-left">Please select a payment type</span>&nbsp;<span class="bs-caret"
+                      ><span class="caret"></span
+                    ></span>
+                  </button>
+                  <div class="dropdown-menu open" role="combobox">
+                    <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                      <li data-original-index="0" class="selected">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"
+                          ><span class="text">Please select a payment type</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="1">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Debit</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="2">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Credit</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="3">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Return</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <select class="form-control selectpicker" name="type" tabindex="-98">
+                    <option selected="selected" value="">Please select a payment type</option>
+                    <option value="debit">Debit</option>
+                    <option value="credit">Credit</option>
+                    <option value="return">Return</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3" style="text-align: right">Payment Method</label>
+              <div class="col-sm-9">
+                <div class="btn-group bootstrap-select form-control">
+                  <button
+                    type="button"
+                    class="btn dropdown-toggle bs-placeholder btn-default"
+                    data-toggle="dropdown"
+                    role="button"
+                    title="Please select a payment method"
+                  >
+                    <span class="filter-option pull-left">Please select a payment method</span>&nbsp;<span class="bs-caret"
+                      ><span class="caret"></span
+                    ></span>
+                  </button>
+                  <div class="dropdown-menu open" role="combobox">
+                    <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                      <li data-original-index="0" class="selected">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"
+                          ><span class="text">Please select a payment method</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="1">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Cash</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="2">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Card</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="3">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Cheque</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                      <li data-original-index="4">
+                        <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"
+                          ><span class="text">Others</span><span class="glyphicon glyphicon-ok check-mark"></span
+                        ></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <select class="form-control selectpicker" name="method" tabindex="-98">
+                    <option selected="selected" value="">Please select a payment method</option>
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                    <option value="cheque">Cheque</option>
+                    <option value="others">Others</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3" style="text-align: right">From</label>
+              <div class="col-sm-9">
+                <input class="form-control dateTime" placeholder="yyyy-mm-dd" name="from" type="text" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3" style="text-align: right">To</label>
+              <div class="col-sm-9">
+                <input class="form-control dateTime" placeholder="yyyy-mm-dd" name="to" type="text" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input class="btn btn-primary" data-disable-with="core.searching" type="submit" value="Search" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
+  <!-- search modal ends -->
+</div>
+
+<!-- <div>
   <h2 id="page-heading" data-cy="PaymentHeading">
     <span>Payments</span>
 
@@ -115,4 +425,4 @@
       ></ngb-pagination>
     </div>
   </div>
-</div>
+</div> -->

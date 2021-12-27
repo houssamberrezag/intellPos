@@ -29,6 +29,9 @@
     <include file="config/liquibase/changelog/20210815155017_added_entity_Payment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210815155018_added_entity_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210815155019_added_entity_Purchase.xml" relativeToChangelogFile="false"/>
+    
+    <include file="config/liquibase/changelog/20211224155019_added_entity_Settings.xml" relativeToChangelogFile="false"/>
+    
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210815155006_added_entity_constraints_ReturnTransaction.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210815155007_added_entity_constraints_Sell.xml" relativeToChangelogFile="false"/>
@@ -39,6 +42,8 @@
     <include file="config/liquibase/changelog/20210815155017_added_entity_constraints_Payment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210815155018_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210815155019_added_entity_constraints_Purchase.xml" relativeToChangelogFile="false"/>
+    
+    
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

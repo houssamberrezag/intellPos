@@ -12,6 +12,7 @@ import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { PaymentTypes } from 'app/entities/enumerations/payment-types.model';
 import { SweetAlertService } from 'app/core/util/sweet-alert.service';
+import { PurchaseBillService } from '../service/purchase-bill.service';
 
 declare let $: any;
 
@@ -36,7 +37,8 @@ export class PurchaseDetailComponent implements OnInit {
     private purchaseService: PurchaseService,
     private paymentService: PaymentService,
     private fb: FormBuilder,
-    private alertService: SweetAlertService
+    private alertService: SweetAlertService,
+    private billService: PurchaseBillService
   ) {}
 
   ngOnInit(): void {
@@ -107,6 +109,12 @@ export class PurchaseDetailComponent implements OnInit {
       this.paymentForm.valid &&
       (this.paymentForm.get(['amount'])?.value ?? 0) <= (this.transaction?.netTotal ?? 0) - (this.transaction?.paid ?? 0)
     );
+  }
+
+  generateBill(): void {
+    if (this.transaction) {
+      this.billService.generatePdf(this.transaction);
+    }
   }
 
   protected createFromForm(): IPayment {

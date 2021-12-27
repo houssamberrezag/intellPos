@@ -78,7 +78,7 @@
                     ? editForm.get('subCategorie')!.value
                     : subcategorieOption
                 "
-                *ngFor="let subcategorieOption of subcategoriesSharedCollection; trackBy: trackSubcategorieById"
+                *ngFor="let subcategorieOption of getFiltredSubCategorys(); trackBy: trackSubcategorieById"
               >
                 {{ subcategorieOption.name }}
               </option>

@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-3">
     <span class="hipster img-fluid rounded"></span>
   </div>
@@ -50,5 +50,141 @@
       <span>If you like JHipster, don't forget to give us a star on</span>
       <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">GitHub</a>!
     </p>
+  </div>
+</div>
+ -->
+<div id="loading" style="top: -250px !important" *ngIf="false">
+  <div class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+</div>
+
+<div id="page-title">
+  <h3>
+    Intelle POS
+    <small style="font-size: 12px; letter-spacing: 2px" class="hidden-xs">
+      <b>my branch</b>
+    </small>
+  </h3>
+</div>
+<div class="panel">
+  <div class="panel-body">
+    <div class="row">
+      <!--Total invoices today-->
+      <div class="col-md-4 col-sm-6 col-xs-12 animated headShake">
+        <div class="tile-box tile-box-alt bg-gradient-9 font-white">
+          <div class="tile-header">VENTES TOTALES (AUJOURD'HUI)</div>
+          <div class="tile-content-wrapper">
+            <i class="glyph-icon fa fa-shopping-cart"></i>
+            <div class="tile-content">
+              <span>
+                5 article
+                <small> ( 545.45 dh ) </small>
+              </span>
+            </div>
+          </div>
+          <a href="" class="tile-footer tooltip-button" data-placement="bottom" title="View Invoices">
+            Voir les factures
+            <i class="glyph-icon icon-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- /.col -->
+      <!--Ends-->
+
+      <!--Total bills for today-->
+      <div class="col-md-4 col-sm-6 col-xs-12 animated headShake">
+        <div class="tile-box tile-box-alt bg-blue font-white">
+          <div class="tile-header">TOTAL DES ACHATS (AUJOURD'HUI)</div>
+          <div class="tile-content-wrapper">
+            <i class="glyph-icon fa fa-ship"></i>
+            <div class="tile-content">
+              <span>
+                5 article
+                <small> ( 545.45 dh ) </small>
+              </span>
+            </div>
+          </div>
+          <a href="" class="tile-footer tooltip-button" data-placement="bottom" title="View Bills">
+            Voir les factures
+            <i class="glyph-icon icon-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- /.col -->
+      <!--Total bill for today ends-->
+
+      <!--Total cash received today-->
+      <div class="col-md-4 col-sm-6 col-xs-12 animated headShake">
+        <div class="tile-box tile-box-alt bg-gradient-9 font-white">
+          <div class="tile-header">TRANSACTIONS (AUJOURD'HUI)</div>
+          <div class="tile-content-wrapper">
+            <i class="glyph-icon fa fa-money"></i>
+            <div class="tile-content">
+              <span> 5460.45 dh </span>
+              <small>&nbsp;</small>
+            </div>
+          </div>
+          <a href="" class="tile-footer tooltip-button" data-placement="bottom" title="Voir les détails">
+            Voir les détails
+            <i class="glyph-icon icon-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- /.col -->
+
+      <!--Ends-->
+    </div>
+    <!-- @endif -->
+
+    <!-- Home design 2 ends -->
+
+    <hr />
+
+    <!-- Chart -->
+    <div class="row">
+      <div class="col-md-6 col-xs-12">
+        <div class="dashboard-box dashboard-box-chart bg-white content-box">
+          <div class="content-wrapper">
+            <div class="header">Sell Vs Purchase</div>
+            <canvas id="sellsvspurchase"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xs-12">
+        <div class="dashboard-box dashboard-box-chart bg-white content-box">
+          <div class="content-wrapper">
+            <div class="header">Stock Value</div>
+            <canvas id="stockChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-xs-12">
+        <div class="dashboard-box dashboard-box-chart bg-white content-box">
+          <div class="content-wrapper">
+            <div class="header">Hot Products</div>
+            <canvas id="productChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xs-12">
+        <div class="dashboard-box dashboard-box-chart bg-white content-box">
+          <div class="content-wrapper">
+            <div class="header">Profit</div>
+            <!-- @if(auth()->user()->can('profit.graph')) -->
+            <canvas id="profit"></canvas>
+            <!--  @endif -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CHART ENDS-->
   </div>
 </div>

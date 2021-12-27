@@ -15,6 +15,7 @@ import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import * as dayjs from 'dayjs';
 
 import { IPerson } from '../person.model';
+import { PaymentBillService } from 'app/entities/payment/service/payment-bill.service';
 
 @Component({
   selector: 'jhi-person-detail',
@@ -48,7 +49,8 @@ export class PersonDetailComponent implements OnInit {
     private purchaseService: PurchaseService,
     private transactionService: TransactionService,
     private paymentService: PaymentService,
-    private alertService: SweetAlertService
+    private alertService: SweetAlertService,
+    private billService: PaymentBillService
   ) {}
 
   ngOnInit(): void {
@@ -128,6 +130,10 @@ export class PersonDetailComponent implements OnInit {
 
   paymentValid(): boolean {
     return this.paymentForm.valid && (this.paymentForm.get(['amount'])?.value ?? 0) <= this.totalDue();
+  }
+
+  generateBill(payment: IPayment): void {
+    this.billService.generatePdf(payment);
   }
 
   protected createFromForm(): IPayment {

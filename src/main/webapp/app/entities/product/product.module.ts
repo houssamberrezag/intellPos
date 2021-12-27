@@ -7,6 +7,7 @@ import { ProductDeleteDialogComponent } from './delete/product-delete-dialog.com
 import { ProductRoutingModule } from './route/product-routing.module';
 import { PrintSingleBarcodeComponent } from './print-single-barcode/print-single-barcode.component';
 import { NgxBarcodeModule } from 'ngx-barcode';
+import { ProductAlertComponent } from './product-alert/product-alert.component';
 
 @NgModule({
   imports: [SharedModule, ProductRoutingModule, NgxBarcodeModule],
@@ -16,6 +17,7 @@ import { NgxBarcodeModule } from 'ngx-barcode';
     ProductUpdateComponent,
     ProductDeleteDialogComponent,
     PrintSingleBarcodeComponent,
+    ProductAlertComponent,
   ],
   entryComponents: [ProductDeleteDialogComponent],
 })

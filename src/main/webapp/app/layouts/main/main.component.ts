@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { Account } from 'app/core/auth/account.model';
 
 import { AccountService } from 'app/core/auth/account.service';
+import { SettingsService } from 'app/entities/settings/service/settings.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -15,7 +17,13 @@ export class MainComponent implements OnInit {
   account: Account | null = null;
 
   private readonly destroy$ = new Subject<void>();
-  constructor(private accountService: AccountService, private titleService: Title, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private titleService: Title,
+    private router: Router,
+    private settingsService: SettingsService,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   ngOnInit(): void {
     this.accountService
@@ -23,9 +31,16 @@ export class MainComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(account => {
         this.account = account;
+        if (account) {
+          this.document.body.classList.remove('body-bg-img');
+        } else {
+          this.document.body.classList.add('body-bg-img');
+        }
       });
     // try to log in automatically
     this.accountService.identity().subscribe();
+
+    this.settingsService.oserveCurrentSettings().subscribe();
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
