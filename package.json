@@ -87,7 +87,7 @@
     "dayjs": "1.10.5",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.0",
-    "ng2-charts": "^3.0.0-rc.7",
+    "ng2-charts": "^3.0.5",
     "ngx-barcode": "^0.3.0",
     "ngx-infinite-scroll": "10.0.1",
     "ngx-webstorage": "8.0.0",

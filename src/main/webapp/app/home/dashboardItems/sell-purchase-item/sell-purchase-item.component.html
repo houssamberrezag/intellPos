@@ -1,0 +1,12 @@
+<div style="display: block" *ngIf="show">
+  <canvas
+    baseChart
+    id="canvas1"
+    [datasets]="barChartData"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [plugins]="barChartPlugins"
+    [legend]="barChartLegend"
+  >
+  </canvas>
+</div>

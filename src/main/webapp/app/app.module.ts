@@ -27,6 +27,7 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
 import { SidebarComponent } from './layouts/sidebar/sidebar.component';
 import { NgxBarcodeModule } from 'ngx-barcode';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
@@ -37,6 +38,8 @@ import { NgxBarcodeModule } from 'ngx-barcode';
     EntityRoutingModule,
     AppRoutingModule,
     NgxBarcodeModule,
+
+    NgChartsModule,
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,
