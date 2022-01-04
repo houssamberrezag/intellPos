@@ -8,6 +8,7 @@ import com.intell.pos.domain.Transaction;
 import com.intell.pos.domain.User;
 import com.intell.pos.domain.enumeration.PaymentTypes;
 import com.intell.pos.domain.enumeration.TransactionTypes;
+import com.intell.pos.domain.projection.ITodaySellsAndItems;
 import com.intell.pos.repository.SellRepository;
 import com.intell.pos.security.SecurityUtils;
 import com.intell.pos.service.PaymentService;
@@ -21,6 +22,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -503,5 +506,13 @@ public class SellResource {
         log.debug("REST request to get a total of Sells quantity by person id");
         int total = sellService.findtotalQuantityByPersonId(personId);
         return ResponseEntity.ok(total);
+    }
+
+    @GetMapping("/sells/findTodaySumQuantitesAndItems")
+    ResponseEntity<ITodaySellsAndItems> findSumQuantitesAndItems() {
+        log.debug("REST request to get the sum  of Sells quantities and the total amount for today");
+        LocalDateTime now = LocalDateTime.now();
+        Instant debut = LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), 0, 0).toInstant(ZoneOffset.UTC);
+        return ResponseEntity.ok(sellService.findSumQuantitesAndItems(debut, now.toInstant(ZoneOffset.UTC)));
     }
 }

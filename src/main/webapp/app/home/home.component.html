@@ -80,8 +80,8 @@
             <i class="glyph-icon fa fa-shopping-cart"></i>
             <div class="tile-content">
               <span>
-                5 article
-                <small> ( 545.45 dh ) </small>
+                {{ sellTotayData.quantite ?? 0 }} articles
+                <small> ( {{ (sellTotayData.total ?? 0).toFixed(2) }} dh ) </small>
               </span>
             </div>
           </div>

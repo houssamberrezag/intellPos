@@ -1,8 +1,10 @@
 package com.intell.pos.service.impl;
 
 import com.intell.pos.domain.Sell;
+import com.intell.pos.domain.projection.ITodaySellsAndItems;
 import com.intell.pos.repository.SellRepository;
 import com.intell.pos.service.SellService;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -109,5 +111,10 @@ public class SellServiceImpl implements SellService {
     @Override
     public int findtotalQuantityByPersonId(Long personId) {
         return sellRepository.findtotalQuantityByPersonId(personId);
+    }
+
+    @Override
+    public ITodaySellsAndItems findSumQuantitesAndItems(Instant debut, Instant fin) {
+        return sellRepository.findSumQuantitesAndItems(debut, fin);
     }
 }
