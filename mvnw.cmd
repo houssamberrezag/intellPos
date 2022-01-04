@@ -58,7 +58,7 @@ set ERROR_CODE=0
 @setlocal
 
 @REM ==== START VALIDATION ====
-set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_66
+set JAVA_HOME=C:\Program Files\Java\jdk-11.0.12
 if not "%JAVA_HOME%" == "" goto OkJHome
 
 echo.
@@ -86,7 +86,7 @@ goto error
 @REM Find the project base dir, i.e. the directory that contains the folder ".mvn".
 @REM Fallback to current working directory if not found.
 
-set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_66
+set JAVA_HOME=C:\Program Files\Java\jdk-11.0.12
 set MAVEN_PROJECTBASEDIR=%MAVEN_BASEDIR%
 IF NOT "%MAVEN_PROJECTBASEDIR%"=="" goto endDetectBaseDir
 
