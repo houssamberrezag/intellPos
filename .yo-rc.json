@@ -63,8 +63,8 @@
     "lastLiquibaseTimestamp": 1629042619000,
     "azureAppServicePlan": "ASP-hbinventory-b7f2",
     "azureApplicationInsightsName": "hb-inventory",
-    "azureAppServiceName": "hb-inventory",
-    "azureAppServiceDeploymentType": "github-action"
+    "azureAppServiceName": "hb-inventory2",
+    "azureAppServiceDeploymentType": "local"
   },
   "git-provider": "GitHub",
   "git-company": "houssamberrezag",
