@@ -2,6 +2,7 @@ package com.intell.pos.service;
 
 import com.intell.pos.domain.Transaction;
 import com.intell.pos.domain.enumeration.TransactionTypes;
+import com.intell.pos.domain.projection.ITransactionResume;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -62,6 +63,8 @@ public interface TransactionService {
 
     Page<Transaction> findByTransactiontype(TransactionTypes transactionType, Pageable pageable);
 
+    Page<Transaction> findTodayTransactionsByTransactiontype(TransactionTypes transactionType, Pageable pageable);
+
     Page<Transaction> findByTransactiontypeAndPersonId(TransactionTypes transactionType, Long personId, Pageable pageable);
 
     /**
@@ -85,4 +88,8 @@ public interface TransactionService {
     int countByProductId(Long productId);
 
     double totalAmountByPersonId(Long personId);
+
+    ITransactionResume findResumeByTransactionType(TransactionTypes transactionType);
+
+    ITransactionResume findTodayResumeByTransactionType(TransactionTypes transactionType);
 }

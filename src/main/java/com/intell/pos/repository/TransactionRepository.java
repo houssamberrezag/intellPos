@@ -2,6 +2,7 @@ package com.intell.pos.repository;
 
 import com.intell.pos.domain.Transaction;
 import com.intell.pos.domain.enumeration.TransactionTypes;
+import com.intell.pos.domain.projection.ITransactionResume;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,4 +46,15 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
         "?1 in (select s.product.id from Purchase s where s.referenceNo = t.referenceNo)"
     )
     int countByProductId(Long productId);
+
+    @Query("select t from Transaction t where t.transactionType = ?1 and t.createdAt > current_date")
+    Page<Transaction> findTodayTransactionsByTransactionType(TransactionTypes transactionType, Pageable pageable);
+
+    @Query(
+        "select sum(t.netTotal) as total, sum(t.paid) as paid from Transaction t where t.transactionType = ?1 and t.createdAt > current_date"
+    )
+    ITransactionResume findTodayResumeByTransactionType(TransactionTypes transactionType);
+
+    @Query("select sum(t.netTotal) as total, sum(t.paid) as paid from Transaction t where t.transactionType = ?1")
+    ITransactionResume findResumeByTransactionType(TransactionTypes transactionType);
 }

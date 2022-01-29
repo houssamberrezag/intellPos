@@ -2,6 +2,7 @@ package com.intell.pos.service.impl;
 
 import com.intell.pos.domain.Transaction;
 import com.intell.pos.domain.enumeration.TransactionTypes;
+import com.intell.pos.domain.projection.ITransactionResume;
 import com.intell.pos.repository.TransactionRepository;
 import com.intell.pos.service.TransactionService;
 import java.util.List;
@@ -171,5 +172,20 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public double totalAmountByPersonId(Long personId) {
         return transactionRepository.totalAmountByPersonId(personId);
+    }
+
+    @Override
+    public Page<Transaction> findTodayTransactionsByTransactiontype(TransactionTypes transactionType, Pageable pageable) {
+        return transactionRepository.findTodayTransactionsByTransactionType(transactionType, pageable);
+    }
+
+    @Override
+    public ITransactionResume findResumeByTransactionType(TransactionTypes transactionType) {
+        return transactionRepository.findResumeByTransactionType(transactionType);
+    }
+
+    @Override
+    public ITransactionResume findTodayResumeByTransactionType(TransactionTypes transactionType) {
+        return transactionRepository.findTodayResumeByTransactionType(transactionType);
     }
 }

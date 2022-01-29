@@ -80,12 +80,12 @@
             <i class="glyph-icon fa fa-shopping-cart"></i>
             <div class="tile-content">
               <span>
-                {{ sellTotayData.quantite ?? 0 }} articles
-                <small> ( {{ (sellTotayData.total ?? 0).toFixed(2) }} dh ) </small>
+                {{ sellTodayData.quantite ?? 0 }} articles
+                <small> ( {{ (sellTodayData.total ?? 0).toFixed(2) }} dh ) </small>
               </span>
             </div>
           </div>
-          <a href="" class="tile-footer tooltip-button" data-placement="bottom" title="View Invoices">
+          <a routerLink="/sell/today" class="tile-footer tooltip-button" data-placement="bottom" title="View Invoices">
             Voir les factures
             <i class="glyph-icon icon-arrow-right"></i>
           </a>
@@ -102,12 +102,12 @@
             <i class="glyph-icon fa fa-ship"></i>
             <div class="tile-content">
               <span>
-                5 article
-                <small> ( 545.45 dh ) </small>
+                {{ purchaseTodayData.quantite ?? 0 }} articles
+                <small> ( {{ (purchaseTodayData.total ?? 0).toFixed(2) }} dh ) </small>
               </span>
             </div>
           </div>
-          <a href="" class="tile-footer tooltip-button" data-placement="bottom" title="View Bills">
+          <a routerLink="/purchase/today" class="tile-footer tooltip-button" data-placement="bottom" title="View Bills">
             Voir les factures
             <i class="glyph-icon icon-arrow-right"></i>
           </a>
@@ -123,11 +123,11 @@
           <div class="tile-content-wrapper">
             <i class="glyph-icon fa fa-money"></i>
             <div class="tile-content">
-              <span> 5460.45 dh </span>
+              <span> {{ todayTransactionsAmount.toFixed(2) }} dh </span>
               <small>&nbsp;</small>
             </div>
           </div>
-          <a href="" class="tile-footer tooltip-button" data-placement="bottom" title="Voir les détails">
+          <a routerLink="/transaction/today" class="tile-footer tooltip-button" data-placement="bottom" title="Voir les détails">
             Voir les détails
             <i class="glyph-icon icon-arrow-right"></i>
           </a>

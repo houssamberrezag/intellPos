@@ -11,11 +11,20 @@ import { ReturnComponent } from '../return/return.component';
 import { PosComponent } from '../pos/pos.component';
 import { InvoiceComponent } from '../invoice/invoice.component';
 import { InvoiceRoutingResolveService } from './invoice-routing-resolve.service';
+import { TodaySellsComponent } from '../today-sells/today-sells.component';
 
 const sellRoute: Routes = [
   {
     path: '',
     component: SellComponent,
+    data: {
+      defaultSort: 'id,desc',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'today',
+    component: TodaySellsComponent,
     data: {
       defaultSort: 'id,desc',
     },

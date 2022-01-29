@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { SettingsService } from 'app/entities/settings/service/settings.service';
+import { ISettings } from 'app/entities/settings/settings.model';
 import { ITransaction } from 'app/entities/transaction/transaction.model';
 import { ISell } from '../sell.model';
 import { SellService } from '../service/sell.service';
@@ -12,18 +14,18 @@ declare let $: any;
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
   sells: ISell[] = [];
-  //payments: IPayment[] = [];
   transaction: ITransaction | null = null;
-  constructor(private sellService: SellService, private activatedRoute: ActivatedRoute) {}
+  settings: ISettings | null = null;
+  constructor(private settingsService: SettingsService, private sellService: SellService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.hideSideBar();
+    this.settingsService.getCurrentSettings().subscribe(se => {
+      this.settings = se;
+    });
     this.activatedRoute.data.subscribe(({ transaction }) => {
-      console.log(transaction);
-
       this.transaction = transaction;
       this.loadSells();
-      //this.loadPayments();
     });
   }
 

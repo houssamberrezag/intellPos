@@ -1,6 +1,7 @@
 package com.intell.pos.service;
 
 import com.intell.pos.domain.Payment;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -74,4 +75,14 @@ public interface PaymentService {
     List<Payment> findByReference(String reference);
 
     double totalAmountByPersonId(Long personId);
+
+    double totalAmountBitweenToDates(Instant debut, Instant fin);
+
+    /**
+     * Get today payments .
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<Payment> todayPayments(Pageable pageable);
 }

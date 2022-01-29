@@ -7,6 +7,8 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { Chart, ChartItem } from 'chart.js';
 import { SellService } from 'app/entities/sell/service/sell.service';
+import { PurchaseService } from 'app/entities/purchase/service/purchase.service';
+import { PaymentService } from 'app/entities/payment/service/payment.service';
 
 @Component({
   selector: 'jhi-home',
@@ -15,11 +17,19 @@ import { SellService } from 'app/entities/sell/service/sell.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
-  sellTotayData: { quantite?: number; total?: number } = {};
+  sellTodayData: { quantite?: number; total?: number } = {};
+  purchaseTodayData: { quantite?: number; total?: number } = {};
+  todayTransactionsAmount = 0;
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private accountService: AccountService, private router: Router, private sellService: SellService) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private sellService: SellService,
+    private purchaseService: PurchaseService,
+    private paymentService: PaymentService
+  ) {}
 
   ngOnInit(): void {
     this.accountService
@@ -45,7 +55,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   loadData(): void {
-    this.sellService.findTodaySumQuantitesAndItems().subscribe(data => (this.sellTotayData = data));
+    this.sellService.findTodaySumQuantitesAndItems().subscribe(data => (this.sellTodayData = data));
+    this.purchaseService.findTodaySumQuantitesAndItems().subscribe(data => (this.purchaseTodayData = data));
+    this.paymentService.todayTotalAmount().subscribe(data => (this.todayTransactionsAmount = data));
   }
 
   profitsChart(): void {
@@ -69,7 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       options: {
         responsive: true,
-        //legend: false,
+        // legend: false,
       },
     });
   }

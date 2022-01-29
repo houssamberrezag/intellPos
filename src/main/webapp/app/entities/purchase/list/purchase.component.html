@@ -30,23 +30,23 @@
         <tbody>
           <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
             <td style="text-align: right">
-              <b>Net Total :</b>
+              <b>Total net :</b>
             </td>
-            <td>DH 8000.00</td>
+            <td>{{ resume.total.toFixed(2) }} dh</td>
           </tr>
 
           <tr style="background-color: #f8f9f9; border: 2px solid #ddd">
             <td style="text-align: right">
-              <b>Total Vat :</b>
+              <b>Payé :</b>
             </td>
-            <td>DH 0.00</td>
+            <td>{{ resume.paid.toFixed(2) }} dh</td>
           </tr>
 
           <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
             <td style="text-align: right">
-              <b>Net Total :</b>
+              <b>Réste :</b>
             </td>
-            <td>DH 8000.00</td>
+            <td>{{ (resume.total - resume.paid).toFixed(2) }} dh</td>
           </tr>
         </tbody>
       </table>
@@ -113,14 +113,12 @@
                     </a>
                   </li>
 
-                  <li>
-                    <!--purchase delete button trigger-->
+                  <!-- <li>
                     <a href="#" data-id="5" data-name="2021/08/P-0002" class="btn-delete">
                       <i class="fa fa-trash" style="color: red"></i>
                       Delete
                     </a>
-                    <!--delete button trigger ends-->
-                  </li>
+                  </li> -->
 
                   <!-- <li>
                     <a href="">

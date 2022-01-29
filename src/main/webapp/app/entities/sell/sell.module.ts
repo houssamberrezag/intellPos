@@ -8,6 +8,7 @@ import { SellRoutingModule } from './route/sell-routing.module';
 import { ReturnComponent } from './return/return.component';
 import { PosComponent } from './pos/pos.component';
 import { InvoiceComponent } from './invoice/invoice.component';
+import { TodaySellsComponent } from './today-sells/today-sells.component';
 
 @NgModule({
   imports: [SharedModule, SellRoutingModule],
@@ -19,6 +20,7 @@ import { InvoiceComponent } from './invoice/invoice.component';
     ReturnComponent,
     PosComponent,
     InvoiceComponent,
+    TodaySellsComponent,
   ],
   entryComponents: [SellDeleteDialogComponent],
 })

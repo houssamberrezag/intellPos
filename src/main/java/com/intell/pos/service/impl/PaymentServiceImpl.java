@@ -5,6 +5,7 @@ import com.intell.pos.domain.Transaction;
 import com.intell.pos.repository.PaymentRepository;
 import com.intell.pos.repository.TransactionRepository;
 import com.intell.pos.service.PaymentService;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -127,5 +128,15 @@ public class PaymentServiceImpl implements PaymentService {
     public double totalAmountByPersonId(Long personId) {
         // TODO Auto-generated method stub
         return paymentRepository.totalAmountByPersonId(personId);
+    }
+
+    @Override
+    public double totalAmountBitweenToDates(Instant debut, Instant fin) {
+        return paymentRepository.totalAmountBitweenToDates(debut, fin);
+    }
+
+    @Override
+    public Page<Payment> todayPayments(Pageable pageable) {
+        return paymentRepository.todayPayments(pageable);
     }
 }

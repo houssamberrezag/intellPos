@@ -6,11 +6,20 @@ import { PurchaseComponent } from '../list/purchase.component';
 import { PurchaseDetailComponent } from '../detail/purchase-detail.component';
 import { PurchaseUpdateComponent } from '../update/purchase-update.component';
 import { PurchaseRoutingResolveService } from './purchase-routing-resolve.service';
+import { TodayPurchasesComponent } from '../today-purchases/today-purchases.component';
 
 const purchaseRoute: Routes = [
   {
     path: '',
     component: PurchaseComponent,
+    data: {
+      defaultSort: 'id,desc',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'today',
+    component: TodayPurchasesComponent,
     data: {
       defaultSort: 'id,desc',
     },

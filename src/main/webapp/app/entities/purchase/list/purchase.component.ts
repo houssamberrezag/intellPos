@@ -27,6 +27,7 @@ export class PurchaseComponent implements OnInit {
   ngbPaginationPage = 1;
 
   showenSummary = false;
+  resume: { total: number; paid: number } = { total: 0, paid: 0 };
   constructor(
     protected transactionService: TransactionService,
     protected activatedRoute: ActivatedRoute,
@@ -39,6 +40,15 @@ export class PurchaseComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ person }) => {
       this.person = person;
       this.handleNavigation();
+    });
+    this.loadResume();
+  }
+
+  loadResume(): void {
+    this.transactionService.purchasesResume().subscribe(res => {
+      if (res) {
+        this.resume = res;
+      }
     });
   }
 

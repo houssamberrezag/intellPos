@@ -1,6 +1,8 @@
 package com.intell.pos.service;
 
 import com.intell.pos.domain.Purchase;
+import com.intell.pos.domain.projection.ITodaySellsAndItems;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -60,4 +62,6 @@ public interface PurchaseService {
     Page<Purchase> findByProductId(Long productId, Pageable pageable);
 
     int findtotalQuantityByPersonId(Long personId);
+
+    ITodaySellsAndItems findSumQuantitesAndItems(Instant debut, Instant fin);
 }

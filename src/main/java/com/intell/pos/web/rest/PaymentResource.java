@@ -6,6 +6,9 @@ import com.intell.pos.service.PaymentService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -211,5 +214,27 @@ public class PaymentResource {
     public ResponseEntity<Double> totalAmountByPersonId(@RequestParam Long personId) {
         log.debug("REST request to get a sum of amout of payments by person id");
         return ResponseEntity.ok(paymentService.totalAmountByPersonId(personId));
+    }
+
+    @GetMapping("/payments/todayTotalAmount")
+    public ResponseEntity<Double> todayTotalAmount() {
+        log.debug("REST request to get a sum of amout of payments in today");
+        LocalDateTime now = LocalDateTime.now();
+        Instant debut = LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), 0, 0).toInstant(ZoneOffset.UTC);
+        return ResponseEntity.ok(paymentService.totalAmountBitweenToDates(debut, now.toInstant(ZoneOffset.UTC)));
+    }
+
+    /**
+     * {@code GET  /payments} : get page of payments by person id.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of payments in body.
+     */
+    @GetMapping("/payments/today")
+    public ResponseEntity<List<Payment>> getTodayPayments(Pageable pageable) {
+        log.debug("REST request to get a page of today Payments ");
+        Page<Payment> page = paymentService.todayPayments(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

@@ -15,58 +15,44 @@
       Search
     </a>
 
-    <input type="button" class="btn btn-alt bg-purple btn-xs" onclick="showSummary()" id="summaryBtn" value="Summary" />
+    <input
+      type="button"
+      class="btn btn-alt bg-purple btn-xs"
+      (click)="showenSummary = !showenSummary"
+      id="summaryBtn"
+      [value]="showenSummary ? 'Liste d\'achat' : 'Résumé'"
+    />
   </div>
 
   <div class="panel-body">
-    <div id="summaryDiv" style="display: none">
-      <table style="width: 100%; font-weight: bold" class="table table-bordered">
+    <div id="summaryDiv" *ngIf="showenSummary">
+      <table style="width: 100%" class="table table-bordered">
         <tbody>
           <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
             <td style="text-align: right">
-              <b>Total :</b>
+              <b>Total net :</b>
             </td>
-            <td>
-              DH 34100.00
-              <span class="font-size-9">(Excluding Vat &amp; Product Tax)</span>
-            </td>
+            <td>{{ resume.total.toFixed(2) }} dh</td>
           </tr>
 
           <tr style="background-color: #f8f9f9; border: 2px solid #ddd">
             <td style="text-align: right">
-              <b>Total Vat :</b>
+              <b>Payé :</b>
             </td>
-            <td>DH 0.00</td>
+            <td>{{ resume.paid.toFixed(2) }} dh</td>
           </tr>
 
           <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
             <td style="text-align: right">
-              <b>Net Total :</b>
+              <b>Réste :</b>
             </td>
-            <td>DH 34100.00</td>
-          </tr>
-
-          <tr style="background-color: #f8f9f9; border: 1px solid #ddd">
-            <td style="text-align: right">
-              <b>Total Cost Price :</b>
-            </td>
-            <td>
-              DH 29800.00
-              <span class="font-size-9">(Excluding Vat &amp; Product Tax)</span>
-            </td>
-          </tr>
-
-          <tr style="background-color: #f8f9f9; border: 2px solid #ddd">
-            <td style="text-align: right">
-              <b>Total Profit</b>
-            </td>
-            <td>DH 4300.00</td>
+            <td>{{ (resume.total - resume.paid).toFixed(2) }} dh</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="table-responsive" style="min-height: 300px" id="tableDIv">
+    <div class="table-responsive" style="min-height: 300px" id="tableDIv" *ngIf="!showenSummary">
       <table class="table table-bordered table-striped">
         <thead class="bg-gradient-9">
           <tr>

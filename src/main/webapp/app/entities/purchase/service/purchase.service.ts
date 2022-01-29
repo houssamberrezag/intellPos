@@ -99,6 +99,10 @@ export class PurchaseService {
     return this.http.get<number>(`${this.resourceUrl}/totalQuantity?personId=${personId}`, { observe: 'body' });
   }
 
+  findTodaySumQuantitesAndItems(): Observable<{ quantite?: number; total?: number }> {
+    return this.http.get<any>(`${this.resourceUrl}/findTodaySumQuantitesAndItems`, { observe: 'body' });
+  }
+
   protected convertDateFromClient(purchase: IPurchase): IPurchase {
     return Object.assign({}, purchase, {
       date: purchase.date?.isValid() ? purchase.date.toJSON() : undefined,

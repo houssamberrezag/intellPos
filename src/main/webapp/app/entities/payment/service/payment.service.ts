@@ -52,6 +52,13 @@ export class PaymentService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  todayPayments(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IPayment[]>(this.resourceUrl + '/today', { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   findByPersonId(personId: number, req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -89,6 +96,10 @@ export class PaymentService {
 
   totalAmountByPersonId(personId: number): Observable<number> {
     return this.http.get<number>(`${this.resourceUrl}/totalAmountByPersonId?personId=${personId}`, { observe: 'body' });
+  }
+
+  todayTotalAmount(): Observable<number> {
+    return this.http.get<number>(`${this.resourceUrl}/todayTotalAmount`, { observe: 'body' });
   }
 
   protected convertDateFromClient(payment: IPayment): IPayment {

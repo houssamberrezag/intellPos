@@ -5,10 +5,11 @@ import { PaymentDetailComponent } from './detail/payment-detail.component';
 import { PaymentUpdateComponent } from './update/payment-update.component';
 import { PaymentDeleteDialogComponent } from './delete/payment-delete-dialog.component';
 import { PaymentRoutingModule } from './route/payment-routing.module';
+import { TodayPaymentsComponent } from './today-payments/today-payments.component';
 
 @NgModule({
   imports: [SharedModule, PaymentRoutingModule],
-  declarations: [PaymentComponent, PaymentDetailComponent, PaymentUpdateComponent, PaymentDeleteDialogComponent],
+  declarations: [PaymentComponent, PaymentDetailComponent, PaymentUpdateComponent, PaymentDeleteDialogComponent, TodayPaymentsComponent],
   entryComponents: [PaymentDeleteDialogComponent],
 })
 export class PaymentModule {}

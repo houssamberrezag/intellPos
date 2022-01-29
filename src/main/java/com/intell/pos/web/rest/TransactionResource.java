@@ -2,6 +2,7 @@ package com.intell.pos.web.rest;
 
 import com.intell.pos.domain.Transaction;
 import com.intell.pos.domain.enumeration.TransactionTypes;
+import com.intell.pos.domain.projection.ITransactionResume;
 import com.intell.pos.repository.TransactionRepository;
 import com.intell.pos.service.TransactionService;
 import com.intell.pos.web.rest.errors.BadRequestAlertException;
@@ -202,7 +203,7 @@ public class TransactionResource {
      */
     @GetMapping("/transactions/sells")
     public ResponseEntity<List<Transaction>> getSellTransactions(Pageable pageable) {
-        log.debug("REST request to get a page of Transactions");
+        log.debug("REST request to get a page of sell Transactions");
         Page<Transaction> page = transactionService.findByTransactiontype(TransactionTypes.SELL, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -216,8 +217,36 @@ public class TransactionResource {
      */
     @GetMapping("/transactions/purchases")
     public ResponseEntity<List<Transaction>> getPurchasesTransactions(Pageable pageable) {
-        log.debug("REST request to get a page of Transactions");
+        log.debug("REST request to get a page of parchases Transactions");
         Page<Transaction> page = transactionService.findByTransactiontype(TransactionTypes.PURCHASE, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /transactions} : get today  sell transactions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
+     */
+    @GetMapping("/transactions/sells/today")
+    public ResponseEntity<List<Transaction>> getTodaySellTransactions(Pageable pageable) {
+        log.debug("REST request to get a page of today sell Transactions");
+        Page<Transaction> page = transactionService.findTodayTransactionsByTransactiontype(TransactionTypes.SELL, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /transactions} : get today purchases transactions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
+     */
+    @GetMapping("/transactions/purchases/today")
+    public ResponseEntity<List<Transaction>> getTodayPurchasesTransactions(Pageable pageable) {
+        log.debug("REST request to get a page of today purchases Transactions");
+        Page<Transaction> page = transactionService.findTodayTransactionsByTransactiontype(TransactionTypes.PURCHASE, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -282,5 +311,29 @@ public class TransactionResource {
     public ResponseEntity<Double> totalAmountByPersonId(@RequestParam Long personId) {
         log.debug("REST request to get a sum of amout of  Transactions by person id");
         return ResponseEntity.ok(transactionService.totalAmountByPersonId(personId));
+    }
+
+    @GetMapping("/transactions/sellResume")
+    public ResponseEntity<ITransactionResume> sellResume() {
+        log.debug("REST request to get a sum of amout of  Transactions by person id");
+        return ResponseEntity.ok(transactionService.findResumeByTransactionType(TransactionTypes.SELL));
+    }
+
+    @GetMapping("/transactions/sellTodayResume")
+    public ResponseEntity<ITransactionResume> sellTodayResume() {
+        log.debug("REST request to get a sum of amout of  Transactions by person id");
+        return ResponseEntity.ok(transactionService.findTodayResumeByTransactionType(TransactionTypes.SELL));
+    }
+
+    @GetMapping("/transactions/purchasesResume")
+    public ResponseEntity<ITransactionResume> purchaseResume() {
+        log.debug("REST request to get a sum of amout of  Transactions by person id");
+        return ResponseEntity.ok(transactionService.findResumeByTransactionType(TransactionTypes.PURCHASE));
+    }
+
+    @GetMapping("/transactions/purchasesTodayResume")
+    public ResponseEntity<ITransactionResume> purchaseTodayResume() {
+        log.debug("REST request to get a sum of amout of  Transactions by person id");
+        return ResponseEntity.ok(transactionService.findTodayResumeByTransactionType(TransactionTypes.PURCHASE));
     }
 }

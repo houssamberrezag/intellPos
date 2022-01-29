@@ -17,8 +17,8 @@ export class StockItemComponent {
   public pieChartLegend = true;
   public pieChartPlugins = [];
 
-  /*constructor() {
-    //monkeyPatchChartJsTooltip();
-    //monkeyPatchChartJsLegend();
-  }*/
+  /* constructor() {
+    // monkeyPatchChartJsTooltip();
+    // monkeyPatchChartJsLegend();
+  } */
 }

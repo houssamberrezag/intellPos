@@ -6,16 +6,16 @@
             </div> -->
         <div class="info">
           <h2>
-            <b>MY Company name</b>
+            <b>{{ settings?.name }}</b>
           </h2>
           <p>
-            Address: Ain haroune Fès
+            Address:
+            {{ settings?.address }}
             <br />
             {{ 'Email' }}:
-            {{ 'houssamberrezag@gmail.com' }}
+            {{ settings?.email }}
             <br />
-            Phone: +212 6748483048
-            <br /><br />
+            Phone: {{ settings?.phone }} <br /><br />
           </p>
         </div>
         <!--End Info-->

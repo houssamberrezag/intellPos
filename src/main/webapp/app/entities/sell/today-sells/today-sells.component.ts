@@ -4,22 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ISell } from '../sell.model';
-
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
-import { SellService } from '../service/sell.service';
-import { SellDeleteDialogComponent } from '../delete/sell-delete-dialog.component';
 import { ITransaction } from 'app/entities/transaction/transaction.model';
+import { TransactionDeleteDialogComponent } from 'app/entities/transaction/delete/transaction-delete-dialog.component';
 import { TransactionService } from 'app/entities/transaction/service/transaction.service';
-import { IPerson } from 'app/entities/person/person.model';
 import { SellBillService } from '../service/sell-bill.service';
 
 @Component({
-  selector: 'jhi-sell',
-  templateUrl: './sell.component.html',
+  selector: 'jhi-today-sells',
+  templateUrl: './today-sells.component.html',
+  styleUrls: ['./today-sells.component.scss'],
 })
-export class SellComponent implements OnInit {
-  person: IPerson | null = null;
+export class TodaySellsComponent implements OnInit {
   transactions?: ITransaction[];
   isLoading = false;
   totalItems = 0;
@@ -28,10 +24,8 @@ export class SellComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
-
-  showenSummary = false;
   resume: { total: number; paid: number } = { total: 0, paid: 0 };
-
+  showenSummary = false;
   constructor(
     protected transactionService: TransactionService,
     protected activatedRoute: ActivatedRoute,
@@ -41,15 +35,12 @@ export class SellComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ person }) => {
-      this.person = person;
-      this.handleNavigation();
-    });
+    this.handleNavigation();
     this.loadResume();
   }
 
   loadResume(): void {
-    this.transactionService.sellResume().subscribe(res => {
+    this.transactionService.sellTodayResume().subscribe(res => {
       if (res) {
         this.resume = res;
       }
@@ -59,51 +50,31 @@ export class SellComponent implements OnInit {
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
-
-    if (this.person?.id) {
-      this.transactionService
-        .sellsByPersonId(this.person.id, {
-          page: pageToLoad - 1,
-          size: this.itemsPerPage,
-          sort: this.sort(),
-        })
-        .subscribe(
-          (res: HttpResponse<ITransaction[]>) => {
-            this.isLoading = false;
-            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-          },
-          () => {
-            this.isLoading = false;
-            this.onError();
-          }
-        );
-    } else {
-      this.transactionService
-        .sells({
-          page: pageToLoad - 1,
-          size: this.itemsPerPage,
-          sort: this.sort(),
-        })
-        .subscribe(
-          (res: HttpResponse<ITransaction[]>) => {
-            this.isLoading = false;
-            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-          },
-          () => {
-            this.isLoading = false;
-            this.onError();
-          }
-        );
-    }
+    this.transactionService
+      .todaySells({
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      })
+      .subscribe(
+        (res: HttpResponse<ITransaction[]>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+        },
+        () => {
+          this.isLoading = false;
+          this.onError();
+        }
+      );
   }
 
   trackId(index: number, item: ITransaction): number {
     return item.id!;
   }
 
-  delete(sell: ISell): void {
-    const modalRef = this.modalService.open(SellDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.sell = sell;
+  delete(transaction: ITransaction): void {
+    const modalRef = this.modalService.open(TransactionDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.transaction = transaction;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
@@ -139,11 +110,11 @@ export class SellComponent implements OnInit {
     });
   }
 
-  protected onSuccess(data: ISell[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
+  protected onSuccess(data: ITransaction[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     if (navigate) {
-      const route = this.person?.id ? ['/person', this.person.id, 'sells'] : ['/sell'];
+      const route = ['/sell/today'];
       this.router.navigate(route, {
         queryParams: {
           page: this.page,
@@ -153,7 +124,6 @@ export class SellComponent implements OnInit {
       });
     }
     this.transactions = data ?? [];
-
     this.ngbPaginationPage = this.page;
   }
 

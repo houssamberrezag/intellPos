@@ -7,12 +7,22 @@ import { TransactionDetailComponent } from '../detail/transaction-detail.compone
 import { TransactionUpdateComponent } from '../update/transaction-update.component';
 import { TransactionRoutingResolveService } from './transaction-routing-resolve.service';
 import { PaymentComponent } from 'app/entities/payment/list/payment.component';
+import { TodayPaymentsComponent } from 'app/entities/payment/today-payments/today-payments.component';
 
 const transactionRoute: Routes = [
   {
     path: '',
     //component: TransactionComponent,
     component: PaymentComponent,
+    data: {
+      defaultSort: 'id,desc',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'today',
+    //component: TransactionComponent,
+    component: TodayPaymentsComponent,
     data: {
       defaultSort: 'id,desc',
     },
